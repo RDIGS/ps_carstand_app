@@ -104,61 +104,68 @@ class _FichaTecnicaCard extends StatelessWidget {
     final corEstado = AppColors.paraEstado(vehicle.estado);
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(width: 6, color: corEstado),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        vehicle.matricula,
-                        style: AppTypography.numero(fontSize: 20, color: Theme.of(context).colorScheme.onSurface),
-                      ),
-                      StatusBadge(estado: vehicle.estado),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Text('${vehicle.marca} ${vehicle.modelo}', style: Theme.of(context).textTheme.headlineLarge),
-                  if (vehicle.versao != null)
-                    Text(vehicle.versao!, style: Theme.of(context).textTheme.bodyMedium),
-                  const Divider(height: 28),
-                  Wrap(
-                    spacing: 24,
-                    runSpacing: 12,
-                    children: [
-                      _Spec(label: l10n.specKms, value: '${vehicle.kms} km', mono: true),
-                      if (vehicle.dataPrimeiraMatriculaReal != null)
-                        _Spec(label: l10n.specPrimeiraMatricula, value: vehicle.dataPrimeiraMatriculaReal!, mono: true),
-                      if (vehicle.categoria != null) _Spec(label: l10n.specCategoria, value: vehicle.categoria!),
-                      if (vehicle.combustivel != null) _Spec(label: l10n.specCombustivel, value: vehicle.combustivel!),
-                      if (vehicle.cilindrada != null) _Spec(label: l10n.specCilindrada, value: '${vehicle.cilindrada} cm³'),
-                      if (vehicle.potenciaKw != null) _Spec(label: l10n.specPotencia, value: '${vehicle.potenciaKw} kW'),
-                      if (vehicle.cor != null) _Spec(label: l10n.specCor, value: vehicle.cor!),
-                      if (vehicle.numLugares != null) _Spec(label: l10n.specLugares, value: '${vehicle.numLugares}'),
-                      if (vehicle.pesoTara != null) _Spec(label: l10n.specTara, value: '${vehicle.pesoTara} kg'),
-                      if (vehicle.pesoBruto != null) _Spec(label: l10n.specPesoBruto, value: '${vehicle.pesoBruto} kg'),
-                    ],
-                  ),
-                  if (vehicle.chassis != null) ...[
-                    const SizedBox(height: 12),
-                    Text(l10n.specChassis, style: Theme.of(context).textTheme.bodyMedium),
-                    Text(
-                      vehicle.chassis!,
-                      style: AppTypography.numero(fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
+      // IntrinsicHeight é necessário porque o Row usa stretch dentro de um
+      // ListView (altura não limitada) — sem isto o layout falha em
+      // silêncio numa build de release e o cartão nunca chega a aparecer.
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(width: 6, color: corEstado),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          vehicle.matricula,
+                          style: AppTypography.numero(fontSize: 20, color: Theme.of(context).colorScheme.onSurface),
+                        ),
+                        StatusBadge(estado: vehicle.estado),
+                      ],
                     ),
+                    const SizedBox(height: 4),
+                    Text('${vehicle.marca} ${vehicle.modelo}', style: Theme.of(context).textTheme.headlineLarge),
+                    if (vehicle.versao != null)
+                      Text(vehicle.versao!, style: Theme.of(context).textTheme.bodyMedium),
+                    const Divider(height: 28),
+                    Wrap(
+                      spacing: 24,
+                      runSpacing: 12,
+                      children: [
+                        _Spec(label: l10n.specKms, value: '${vehicle.kms} km', mono: true),
+                        if (vehicle.dataPrimeiraMatriculaReal != null)
+                          _Spec(
+                              label: l10n.specPrimeiraMatricula, value: vehicle.dataPrimeiraMatriculaReal!, mono: true),
+                        if (vehicle.categoria != null) _Spec(label: l10n.specCategoria, value: vehicle.categoria!),
+                        if (vehicle.combustivel != null) _Spec(label: l10n.specCombustivel, value: vehicle.combustivel!),
+                        if (vehicle.cilindrada != null)
+                          _Spec(label: l10n.specCilindrada, value: '${vehicle.cilindrada} cm³'),
+                        if (vehicle.potenciaKw != null) _Spec(label: l10n.specPotencia, value: '${vehicle.potenciaKw} kW'),
+                        if (vehicle.cor != null) _Spec(label: l10n.specCor, value: vehicle.cor!),
+                        if (vehicle.numLugares != null) _Spec(label: l10n.specLugares, value: '${vehicle.numLugares}'),
+                        if (vehicle.pesoTara != null) _Spec(label: l10n.specTara, value: '${vehicle.pesoTara} kg'),
+                        if (vehicle.pesoBruto != null) _Spec(label: l10n.specPesoBruto, value: '${vehicle.pesoBruto} kg'),
+                      ],
+                    ),
+                    if (vehicle.chassis != null) ...[
+                      const SizedBox(height: 12),
+                      Text(l10n.specChassis, style: Theme.of(context).textTheme.bodyMedium),
+                      Text(
+                        vehicle.chassis!,
+                        style: AppTypography.numero(fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
