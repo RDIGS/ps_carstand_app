@@ -5,6 +5,7 @@ import 'l10n/app_localizations.dart';
 import 'core/api/api_client.dart';
 import 'core/storage/secure_storage.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/theme_state.dart';
 import 'features/app_version/app_version_repository.dart';
 import 'features/app_version/update_required_screen.dart';
 import 'features/audit/audit_repository.dart';
@@ -33,6 +34,10 @@ class PsCarStandApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<SecureStorage>(create: (_) => SecureStorage()),
+        ChangeNotifierProxyProvider<SecureStorage, ThemeState>(
+          create: (context) => ThemeState(context.read<SecureStorage>()),
+          update: (_, __, previous) => previous!,
+        ),
         // ApiClient precisa de notificar o AuthState quando uma sessão expira
         // (401 + refresh falhado) — o callback é ligado depois de o
         // AuthState existir, através deste indirection simples.
@@ -75,13 +80,16 @@ class _AppRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthState>(
-      builder: (context, auth, _) {
+    return Consumer2<AuthState, ThemeState>(
+      builder: (context, auth, themeState, _) {
         return MaterialApp(
           title: 'PS CarStand',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light(),
           darkTheme: AppTheme.dark(),
+          // Nunca segue o sistema/browser sozinho (secção 11: claro é o
+          // default) — só muda com o alternador explícito no menu de perfil.
+          themeMode: themeState.mode,
           // Idioma vem de people.idioma (secção 18), não do dispositivo.
           locale: Locale(auth.userIdioma),
           localizationsDelegates: AppLocalizations.localizationsDelegates,

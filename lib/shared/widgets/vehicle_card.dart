@@ -36,7 +36,10 @@ class VehicleCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(vehicle.matricula, style: AppTypography.numero(fontSize: 15)),
+                          Text(
+                            vehicle.matricula,
+                            style: AppTypography.numero(fontSize: 15, color: Theme.of(context).colorScheme.onSurface),
+                          ),
                           StatusBadge(estado: vehicle.estado),
                         ],
                       ),
@@ -123,7 +126,10 @@ class _KmsReading extends StatelessWidget {
       children: [
         const Icon(Icons.speed, size: 16, color: AppColors.grafiteVendido),
         const SizedBox(width: 4),
-        Text('$formatted km', style: AppTypography.numero(fontSize: 14, color: AppColors.grafiteAsfalto)),
+        Text(
+          '$formatted km',
+          style: AppTypography.numero(fontSize: 14, color: Theme.of(context).colorScheme.onSurface),
+        ),
       ],
     );
   }

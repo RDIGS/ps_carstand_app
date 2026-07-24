@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,8 +30,8 @@ class DuaCaptureScreen extends StatefulWidget {
 
 class _DuaCaptureScreenState extends State<DuaCaptureScreen> {
   final _picker = ImagePicker();
-  File? _frente;
-  File? _verso;
+  Uint8List? _frente;
+  Uint8List? _verso;
   bool _fotosProntas = false;
   bool _extraindo = false;
   String? _erro;
@@ -41,11 +41,15 @@ class _DuaCaptureScreenState extends State<DuaCaptureScreen> {
   Future<void> _capturar({required bool isFrente}) async {
     final foto = await _picker.pickImage(source: ImageSource.camera, imageQuality: 90, maxWidth: 2000);
     if (foto == null) return;
+    // XFile.readAsBytes() funciona em todas as plataformas, incluindo Web —
+    // ao contrário de `File(foto.path)`, que não existe no browser.
+    final bytes = await foto.readAsBytes();
+    if (!mounted) return;
     setState(() {
       if (isFrente) {
-        _frente = File(foto.path);
+        _frente = bytes;
       } else {
-        _verso = File(foto.path);
+        _verso = bytes;
       }
       _erro = null;
     });
@@ -58,9 +62,8 @@ class _DuaCaptureScreenState extends State<DuaCaptureScreen> {
     });
 
     try {
-      final frenteBytes = await _frente!.readAsBytes();
-      final versoBytes = await _verso!.readAsBytes();
-      if (!mounted) return;
+      final frenteBytes = _frente!;
+      final versoBytes = _verso!;
       final repo = context.read<VehiclesRepository>();
       final resultado = await repo.extractFromDua(fotoFrente: frenteBytes, fotoVerso: versoBytes);
 
@@ -118,7 +121,7 @@ class _DuaCaptureScreenState extends State<DuaCaptureScreen> {
                   Expanded(
                     child: DocumentPhotoSlot(
                       label: l10n.duaFrente,
-                      file: _frente,
+                      bytes: _frente,
                       onTap: _extraindo ? null : () => _capturar(isFrente: true),
                     ),
                   ),
@@ -126,7 +129,7 @@ class _DuaCaptureScreenState extends State<DuaCaptureScreen> {
                   Expanded(
                     child: DocumentPhotoSlot(
                       label: l10n.duaVerso,
-                      file: _verso,
+                      bytes: _verso,
                       onTap: _extraindo ? null : () => _capturar(isFrente: false),
                     ),
                   ),

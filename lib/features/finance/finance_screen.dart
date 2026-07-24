@@ -179,7 +179,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                       ),
                       trailing: Text(
                         '${(parseFinanceDecimal(linha['valor_total']) ?? 0).toStringAsFixed(0)} €',
-                        style: AppTypography.numero(fontSize: 15),
+                        style: AppTypography.numero(fontSize: 15, color: Theme.of(context).colorScheme.onSurface),
                       ),
                     ),
                   ),
@@ -277,7 +277,7 @@ class _MiniStat extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: Theme.of(context).textTheme.bodyMedium),
-        Text(value, style: AppTypography.numero(fontSize: 16)),
+        Text(value, style: AppTypography.numero(fontSize: 16, color: Theme.of(context).colorScheme.onSurface)),
       ],
     );
   }

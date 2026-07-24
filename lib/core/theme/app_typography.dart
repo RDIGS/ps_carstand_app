@@ -28,6 +28,12 @@ class AppTypography {
 
   /// Estilo mono para matrícula/kms/preços — números tabulares para
   /// alinharem como um conta-quilómetros real (elemento assinatura, secção 11).
+  ///
+  /// `color` por omissão é `grafiteAsfalto` (quase preto) — só é legível em
+  /// tema claro. Para texto normal (não uma cor de marca/estado fixa como
+  /// `azulMatricula`/`verdeDisponivel`), passa sempre
+  /// `Theme.of(context).colorScheme.onSurface` explicitamente, senão fica
+  /// invisível em modo escuro.
   static TextStyle numero({double fontSize = 16, FontWeight fontWeight = FontWeight.w600, Color? color}) {
     return GoogleFonts.ibmPlexMono(
       fontSize: fontSize,

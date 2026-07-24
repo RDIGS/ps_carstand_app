@@ -278,6 +278,12 @@ abstract class AppLocalizations {
   /// **'Auditoria'**
   String get menuAuditoria;
 
+  /// No description provided for @menuModoEscuro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo escuro'**
+  String get menuModoEscuro;
+
   /// No description provided for @auditoriaTitulo.
   ///
   /// In pt, this message translates to:

@@ -117,7 +117,10 @@ class _FichaTecnicaCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(vehicle.matricula, style: AppTypography.numero(fontSize: 20)),
+                      Text(
+                        vehicle.matricula,
+                        style: AppTypography.numero(fontSize: 20, color: Theme.of(context).colorScheme.onSurface),
+                      ),
                       StatusBadge(estado: vehicle.estado),
                     ],
                   ),
@@ -146,7 +149,10 @@ class _FichaTecnicaCard extends StatelessWidget {
                   if (vehicle.chassis != null) ...[
                     const SizedBox(height: 12),
                     Text(l10n.specChassis, style: Theme.of(context).textTheme.bodyMedium),
-                    Text(vehicle.chassis!, style: AppTypography.numero(fontSize: 13)),
+                    Text(
+                      vehicle.chassis!,
+                      style: AppTypography.numero(fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
+                    ),
                   ],
                 ],
               ),
@@ -172,7 +178,12 @@ class _Spec extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(label, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.grafiteVendido)),
-        Text(value, style: mono ? AppTypography.numero(fontSize: 14) : Theme.of(context).textTheme.bodyLarge),
+        Text(
+          value,
+          style: mono
+              ? AppTypography.numero(fontSize: 14, color: Theme.of(context).colorScheme.onSurface)
+              : Theme.of(context).textTheme.bodyLarge,
+        ),
       ],
     );
   }
@@ -222,7 +233,7 @@ class _PrecoColuna extends StatelessWidget {
           '${valor.toStringAsFixed(0)} €',
           style: AppTypography.numero(
             fontSize: destaque ? 22 : 18,
-            color: destaque ? AppColors.azulMatricula : AppColors.grafiteAsfalto,
+            color: destaque ? AppColors.azulMatricula : Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ],
@@ -528,7 +539,10 @@ class _FonteEstimativa extends StatelessWidget {
               if (anuncio.ano != null) '${anuncio.ano}',
               if (anuncio.kms != null) '${anuncio.kms} km',
             ].join(' · ')),
-            trailing: Text('${anuncio.preco.toStringAsFixed(0)} €', style: AppTypography.numero(fontSize: 14)),
+            trailing: Text(
+              '${anuncio.preco.toStringAsFixed(0)} €',
+              style: AppTypography.numero(fontSize: 14, color: Theme.of(context).colorScheme.onSurface),
+            ),
             onTap: () => onAbrirAnuncio(anuncio.url),
           ),
       ],

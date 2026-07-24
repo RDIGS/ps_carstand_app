@@ -110,6 +110,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuAuditoria => 'Audit log';
 
   @override
+  String get menuModoEscuro => 'Dark mode';
+
+  @override
   String get auditoriaTitulo => 'Audit log';
 
   @override

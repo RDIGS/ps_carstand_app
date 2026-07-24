@@ -16,6 +16,7 @@ class SecureStorage {
   static const _kUserNome = 'user_nome';
   static const _kUserRole = 'user_role';
   static const _kUserIdioma = 'user_idioma';
+  static const _kThemeMode = 'theme_mode';
 
   Future<void> saveStandToken(String token, String standId, String standNome) async {
     await _storage.write(key: _kStandToken, value: token);
@@ -50,6 +51,11 @@ class SecureStorage {
   Future<String?> readUserIdioma() => _storage.read(key: _kUserIdioma);
 
   Future<void> saveUserIdioma(String idioma) => _storage.write(key: _kUserIdioma, value: idioma);
+
+  /// Preferência de tema (secção 11: claro é o default) — é do dispositivo,
+  /// não da conta, por isso vive só aqui, não em `saveSession`.
+  Future<String?> readThemeMode() => _storage.read(key: _kThemeMode);
+  Future<void> saveThemeMode(String mode) => _storage.write(key: _kThemeMode, value: mode);
 
   /// Logout normal: mantém o token do stand guardado (secção 4), só limpa a sessão.
   Future<void> clearSession() async {

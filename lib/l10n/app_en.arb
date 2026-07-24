@@ -34,6 +34,7 @@
   "erroGenerico": "An unexpected error occurred. Please try again.",
   "terminarSessao": "Sign out",
   "menuAuditoria": "Audit log",
+  "menuModoEscuro": "Dark mode",
 
   "auditoriaTitulo": "Audit log",
   "auditoriaFiltroTodos": "All",

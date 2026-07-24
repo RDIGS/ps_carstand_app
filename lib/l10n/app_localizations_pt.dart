@@ -110,6 +110,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get menuAuditoria => 'Auditoria';
 
   @override
+  String get menuModoEscuro => 'Modo escuro';
+
+  @override
   String get auditoriaTitulo => 'Auditoria';
 
   @override

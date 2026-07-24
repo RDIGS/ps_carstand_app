@@ -61,7 +61,7 @@ class _HomeShellState extends State<HomeShell> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
         onDestinationSelected: (i) => setState(() => _index = i),
-        backgroundColor: AppColors.cinzaChapa,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         indicatorColor: AppColors.azulMatricula.withValues(alpha: 0.14),
         destinations: [
           for (final d in destinations) NavigationDestination(icon: Icon(d.icon), label: d.label),

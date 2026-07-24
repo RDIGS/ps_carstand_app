@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/theme_state.dart';
 import '../audit/audit_screen.dart';
 import '../auth/auth_state.dart';
 import '../../shared/widgets/vehicle_card.dart';
@@ -116,6 +117,7 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
                 if (value == 'logout_completo') _logoutCompleto();
                 if (value == 'idioma_pt') auth.changeIdioma('pt');
                 if (value == 'idioma_en') auth.changeIdioma('en');
+                if (value == 'tema_escuro') context.read<ThemeState>().toggle();
                 if (value == 'auditoria') {
                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AuditScreen()));
                 }
@@ -132,6 +134,12 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
                   value: 'idioma_en',
                   checked: auth.userIdioma == 'en',
                   child: const Text('English'),
+                ),
+                const PopupMenuDivider(),
+                CheckedPopupMenuItem(
+                  value: 'tema_escuro',
+                  checked: context.watch<ThemeState>().mode == ThemeMode.dark,
+                  child: Text(l10n.menuModoEscuro),
                 ),
                 const PopupMenuDivider(),
                 // Só owner (secção 4/O15) — auditoria é um assunto
@@ -224,7 +232,7 @@ class _LoadingSkeleton extends StatelessWidget {
       ),
       itemBuilder: (context, index) => Container(
         decoration: BoxDecoration(
-          color: AppColors.grafiteAsfalto.withValues(alpha: 0.06),
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(14),
         ),
       ),

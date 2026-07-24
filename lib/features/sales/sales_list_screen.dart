@@ -74,7 +74,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                       '${venda.precoFinal.toStringAsFixed(0)} €',
                       style: AppTypography.numero(
                         fontSize: 16,
-                        color: revertida ? AppColors.grafiteVendido : AppColors.grafiteAsfalto,
+                        color: revertida ? AppColors.grafiteVendido : Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ),
