@@ -8,10 +8,12 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
 import '../../shared/widgets/status_badge.dart';
 import '../auth/auth_state.dart';
+import '../banner/banner_form_screen.dart';
 import '../checklist/vehicle_checklist_card.dart';
 import '../sales/sale_screen.dart';
 import 'market_estimate.dart';
 import 'vehicle_detail.dart';
+import 'vehicle_expenses_card.dart';
 import 'vehicles_repository.dart';
 
 class VehicleDetailScreen extends StatefulWidget {
@@ -56,6 +58,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final role = context.watch<AuthState>().userRole;
     return Scaffold(
       appBar: AppBar(title: Text(context.l10n.fichaVeiculoTitulo)),
       body: FutureBuilder<VehicleDetail>(
@@ -81,8 +84,16 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                 if (vehicle.importado) const SizedBox(height: 16),
                 _ActionsCard(vehicle: vehicle, busy: _busy, onAction: _runAction, onRefresh: _refresh),
                 const SizedBox(height: 16),
+                if (vehicle.estado == 'disponivel' || vehicle.estado == 'reservado') ...[
+                  _GerarBannerButton(vehicle: vehicle),
+                  const SizedBox(height: 16),
+                ],
                 ChecklistCard(vehicleId: vehicle.id),
                 const SizedBox(height: 16),
+                if (role == 'owner') ...[
+                  VehicleExpensesCard(vehicleId: vehicle.id),
+                  const SizedBox(height: 16),
+                ],
                 _MarketEstimateCard(vehicle: vehicle, onRefresh: _refresh),
               ],
             ),
@@ -360,6 +371,26 @@ class _ActionsCard extends StatelessWidget {
     if (buttons.isEmpty) return const SizedBox.shrink();
 
     return Wrap(spacing: 12, runSpacing: 12, children: buttons);
+  }
+}
+
+class _GerarBannerButton extends StatelessWidget {
+  const _GerarBannerButton({required this.vehicle});
+
+  final VehicleDetail vehicle;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => BannerFormScreen(vehicle: vehicle)),
+        ),
+        icon: const Icon(Icons.campaign_outlined),
+        label: Text(context.l10n.bannerGerarBotao),
+      ),
+    );
   }
 }
 

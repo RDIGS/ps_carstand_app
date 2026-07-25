@@ -1,6 +1,7 @@
 import '../../core/api/api_client.dart';
 import 'vehicle.dart';
 import 'vehicle_detail.dart';
+import 'vehicle_expense.dart';
 import 'market_estimate.dart';
 import 'create_vehicle_data.dart';
 import 'dua_extraction_result.dart';
@@ -106,6 +107,14 @@ class VehiclesRepository {
       '/vehicles/$vehicleId/expenses',
       data: {'categoria': categoria, if (descricao != null) 'descricao': descricao, 'valor': valor},
       parse: (_) {},
+    );
+  }
+
+  Future<List<VehicleExpense>> listExpenses(String vehicleId) {
+    return _api.request(
+      'GET',
+      '/vehicles/$vehicleId/expenses',
+      parse: (data) => (data as List<dynamic>).map((e) => VehicleExpense.fromJson(e as Map<String, dynamic>)).toList(),
     );
   }
 

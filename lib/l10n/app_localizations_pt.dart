@@ -703,6 +703,33 @@ class AppLocalizationsPt extends AppLocalizations {
   String get checklistAdicionarItemModelo => 'Adicionar item';
 
   @override
+  String get despesasTitulo => 'Despesas do veículo';
+
+  @override
+  String get despesasVazio => 'Ainda sem despesas registadas.';
+
+  @override
+  String get despesasAdicionar => 'Adicionar despesa';
+
+  @override
+  String get despesasNovaTitulo => 'Nova despesa';
+
+  @override
+  String get despesaCategoriaReparacao => 'Reparação';
+
+  @override
+  String get despesaCategoriaTransporte => 'Transporte';
+
+  @override
+  String get despesaCategoriaLegalizacao => 'Legalização';
+
+  @override
+  String get despesaCategoriaLimpezaDetalhe => 'Limpeza / Detalhe';
+
+  @override
+  String get despesaCategoriaOutro => 'Outro';
+
+  @override
   String get fotosJaProntasTitulo => 'Fotos já cortadas e prontas?';
 
   @override
@@ -790,4 +817,75 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get navFinanceiro => 'Financeiro';
+
+  @override
+  String get bannerGerarBotao => 'Gerar banner de venda';
+
+  @override
+  String get bannerTitulo => 'Banner de venda';
+
+  @override
+  String get bannerPreviewTitulo => 'Pré-visualização';
+
+  @override
+  String get bannerCampoTitulo => 'Título';
+
+  @override
+  String get bannerCampoSubtitulo => 'Versão / motor';
+
+  @override
+  String get bannerCampoPotencia => 'Potência';
+
+  @override
+  String get bannerCampoAno => 'Ano';
+
+  @override
+  String get bannerCampoCombustivel => 'Combustível';
+
+  @override
+  String get bannerCampoPreco => 'Preço';
+
+  @override
+  String get bannerCampoPrestacao => 'Prestação / mês';
+
+  @override
+  String get bannerPerfilLojaSecao => 'Perfil da loja (aparece no banner)';
+
+  @override
+  String get bannerCampoSocial => 'Redes sociais (@handle)';
+
+  @override
+  String get bannerCampoContacto => 'Contacto';
+
+  @override
+  String get bannerEscolherCor => 'Cor de destaque';
+
+  @override
+  String get bannerCarregarFoto => 'Carregar foto';
+
+  @override
+  String get bannerTrocarFoto => 'Trocar foto';
+
+  @override
+  String get bannerFotoObrigatoria =>
+      'É necessário carregar uma foto do veículo antes de gerar o banner.';
+
+  @override
+  String get bannerAvisoExemplo =>
+      'Ainda sem foto — carrega a foto real do veículo antes de gerar.';
+
+  @override
+  String get bannerContinuar => 'Pré-visualizar';
+
+  @override
+  String get bannerPartilhar => 'Partilhar';
+
+  @override
+  String bannerGuardadoSucesso(String caminho) {
+    return 'Banner guardado em $caminho';
+  }
+
+  @override
+  String get bannerErroGuardar =>
+      'Não foi possível guardar o banner. Tenta novamente.';
 }

@@ -226,6 +226,16 @@
   "checklistItensModelo": "Items",
   "checklistAdicionarItemModelo": "Add item",
 
+  "despesasTitulo": "Vehicle expenses",
+  "despesasVazio": "No expenses recorded yet.",
+  "despesasAdicionar": "Add expense",
+  "despesasNovaTitulo": "New expense",
+  "despesaCategoriaReparacao": "Repair",
+  "despesaCategoriaTransporte": "Transport",
+  "despesaCategoriaLegalizacao": "Legal/registration",
+  "despesaCategoriaLimpezaDetalhe": "Cleaning / Detailing",
+  "despesaCategoriaOutro": "Other",
+
   "fotosJaProntasTitulo": "Photos already cropped and ready?",
   "fotosJaProntasSubtitulo": "No background around it, just the document. If yes, they're saved as a scan. If no, they're only used to fill in the data.",
 
@@ -257,5 +267,29 @@
   "navVeiculos": "Vehicles",
   "navVendas": "Sales",
   "navEquipa": "Team",
-  "navFinanceiro": "Finance"
+  "navFinanceiro": "Finance",
+
+  "bannerGerarBotao": "Generate sales banner",
+  "bannerTitulo": "Sales banner",
+  "bannerPreviewTitulo": "Preview",
+  "bannerCampoTitulo": "Title",
+  "bannerCampoSubtitulo": "Trim / engine",
+  "bannerCampoPotencia": "Power",
+  "bannerCampoAno": "Year",
+  "bannerCampoCombustivel": "Fuel",
+  "bannerCampoPreco": "Price",
+  "bannerCampoPrestacao": "Monthly payment",
+  "bannerPerfilLojaSecao": "Dealer profile (shown on the banner)",
+  "bannerCampoSocial": "Social media (@handle)",
+  "bannerCampoContacto": "Contact",
+  "bannerEscolherCor": "Accent colour",
+  "bannerCarregarFoto": "Upload photo",
+  "bannerTrocarFoto": "Change photo",
+  "bannerFotoObrigatoria": "You need to upload a photo of the vehicle before generating the banner.",
+  "bannerAvisoExemplo": "No photo yet — upload the real vehicle photo before generating.",
+  "bannerContinuar": "Preview",
+  "bannerPartilhar": "Share",
+  "bannerGuardadoSucesso": "Banner saved to {caminho}",
+  "@bannerGuardadoSucesso": { "placeholders": { "caminho": { "type": "String" } } },
+  "bannerErroGuardar": "Could not save the banner. Please try again."
 }

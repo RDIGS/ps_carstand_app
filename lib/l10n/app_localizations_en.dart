@@ -703,6 +703,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checklistAdicionarItemModelo => 'Add item';
 
   @override
+  String get despesasTitulo => 'Vehicle expenses';
+
+  @override
+  String get despesasVazio => 'No expenses recorded yet.';
+
+  @override
+  String get despesasAdicionar => 'Add expense';
+
+  @override
+  String get despesasNovaTitulo => 'New expense';
+
+  @override
+  String get despesaCategoriaReparacao => 'Repair';
+
+  @override
+  String get despesaCategoriaTransporte => 'Transport';
+
+  @override
+  String get despesaCategoriaLegalizacao => 'Legal/registration';
+
+  @override
+  String get despesaCategoriaLimpezaDetalhe => 'Cleaning / Detailing';
+
+  @override
+  String get despesaCategoriaOutro => 'Other';
+
+  @override
   String get fotosJaProntasTitulo => 'Photos already cropped and ready?';
 
   @override
@@ -790,4 +817,75 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navFinanceiro => 'Finance';
+
+  @override
+  String get bannerGerarBotao => 'Generate sales banner';
+
+  @override
+  String get bannerTitulo => 'Sales banner';
+
+  @override
+  String get bannerPreviewTitulo => 'Preview';
+
+  @override
+  String get bannerCampoTitulo => 'Title';
+
+  @override
+  String get bannerCampoSubtitulo => 'Trim / engine';
+
+  @override
+  String get bannerCampoPotencia => 'Power';
+
+  @override
+  String get bannerCampoAno => 'Year';
+
+  @override
+  String get bannerCampoCombustivel => 'Fuel';
+
+  @override
+  String get bannerCampoPreco => 'Price';
+
+  @override
+  String get bannerCampoPrestacao => 'Monthly payment';
+
+  @override
+  String get bannerPerfilLojaSecao => 'Dealer profile (shown on the banner)';
+
+  @override
+  String get bannerCampoSocial => 'Social media (@handle)';
+
+  @override
+  String get bannerCampoContacto => 'Contact';
+
+  @override
+  String get bannerEscolherCor => 'Accent colour';
+
+  @override
+  String get bannerCarregarFoto => 'Upload photo';
+
+  @override
+  String get bannerTrocarFoto => 'Change photo';
+
+  @override
+  String get bannerFotoObrigatoria =>
+      'You need to upload a photo of the vehicle before generating the banner.';
+
+  @override
+  String get bannerAvisoExemplo =>
+      'No photo yet — upload the real vehicle photo before generating.';
+
+  @override
+  String get bannerContinuar => 'Preview';
+
+  @override
+  String get bannerPartilhar => 'Share';
+
+  @override
+  String bannerGuardadoSucesso(String caminho) {
+    return 'Banner saved to $caminho';
+  }
+
+  @override
+  String get bannerErroGuardar =>
+      'Could not save the banner. Please try again.';
 }

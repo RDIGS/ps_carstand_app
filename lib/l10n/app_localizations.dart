@@ -1358,6 +1358,60 @@ abstract class AppLocalizations {
   /// **'Adicionar item'**
   String get checklistAdicionarItemModelo;
 
+  /// No description provided for @despesasTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesas do veículo'**
+  String get despesasTitulo;
+
+  /// No description provided for @despesasVazio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda sem despesas registadas.'**
+  String get despesasVazio;
+
+  /// No description provided for @despesasAdicionar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar despesa'**
+  String get despesasAdicionar;
+
+  /// No description provided for @despesasNovaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova despesa'**
+  String get despesasNovaTitulo;
+
+  /// No description provided for @despesaCategoriaReparacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reparação'**
+  String get despesaCategoriaReparacao;
+
+  /// No description provided for @despesaCategoriaTransporte.
+  ///
+  /// In pt, this message translates to:
+  /// **'Transporte'**
+  String get despesaCategoriaTransporte;
+
+  /// No description provided for @despesaCategoriaLegalizacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Legalização'**
+  String get despesaCategoriaLegalizacao;
+
+  /// No description provided for @despesaCategoriaLimpezaDetalhe.
+  ///
+  /// In pt, this message translates to:
+  /// **'Limpeza / Detalhe'**
+  String get despesaCategoriaLimpezaDetalhe;
+
+  /// No description provided for @despesaCategoriaOutro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outro'**
+  String get despesaCategoriaOutro;
+
   /// No description provided for @fotosJaProntasTitulo.
   ///
   /// In pt, this message translates to:
@@ -1513,6 +1567,138 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Financeiro'**
   String get navFinanceiro;
+
+  /// No description provided for @bannerGerarBotao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar banner de venda'**
+  String get bannerGerarBotao;
+
+  /// No description provided for @bannerTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Banner de venda'**
+  String get bannerTitulo;
+
+  /// No description provided for @bannerPreviewTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pré-visualização'**
+  String get bannerPreviewTitulo;
+
+  /// No description provided for @bannerCampoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Título'**
+  String get bannerCampoTitulo;
+
+  /// No description provided for @bannerCampoSubtitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Versão / motor'**
+  String get bannerCampoSubtitulo;
+
+  /// No description provided for @bannerCampoPotencia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Potência'**
+  String get bannerCampoPotencia;
+
+  /// No description provided for @bannerCampoAno.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ano'**
+  String get bannerCampoAno;
+
+  /// No description provided for @bannerCampoCombustivel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Combustível'**
+  String get bannerCampoCombustivel;
+
+  /// No description provided for @bannerCampoPreco.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço'**
+  String get bannerCampoPreco;
+
+  /// No description provided for @bannerCampoPrestacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Prestação / mês'**
+  String get bannerCampoPrestacao;
+
+  /// No description provided for @bannerPerfilLojaSecao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perfil da loja (aparece no banner)'**
+  String get bannerPerfilLojaSecao;
+
+  /// No description provided for @bannerCampoSocial.
+  ///
+  /// In pt, this message translates to:
+  /// **'Redes sociais (@handle)'**
+  String get bannerCampoSocial;
+
+  /// No description provided for @bannerCampoContacto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Contacto'**
+  String get bannerCampoContacto;
+
+  /// No description provided for @bannerEscolherCor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cor de destaque'**
+  String get bannerEscolherCor;
+
+  /// No description provided for @bannerCarregarFoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregar foto'**
+  String get bannerCarregarFoto;
+
+  /// No description provided for @bannerTrocarFoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar foto'**
+  String get bannerTrocarFoto;
+
+  /// No description provided for @bannerFotoObrigatoria.
+  ///
+  /// In pt, this message translates to:
+  /// **'É necessário carregar uma foto do veículo antes de gerar o banner.'**
+  String get bannerFotoObrigatoria;
+
+  /// No description provided for @bannerAvisoExemplo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda sem foto — carrega a foto real do veículo antes de gerar.'**
+  String get bannerAvisoExemplo;
+
+  /// No description provided for @bannerContinuar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pré-visualizar'**
+  String get bannerContinuar;
+
+  /// No description provided for @bannerPartilhar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partilhar'**
+  String get bannerPartilhar;
+
+  /// No description provided for @bannerGuardadoSucesso.
+  ///
+  /// In pt, this message translates to:
+  /// **'Banner guardado em {caminho}'**
+  String bannerGuardadoSucesso(String caminho);
+
+  /// No description provided for @bannerErroGuardar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível guardar o banner. Tenta novamente.'**
+  String get bannerErroGuardar;
 }
 
 class _AppLocalizationsDelegate

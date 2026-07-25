@@ -259,6 +259,16 @@
   "checklistItensModelo": "Itens",
   "checklistAdicionarItemModelo": "Adicionar item",
 
+  "despesasTitulo": "Despesas do veículo",
+  "despesasVazio": "Ainda sem despesas registadas.",
+  "despesasAdicionar": "Adicionar despesa",
+  "despesasNovaTitulo": "Nova despesa",
+  "despesaCategoriaReparacao": "Reparação",
+  "despesaCategoriaTransporte": "Transporte",
+  "despesaCategoriaLegalizacao": "Legalização",
+  "despesaCategoriaLimpezaDetalhe": "Limpeza / Detalhe",
+  "despesaCategoriaOutro": "Outro",
+
   "fotosJaProntasTitulo": "Fotos já cortadas e prontas?",
   "fotosJaProntasSubtitulo": "Sem fundo à volta, só o documento. Se sim, ficam guardadas como digitalização. Se não, só são usadas para preencher os dados.",
 
@@ -291,5 +301,29 @@
   "navVeiculos": "Veículos",
   "navVendas": "Vendas",
   "navEquipa": "Equipa",
-  "navFinanceiro": "Financeiro"
+  "navFinanceiro": "Financeiro",
+
+  "bannerGerarBotao": "Gerar banner de venda",
+  "bannerTitulo": "Banner de venda",
+  "bannerPreviewTitulo": "Pré-visualização",
+  "bannerCampoTitulo": "Título",
+  "bannerCampoSubtitulo": "Versão / motor",
+  "bannerCampoPotencia": "Potência",
+  "bannerCampoAno": "Ano",
+  "bannerCampoCombustivel": "Combustível",
+  "bannerCampoPreco": "Preço",
+  "bannerCampoPrestacao": "Prestação / mês",
+  "bannerPerfilLojaSecao": "Perfil da loja (aparece no banner)",
+  "bannerCampoSocial": "Redes sociais (@handle)",
+  "bannerCampoContacto": "Contacto",
+  "bannerEscolherCor": "Cor de destaque",
+  "bannerCarregarFoto": "Carregar foto",
+  "bannerTrocarFoto": "Trocar foto",
+  "bannerFotoObrigatoria": "É necessário carregar uma foto do veículo antes de gerar o banner.",
+  "bannerAvisoExemplo": "Ainda sem foto — carrega a foto real do veículo antes de gerar.",
+  "bannerContinuar": "Pré-visualizar",
+  "bannerPartilhar": "Partilhar",
+  "bannerGuardadoSucesso": "Banner guardado em {caminho}",
+  "@bannerGuardadoSucesso": { "placeholders": { "caminho": { "type": "String" } } },
+  "bannerErroGuardar": "Não foi possível guardar o banner. Tenta novamente."
 }
