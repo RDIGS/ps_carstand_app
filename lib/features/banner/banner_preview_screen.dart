@@ -1,13 +1,8 @@
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../core/l10n_extension.dart';
+import 'banner_capture.dart';
 import 'banner_content.dart';
-import 'banner_file_saver.dart';
 import 'banner_widget.dart';
 
 class BannerPreviewScreen extends StatefulWidget {
@@ -23,45 +18,16 @@ class _BannerPreviewScreenState extends State<BannerPreviewScreen> {
   final _repaintKey = GlobalKey();
   bool _ocupado = false;
 
-  String get _nomeFicheiro => 'ps_carstand_banner_${DateTime.now().millisecondsSinceEpoch}.png';
-
-  Future<Uint8List> _capturar() async {
-    final boundary = _repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    // pixelRatio 3 ≈ exportação 3000x3000 a partir do desenho base 1000x1000
-    // (mesma escala que o protótipo original usava com html2canvas).
-    final imagem = await boundary.toImage(pixelRatio: 3.0);
-    final bytesData = await imagem.toByteData(format: ui.ImageByteFormat.png);
-    return bytesData!.buffer.asUint8List();
-  }
-
   Future<void> _guardar() async {
-    final l10n = context.l10n;
     setState(() => _ocupado = true);
-    try {
-      final bytes = await _capturar();
-      final destino = await salvarBannerNoDisco(bytes, _nomeFicheiro);
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.bannerGuardadoSucesso(destino))));
-    } catch (_) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.bannerErroGuardar)));
-    } finally {
-      if (mounted) setState(() => _ocupado = false);
-    }
+    await guardarBanner(context, _repaintKey);
+    if (mounted) setState(() => _ocupado = false);
   }
 
   Future<void> _partilhar() async {
-    final l10n = context.l10n;
     setState(() => _ocupado = true);
-    try {
-      final bytes = await _capturar();
-      await Share.shareXFiles([XFile.fromData(bytes, name: _nomeFicheiro, mimeType: 'image/png')]);
-    } catch (_) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.bannerErroGuardar)));
-    } finally {
-      if (mounted) setState(() => _ocupado = false);
-    }
+    await partilharBanner(context, _repaintKey);
+    if (mounted) setState(() => _ocupado = false);
   }
 
   @override
@@ -84,12 +50,11 @@ class _BannerPreviewScreenState extends State<BannerPreviewScreen> {
                   // (BannerWidget.tamanho), por isso a captura sai sempre
                   // à mesma resolução independentemente do tamanho da janela.
                   //
-                  // IgnorePointer é necessário: um RepaintBoundary dentro de
-                  // um FittedBox recebendo eventos de rato (hover) antes do
-                  // layout estabilizar despoleta "Cannot hit test a render
-                  // box with no size" no Flutter desktop — bug conhecido da
-                  // combinação FittedBox+hitTest. Esta zona é só uma
-                  // pré-visualização, nunca precisa de ser interativa.
+                  // IgnorePointer: esta zona é só de leitura (para trocar a
+                  // foto volta-se ao ecrã anterior) — mantém-se fora do
+                  // hit-test para não arriscar o "Cannot hit test a render
+                  // box with no size" que pode surgir com RepaintBoundary
+                  // dentro de FittedBox a receber eventos de rato.
                   child: IgnorePointer(
                     child: FittedBox(
                       fit: BoxFit.contain,

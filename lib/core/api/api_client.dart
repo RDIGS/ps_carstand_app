@@ -37,7 +37,11 @@ class ApiException implements Exception {
 /// refresh-rotation automático (secção 21) quando a API responde 401.
 class ApiClient {
   ApiClient(this._storage, {this.onSessionExpired}) {
-    _dio = Dio(BaseOptions(baseUrl: apiBaseUrl, connectTimeout: const Duration(seconds: 15)));
+    // O backend em produção corre no plano free do Render: adormece ao fim
+    // de ~15 min sem pedidos e pode demorar dezenas de segundos a "acordar"
+    // no primeiro pedido — um timeout curto dava falso "Sem ligação ao
+    // servidor" nesse cenário (mesmo ajuste feito em ps_carstand_admin).
+    _dio = Dio(BaseOptions(baseUrl: apiBaseUrl, connectTimeout: const Duration(seconds: 60)));
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {

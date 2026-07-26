@@ -2,11 +2,14 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
+import 'templates/banner_template.dart';
+
 /// Conteúdo final do banner, já confirmado pelo utilizador — puramente
 /// visual, sem ligação de volta aos dados do veículo (o utilizador pode ter
 /// editado qualquer campo antes de gerar).
 class BannerContent {
   const BannerContent({
+    required this.templateId,
     required this.titulo,
     required this.subtitulo,
     required this.potencia,
@@ -20,6 +23,7 @@ class BannerContent {
     required this.foto,
   });
 
+  final BannerTemplateId templateId;
   final String titulo;
   final String subtitulo;
   final String potencia;
@@ -31,8 +35,8 @@ class BannerContent {
   final String contacto;
   final Color corDestaque;
 
-  /// Bytes da foto escolhida pelo utilizador, ou da imagem-placeholder de
-  /// exemplo (assets/images/banner_placeholder.jpg) se ainda não carregou
-  /// nenhuma — nunca fica sem imagem de fundo.
+  /// Bytes da foto escolhida pelo utilizador — enquanto for `null`, os
+  /// templates mostram um placeholder desenhado na app (nunca uma foto de
+  /// stock): "Gerar" continua bloqueado até haver foto real.
   final Uint8List? foto;
 }

@@ -440,6 +440,18 @@ abstract class AppLocalizations {
   /// **'Adicionar a partir do DUA'**
   String get adicionarPorDua;
 
+  /// No description provided for @fonteImagemCamara.
+  ///
+  /// In pt, this message translates to:
+  /// **'Câmara'**
+  String get fonteImagemCamara;
+
+  /// No description provided for @fonteImagemGaleria.
+  ///
+  /// In pt, this message translates to:
+  /// **'Galeria'**
+  String get fonteImagemGaleria;
+
   /// No description provided for @fichaVeiculoTitulo.
   ///
   /// In pt, this message translates to:
@@ -1699,6 +1711,54 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Não foi possível guardar o banner. Tenta novamente.'**
   String get bannerErroGuardar;
+
+  /// No description provided for @bannerEscolherTemplateTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolher template'**
+  String get bannerEscolherTemplateTitulo;
+
+  /// No description provided for @bannerTemplateBrevemente.
+  ///
+  /// In pt, this message translates to:
+  /// **'Brevemente'**
+  String get bannerTemplateBrevemente;
+
+  /// No description provided for @menuSugestoes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sugestões'**
+  String get menuSugestoes;
+
+  /// No description provided for @sugestoesTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sugestões'**
+  String get sugestoesTitulo;
+
+  /// No description provided for @sugestoesIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tens alguma ideia, pedido ou reparaste nalgum problema? Escreve aqui — vai diretamente para a equipa PS CarStand.'**
+  String get sugestoesIntro;
+
+  /// No description provided for @sugestoesCampoTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'A tua sugestão'**
+  String get sugestoesCampoTexto;
+
+  /// No description provided for @sugestoesEnviar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enviar'**
+  String get sugestoesEnviar;
+
+  /// No description provided for @sugestaoEnviada.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sugestão enviada. Obrigado!'**
+  String get sugestaoEnviada;
 }
 
 class _AppLocalizationsDelegate

@@ -63,6 +63,8 @@
   "adicionarVeiculo": "Add vehicle",
   "adicionarManualmente": "Add manually",
   "adicionarPorDua": "Add from registration document",
+  "fonteImagemCamara": "Camera",
+  "fonteImagemGaleria": "Gallery",
 
   "fichaVeiculoTitulo": "Vehicle details",
   "specKms": "Mileage",
@@ -291,5 +293,14 @@
   "bannerPartilhar": "Share",
   "bannerGuardadoSucesso": "Banner saved to {caminho}",
   "@bannerGuardadoSucesso": { "placeholders": { "caminho": { "type": "String" } } },
-  "bannerErroGuardar": "Could not save the banner. Please try again."
+  "bannerErroGuardar": "Could not save the banner. Please try again.",
+  "bannerEscolherTemplateTitulo": "Choose template",
+  "bannerTemplateBrevemente": "Coming soon",
+
+  "menuSugestoes": "Suggestions",
+  "sugestoesTitulo": "Suggestions",
+  "sugestoesIntro": "Got an idea, request, or noticed a problem? Write it here — it goes straight to the PS CarStand team.",
+  "sugestoesCampoTexto": "Your suggestion",
+  "sugestoesEnviar": "Send",
+  "sugestaoEnviada": "Suggestion sent. Thank you!"
 }

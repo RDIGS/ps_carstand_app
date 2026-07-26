@@ -8,7 +8,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
 import '../../shared/widgets/status_badge.dart';
 import '../auth/auth_state.dart';
-import '../banner/banner_form_screen.dart';
+import '../banner/banner_template_picker_screen.dart';
 import '../checklist/vehicle_checklist_card.dart';
 import '../sales/sale_screen.dart';
 import 'market_estimate.dart';
@@ -385,7 +385,7 @@ class _GerarBannerButton extends StatelessWidget {
       width: double.infinity,
       child: OutlinedButton.icon(
         onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => BannerFormScreen(vehicle: vehicle)),
+          MaterialPageRoute(builder: (_) => BannerTemplatePickerScreen(vehicle: vehicle)),
         ),
         icon: const Icon(Icons.campaign_outlined),
         label: Text(context.l10n.bannerGerarBotao),

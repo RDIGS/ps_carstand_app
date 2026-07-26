@@ -194,6 +194,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adicionarPorDua => 'Add from registration document';
 
   @override
+  String get fonteImagemCamara => 'Camera';
+
+  @override
+  String get fonteImagemGaleria => 'Gallery';
+
+  @override
   String get fichaVeiculoTitulo => 'Vehicle details';
 
   @override
@@ -888,4 +894,29 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get bannerErroGuardar =>
       'Could not save the banner. Please try again.';
+
+  @override
+  String get bannerEscolherTemplateTitulo => 'Choose template';
+
+  @override
+  String get bannerTemplateBrevemente => 'Coming soon';
+
+  @override
+  String get menuSugestoes => 'Suggestions';
+
+  @override
+  String get sugestoesTitulo => 'Suggestions';
+
+  @override
+  String get sugestoesIntro =>
+      'Got an idea, request, or noticed a problem? Write it here — it goes straight to the PS CarStand team.';
+
+  @override
+  String get sugestoesCampoTexto => 'Your suggestion';
+
+  @override
+  String get sugestoesEnviar => 'Send';
+
+  @override
+  String get sugestaoEnviada => 'Suggestion sent. Thank you!';
 }

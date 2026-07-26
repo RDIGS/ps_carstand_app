@@ -9,18 +9,21 @@ import '../../core/l10n_extension.dart';
 import '../auth/auth_state.dart';
 import '../vehicles/vehicle_detail.dart';
 import 'banner_calculo.dart';
+import 'banner_capture.dart';
 import 'banner_content.dart';
 import 'banner_preview_screen.dart';
 import 'banner_widget.dart';
 import 'stand_profile_repository.dart';
+import 'templates/banner_template.dart';
 
 /// Ecrã de confirmação do banner de venda: tudo vem pré-preenchido a partir
 /// do veículo e do perfil da loja, mas cada campo é editável — nada é
 /// gerado sem o utilizador ver e poder corrigir os valores primeiro.
 class BannerFormScreen extends StatefulWidget {
-  const BannerFormScreen({super.key, required this.vehicle});
+  const BannerFormScreen({super.key, required this.vehicle, required this.templateId});
 
   final VehicleDetail vehicle;
+  final BannerTemplateId templateId;
 
   @override
   State<BannerFormScreen> createState() => _BannerFormScreenState();
@@ -28,6 +31,8 @@ class BannerFormScreen extends StatefulWidget {
 
 class _BannerFormScreenState extends State<BannerFormScreen> {
   static const _corPorOmissao = Color(0xFFE50914);
+
+  final _repaintKey = GlobalKey();
 
   late final TextEditingController _titulo;
   late final TextEditingController _subtitulo;
@@ -42,6 +47,7 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
   Color _corDestaque = _corPorOmissao;
   Uint8List? _foto;
   bool _carregandoFoto = false;
+  bool _ocupado = false;
   String _socialInicial = '';
   String _contactoInicial = '';
 
@@ -126,6 +132,7 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
   }
 
   BannerContent get _conteudoAtual => BannerContent(
+        templateId: widget.templateId,
         titulo: _titulo.text,
         subtitulo: _subtitulo.text,
         potencia: _potencia.text,
@@ -139,34 +146,48 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
         foto: _foto,
       );
 
-  Future<void> _continuar() async {
-    if (_foto == null) {
-      final l10n = context.l10n;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.bannerFotoObrigatoria)));
-      return;
-    }
-
-    // Guarda contacto/@handle no perfil da loja para os próximos banners já
-    // virem pré-preenchidos — só o owner tem permissão para editar o
-    // perfil (backend rejeita o vendedor), por isso só tentamos se for ele
-    // e algo mudou de facto face ao que veio do servidor.
+  /// Guarda contacto/@handle no perfil da loja para os próximos banners já
+  /// virem pré-preenchidos — só o owner tem permissão para editar o perfil
+  /// (backend rejeita o vendedor), por isso só tenta se for ele e algo
+  /// mudou de facto face ao que veio do servidor. Nunca bloqueia a ação
+  /// principal (guardar/pré-visualizar) se a persistência falhar.
+  Future<void> _persistirPerfilSeNecessario() async {
     final role = context.read<AuthState>().userRole;
     final socialMudou = _social.text != _socialInicial;
     final contactoMudou = _contacto.text != _contactoInicial;
-    if (role == 'owner' && (socialMudou || contactoMudou)) {
-      try {
-        await context.read<StandProfileRepository>().updateProfile(
-              contacto: contactoMudou ? _contacto.text : null,
-              redesSociais: socialMudou ? _social.text : null,
-            );
-      } catch (_) {
-        // Não bloqueia a geração do banner por causa disto — o valor
-        // editado continua a ser usado neste banner mesmo que a
-        // persistência para os próximos falhe.
-      }
+    if (role != 'owner' || (!socialMudou && !contactoMudou)) return;
+    try {
+      await context.read<StandProfileRepository>().updateProfile(
+            contacto: contactoMudou ? _contacto.text : null,
+            redesSociais: socialMudou ? _social.text : null,
+          );
+    } catch (_) {
+      // Ignorado de propósito — ver docstring acima.
     }
+  }
 
+  bool _validarFoto() {
+    if (_foto != null) return true;
+    final l10n = context.l10n;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.bannerFotoObrigatoria)));
+    return false;
+  }
+
+  Future<void> _guardarAgora() async {
+    if (!_validarFoto()) return;
+    setState(() => _ocupado = true);
+    await _persistirPerfilSeNecessario();
     if (!mounted) return;
+    await guardarBanner(context, _repaintKey);
+    if (mounted) setState(() => _ocupado = false);
+  }
+
+  Future<void> _continuar() async {
+    if (!_validarFoto()) return;
+    setState(() => _ocupado = true);
+    await _persistirPerfilSeNecessario();
+    if (!mounted) return;
+    setState(() => _ocupado = false);
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => BannerPreviewScreen(content: _conteudoAtual)),
     );
@@ -184,18 +205,43 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
             aspectRatio: 1,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              // IgnorePointer evita o "Cannot hit test a render box with no
-              // size" do Flutter desktop quando um FittedBox recebe eventos
-              // de rato entre rebuilds — esta pré-visualização nunca precisa
-              // de ser interativa (ver nota igual em banner_preview_screen.dart).
-              child: IgnorePointer(
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: AnimatedBuilder(
-                    animation: Listenable.merge(
-                      [_titulo, _subtitulo, _potencia, _ano, _combustivel, _preco, _prestacao, _social, _contacto],
-                    ),
-                    builder: (context, _) => BannerWidget(content: _conteudoAtual),
+              // Clicar na pré-visualização também abre o seletor de foto —
+              // por isso esta zona TEM de participar no hit-test (ao
+              // contrário do ecrã de pré-visualização final, que é só
+              // leitura). O RepaintBoundary aqui é o mesmo usado por
+              // "Guardar": captura sempre ao tamanho real (BannerWidget.
+              // tamanho), independente da escala visual do FittedBox.
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: _carregandoFoto ? null : _escolherFoto,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.contain,
+                        child: AnimatedBuilder(
+                          animation: Listenable.merge(
+                            [_titulo, _subtitulo, _potencia, _ano, _combustivel, _preco, _prestacao, _social, _contacto],
+                          ),
+                          builder: (context, _) => RepaintBoundary(
+                            key: _repaintKey,
+                            child: BannerWidget(content: _conteudoAtual),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 12,
+                        bottom: 12,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.55), shape: BoxShape.circle),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 20),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -258,7 +304,24 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
           const SizedBox(height: 12),
           TextField(controller: _contacto, decoration: InputDecoration(labelText: l10n.bannerCampoContacto)),
           const SizedBox(height: 32),
-          ElevatedButton(onPressed: _continuar, child: Text(l10n.bannerContinuar)),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: _ocupado ? null : _guardarAgora,
+                  icon: const Icon(Icons.download_outlined),
+                  label: Text(l10n.guardar),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: _ocupado ? null : _continuar,
+                  child: Text(l10n.bannerContinuar),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

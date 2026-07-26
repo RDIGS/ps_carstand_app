@@ -65,6 +65,8 @@
   "adicionarVeiculo": "Adicionar veículo",
   "adicionarManualmente": "Adicionar manualmente",
   "adicionarPorDua": "Adicionar a partir do DUA",
+  "fonteImagemCamara": "Câmara",
+  "fonteImagemGaleria": "Galeria",
 
   "fichaVeiculoTitulo": "Ficha do veículo",
   "specKms": "Kms",
@@ -325,5 +327,14 @@
   "bannerPartilhar": "Partilhar",
   "bannerGuardadoSucesso": "Banner guardado em {caminho}",
   "@bannerGuardadoSucesso": { "placeholders": { "caminho": { "type": "String" } } },
-  "bannerErroGuardar": "Não foi possível guardar o banner. Tenta novamente."
+  "bannerErroGuardar": "Não foi possível guardar o banner. Tenta novamente.",
+  "bannerEscolherTemplateTitulo": "Escolher template",
+  "bannerTemplateBrevemente": "Brevemente",
+
+  "menuSugestoes": "Sugestões",
+  "sugestoesTitulo": "Sugestões",
+  "sugestoesIntro": "Tens alguma ideia, pedido ou reparaste nalgum problema? Escreve aqui — vai diretamente para a equipa PS CarStand.",
+  "sugestoesCampoTexto": "A tua sugestão",
+  "sugestoesEnviar": "Enviar",
+  "sugestaoEnviada": "Sugestão enviada. Obrigado!"
 }

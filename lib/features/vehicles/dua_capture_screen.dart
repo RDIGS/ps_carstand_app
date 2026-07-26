@@ -10,6 +10,7 @@ import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/document_photo_slot.dart';
+import '../../shared/widgets/image_source_picker.dart';
 import 'add_vehicle_screen.dart';
 import 'vehicles_repository.dart';
 
@@ -39,7 +40,9 @@ class _DuaCaptureScreenState extends State<DuaCaptureScreen> {
   bool get _prontoParaExtrair => _frente != null && _verso != null;
 
   Future<void> _capturar({required bool isFrente}) async {
-    final foto = await _picker.pickImage(source: ImageSource.camera, imageQuality: 90, maxWidth: 2000);
+    final fonte = await escolherFonteImagem(context);
+    if (fonte == null || !mounted) return;
+    final foto = await _picker.pickImage(source: fonte, imageQuality: 90, maxWidth: 2000);
     if (foto == null) return;
     // XFile.readAsBytes() funciona em todas as plataformas, incluindo Web —
     // ao contrário de `File(foto.path)`, que não existe no browser.

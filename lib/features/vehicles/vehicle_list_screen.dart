@@ -5,6 +5,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/theme_state.dart';
 import '../audit/audit_screen.dart';
 import '../auth/auth_state.dart';
+import '../suggestions/suggestions_screen.dart';
 import '../../shared/widgets/vehicle_card.dart';
 import 'add_vehicle_screen.dart';
 import 'dua_capture_screen.dart';
@@ -121,6 +122,9 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
                 if (value == 'auditoria') {
                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AuditScreen()));
                 }
+                if (value == 'sugestoes') {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SuggestionsScreen()));
+                }
               },
               itemBuilder: (context) => [
                 PopupMenuItem(enabled: false, child: Text('${auth.userNome ?? ''} · ${auth.userRole ?? ''}')),
@@ -146,6 +150,7 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
                 // administrativo do stand, tal como Equipa/Financeiro.
                 if (auth.userRole == 'owner')
                   PopupMenuItem(value: 'auditoria', child: Text(l10n.menuAuditoria)),
+                PopupMenuItem(value: 'sugestoes', child: Text(l10n.menuSugestoes)),
                 PopupMenuItem(value: 'logout', child: Text(l10n.terminarSessao)),
                 PopupMenuItem(value: 'logout_completo', child: Text(l10n.trocarDeStandTitulo)),
               ],
