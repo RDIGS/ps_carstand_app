@@ -118,6 +118,29 @@ class VehiclesRepository {
     );
   }
 
+  Future<void> updateExpense({
+    required String vehicleId,
+    required String expenseId,
+    String? categoria,
+    String? descricao,
+    double? valor,
+  }) {
+    return _api.request(
+      'PATCH',
+      '/vehicles/$vehicleId/expenses/$expenseId',
+      data: {
+        if (categoria != null) 'categoria': categoria,
+        if (descricao != null) 'descricao': descricao,
+        if (valor != null) 'valor': valor,
+      },
+      parse: (_) {},
+    );
+  }
+
+  Future<void> removeExpense({required String vehicleId, required String expenseId}) {
+    return _api.request('DELETE', '/vehicles/$vehicleId/expenses/$expenseId', parse: (_) {});
+  }
+
   Future<MarketEstimate> marketEstimate(
     String vehicleId, {
     bool janelaAmpliada = false,

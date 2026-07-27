@@ -747,6 +747,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get despesasNovaTitulo => 'New expense';
 
   @override
+  String get despesasEditarTitulo => 'Edit expense';
+
+  @override
+  String get despesasApagarTitulo => 'Delete expense';
+
+  @override
+  String get despesasApagarConfirmacao =>
+      'Are you sure you want to delete this expense? This can\'t be undone.';
+
+  @override
   String get despesaCategoriaReparacao => 'Repair';
 
   @override
@@ -760,6 +770,124 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get despesaCategoriaOutro => 'Other';
+
+  @override
+  String get editar => 'Edit';
+
+  @override
+  String get financeCategoriaRenda => 'Rent';
+
+  @override
+  String get financeCategoriaSalarios => 'Salaries';
+
+  @override
+  String get financeCategoriaMarketing => 'Marketing';
+
+  @override
+  String get financeCategoriaServicosTerceiros => 'Third-party services';
+
+  @override
+  String get financeCategoriaImpostosTaxas => 'Taxes and fees';
+
+  @override
+  String get financeCategoriaSeguros => 'Insurance';
+
+  @override
+  String get financeCategoriaManutencaoInstalacoes => 'Premises maintenance';
+
+  @override
+  String get financeCategoriaComissoesRecebidas => 'Commissions received';
+
+  @override
+  String get financeCategoriaFinanciamento => 'Financing';
+
+  @override
+  String get financeCategoriaOutro => 'Other';
+
+  @override
+  String get financeSemCategoria => 'No category';
+
+  @override
+  String get filtrosTitulo => 'Filters';
+
+  @override
+  String get filtroDataInicio => 'Start date';
+
+  @override
+  String get filtroDataFim => 'End date';
+
+  @override
+  String get filtroVendedor => 'Salesperson';
+
+  @override
+  String get filtroMarca => 'Make';
+
+  @override
+  String get filtroModelo => 'Model';
+
+  @override
+  String get filtroTodos => 'All';
+
+  @override
+  String get campoTipo => 'Type';
+
+  @override
+  String get filtroLimpar => 'Clear filters';
+
+  @override
+  String get filtroAplicar => 'Apply';
+
+  @override
+  String get filtroEsteMes => 'This month';
+
+  @override
+  String get filtroUltimos90Dias => 'Last 90 days';
+
+  @override
+  String get filtroEsteAno => 'This year';
+
+  @override
+  String get filtroPersonalizado => 'Custom';
+
+  @override
+  String get evolucaoTitulo => 'Evolution (last 12 months)';
+
+  @override
+  String get margemPotencialTitulo => 'Potential margin in stock';
+
+  @override
+  String get margemPotencialVazio => 'No available/reserved vehicles in stock.';
+
+  @override
+  String get margemPotencialTotal => 'Total potential';
+
+  @override
+  String get despesasGeraisPorCategoriaTitulo => 'General company expenses';
+
+  @override
+  String get despesasVeiculosPorCategoriaTitulo => 'Vehicle expenses';
+
+  @override
+  String get despesasSemLancamentos => 'No expenses in this period.';
+
+  @override
+  String get lancamentosTitulo => 'Entries';
+
+  @override
+  String get lancamentosVerTodos => 'View entries';
+
+  @override
+  String get lancamentosVazio => 'No entries in this period.';
+
+  @override
+  String get lancamentosEditarTitulo => 'Edit entry';
+
+  @override
+  String get lancamentosApagarTitulo => 'Delete entry';
+
+  @override
+  String get lancamentosApagarConfirmacao =>
+      'Are you sure you want to delete this entry? This can\'t be undone.';
 
   @override
   String get fotosJaProntasTitulo => 'Photos already cropped and ready?';

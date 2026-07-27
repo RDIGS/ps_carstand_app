@@ -1,5 +1,19 @@
 import '../vehicles/vehicle.dart';
 
+/// Total por categoria — usado tanto para despesas gerais (finance_entries)
+/// como para despesas de veículo (vehicle_expenses); pedido explícito do
+/// utilizador para os dois tipos ficarem sempre claramente distintos, nunca
+/// só somados escondidos no cashflow.
+class CategoriaTotal {
+  CategoriaTotal({required this.categoria, required this.total});
+
+  factory CategoriaTotal.fromJson(Map<String, dynamic> json) =>
+      CategoriaTotal(categoria: json['categoria'] as String?, total: (json['total'] as num).toDouble());
+
+  final String? categoria;
+  final double total;
+}
+
 /// Espelha a resposta de GET /finance/summary (secção 12.5). Linhas de
 /// SQL bruto no backend devolvem NUMERIC/COUNT(*) como String — os getters
 /// aqui tratam disso, os mapas ficam soltos porque isto é só para
@@ -8,6 +22,8 @@ class FinanceSummary {
   FinanceSummary({
     required this.periodoInicio,
     required this.periodoFim,
+    required this.despesasGeraisPorCategoria,
+    required this.despesasVeiculosPorCategoria,
     required this.margemPorVeiculo,
     required this.margemPorMarcaModelo,
     required this.rankingVendedores,
@@ -21,6 +37,12 @@ class FinanceSummary {
     return FinanceSummary(
       periodoInicio: periodo['inicio'] as String,
       periodoFim: periodo['fim'] as String,
+      despesasGeraisPorCategoria: (json['despesas_gerais_por_categoria'] as List<dynamic>)
+          .map((e) => CategoriaTotal.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      despesasVeiculosPorCategoria: (json['despesas_veiculos_por_categoria'] as List<dynamic>)
+          .map((e) => CategoriaTotal.fromJson(e as Map<String, dynamic>))
+          .toList(),
       margemPorVeiculo: List<Map<String, dynamic>>.from(json['margem_por_veiculo'] as List),
       margemPorMarcaModelo: List<Map<String, dynamic>>.from(json['margem_por_marca_modelo'] as List),
       rankingVendedores: List<Map<String, dynamic>>.from(json['ranking_vendedores'] as List),
@@ -32,6 +54,8 @@ class FinanceSummary {
 
   final String periodoInicio;
   final String periodoFim;
+  final List<CategoriaTotal> despesasGeraisPorCategoria;
+  final List<CategoriaTotal> despesasVeiculosPorCategoria;
   final List<Map<String, dynamic>> margemPorVeiculo;
   final List<Map<String, dynamic>> margemPorMarcaModelo;
   final List<Map<String, dynamic>> rankingVendedores;

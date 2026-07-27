@@ -1436,6 +1436,24 @@ abstract class AppLocalizations {
   /// **'Nova despesa'**
   String get despesasNovaTitulo;
 
+  /// No description provided for @despesasEditarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar despesa'**
+  String get despesasEditarTitulo;
+
+  /// No description provided for @despesasApagarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar despesa'**
+  String get despesasApagarTitulo;
+
+  /// No description provided for @despesasApagarConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tens a certeza que queres apagar esta despesa? Não é possível desfazer.'**
+  String get despesasApagarConfirmacao;
+
   /// No description provided for @despesaCategoriaReparacao.
   ///
   /// In pt, this message translates to:
@@ -1465,6 +1483,240 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Outro'**
   String get despesaCategoriaOutro;
+
+  /// No description provided for @editar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar'**
+  String get editar;
+
+  /// No description provided for @financeCategoriaRenda.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renda'**
+  String get financeCategoriaRenda;
+
+  /// No description provided for @financeCategoriaSalarios.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salários'**
+  String get financeCategoriaSalarios;
+
+  /// No description provided for @financeCategoriaMarketing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marketing'**
+  String get financeCategoriaMarketing;
+
+  /// No description provided for @financeCategoriaServicosTerceiros.
+  ///
+  /// In pt, this message translates to:
+  /// **'Serviços de terceiros'**
+  String get financeCategoriaServicosTerceiros;
+
+  /// No description provided for @financeCategoriaImpostosTaxas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Impostos e taxas'**
+  String get financeCategoriaImpostosTaxas;
+
+  /// No description provided for @financeCategoriaSeguros.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seguros'**
+  String get financeCategoriaSeguros;
+
+  /// No description provided for @financeCategoriaManutencaoInstalacoes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Manutenção das instalações'**
+  String get financeCategoriaManutencaoInstalacoes;
+
+  /// No description provided for @financeCategoriaComissoesRecebidas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comissões recebidas'**
+  String get financeCategoriaComissoesRecebidas;
+
+  /// No description provided for @financeCategoriaFinanciamento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Financiamento'**
+  String get financeCategoriaFinanciamento;
+
+  /// No description provided for @financeCategoriaOutro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outro'**
+  String get financeCategoriaOutro;
+
+  /// No description provided for @financeSemCategoria.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem categoria'**
+  String get financeSemCategoria;
+
+  /// No description provided for @filtrosTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Filtros'**
+  String get filtrosTitulo;
+
+  /// No description provided for @filtroDataInicio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data de início'**
+  String get filtroDataInicio;
+
+  /// No description provided for @filtroDataFim.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data de fim'**
+  String get filtroDataFim;
+
+  /// No description provided for @filtroVendedor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vendedor'**
+  String get filtroVendedor;
+
+  /// No description provided for @filtroMarca.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marca'**
+  String get filtroMarca;
+
+  /// No description provided for @filtroModelo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modelo'**
+  String get filtroModelo;
+
+  /// No description provided for @filtroTodos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos'**
+  String get filtroTodos;
+
+  /// No description provided for @campoTipo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo'**
+  String get campoTipo;
+
+  /// No description provided for @filtroLimpar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Limpar filtros'**
+  String get filtroLimpar;
+
+  /// No description provided for @filtroAplicar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aplicar'**
+  String get filtroAplicar;
+
+  /// No description provided for @filtroEsteMes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este mês'**
+  String get filtroEsteMes;
+
+  /// No description provided for @filtroUltimos90Dias.
+  ///
+  /// In pt, this message translates to:
+  /// **'Últimos 90 dias'**
+  String get filtroUltimos90Dias;
+
+  /// No description provided for @filtroEsteAno.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este ano'**
+  String get filtroEsteAno;
+
+  /// No description provided for @filtroPersonalizado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Personalizado'**
+  String get filtroPersonalizado;
+
+  /// No description provided for @evolucaoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Evolução (últimos 12 meses)'**
+  String get evolucaoTitulo;
+
+  /// No description provided for @margemPotencialTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Margem potencial do stock'**
+  String get margemPotencialTitulo;
+
+  /// No description provided for @margemPotencialVazio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem veículos em stock disponíveis/reservados.'**
+  String get margemPotencialVazio;
+
+  /// No description provided for @margemPotencialTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total potencial'**
+  String get margemPotencialTotal;
+
+  /// No description provided for @despesasGeraisPorCategoriaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesas gerais da empresa'**
+  String get despesasGeraisPorCategoriaTitulo;
+
+  /// No description provided for @despesasVeiculosPorCategoriaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesas por veículo'**
+  String get despesasVeiculosPorCategoriaTitulo;
+
+  /// No description provided for @despesasSemLancamentos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem despesas neste período.'**
+  String get despesasSemLancamentos;
+
+  /// No description provided for @lancamentosTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançamentos'**
+  String get lancamentosTitulo;
+
+  /// No description provided for @lancamentosVerTodos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver lançamentos'**
+  String get lancamentosVerTodos;
+
+  /// No description provided for @lancamentosVazio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem lançamentos neste período.'**
+  String get lancamentosVazio;
+
+  /// No description provided for @lancamentosEditarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar lançamento'**
+  String get lancamentosEditarTitulo;
+
+  /// No description provided for @lancamentosApagarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar lançamento'**
+  String get lancamentosApagarTitulo;
+
+  /// No description provided for @lancamentosApagarConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tens a certeza que queres apagar este lançamento? Não é possível desfazer.'**
+  String get lancamentosApagarConfirmacao;
 
   /// No description provided for @fotosJaProntasTitulo.
   ///

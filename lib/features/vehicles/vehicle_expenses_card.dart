@@ -54,18 +54,25 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
     await _future;
   }
 
-  Future<void> _adicionarDespesa() async {
+  /// Formulário partilhado por adicionar e editar — devolve os valores
+  /// escolhidos, ou `null` se cancelado.
+  Future<(String categoria, double valor, String? descricao)?> _formularioDespesa({
+    required String tituloDialogo,
+    String? categoriaInicial,
+    double? valorInicial,
+    String? descricaoInicial,
+  }) async {
     final l10n = context.l10n;
     final formKey = GlobalKey<FormState>();
-    final valorController = TextEditingController();
-    final descricaoController = TextEditingController();
-    String categoria = vehicleExpenseCategorias.first;
+    final valorController = TextEditingController(text: valorInicial?.toStringAsFixed(2));
+    final descricaoController = TextEditingController(text: descricaoInicial);
+    String categoria = categoriaInicial ?? vehicleExpenseCategorias.first;
 
     final confirmou = await showDialog<bool>(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: Text(l10n.despesasNovaTitulo),
+          title: Text(tituloDialogo),
           content: Form(
             key: formKey,
             child: Column(
@@ -103,14 +110,68 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
       ),
     );
 
-    if (confirmou != true || !mounted) return;
+    if (confirmou != true) return null;
+    return (
+      categoria,
+      double.parse(valorController.text.replaceAll(',', '.')),
+      descricaoController.text.trim().isEmpty ? null : descricaoController.text.trim(),
+    );
+  }
+
+  Future<void> _adicionarDespesa() async {
+    final resultado = await _formularioDespesa(tituloDialogo: context.l10n.despesasNovaTitulo);
+    if (resultado == null || !mounted) return;
     try {
       await context.read<VehiclesRepository>().addExpense(
             vehicleId: widget.vehicleId,
-            categoria: categoria,
-            valor: double.parse(valorController.text.replaceAll(',', '.')),
-            descricao: descricaoController.text.trim().isEmpty ? null : descricaoController.text.trim(),
+            categoria: resultado.$1,
+            valor: resultado.$2,
+            descricao: resultado.$3,
           );
+      await _refresh();
+    } on ApiException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.localizado(context))));
+    }
+  }
+
+  Future<void> _editarDespesa(VehicleExpense despesa) async {
+    final resultado = await _formularioDespesa(
+      tituloDialogo: context.l10n.despesasEditarTitulo,
+      categoriaInicial: despesa.categoria,
+      valorInicial: despesa.valor,
+      descricaoInicial: despesa.descricao,
+    );
+    if (resultado == null || !mounted) return;
+    try {
+      await context.read<VehiclesRepository>().updateExpense(
+            vehicleId: widget.vehicleId,
+            expenseId: despesa.id,
+            categoria: resultado.$1,
+            valor: resultado.$2,
+            descricao: resultado.$3 ?? '',
+          );
+      await _refresh();
+    } on ApiException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.localizado(context))));
+    }
+  }
+
+  Future<void> _apagarDespesa(VehicleExpense despesa) async {
+    final l10n = context.l10n;
+    final confirmou = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.despesasApagarTitulo),
+        content: Text(l10n.despesasApagarConfirmacao),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancelar)),
+          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.remover)),
+        ],
+      ),
+    );
+    if (confirmou != true || !mounted) return;
+    try {
+      await context.read<VehiclesRepository>().removeExpense(vehicleId: widget.vehicleId, expenseId: despesa.id);
       await _refresh();
     } on ApiException catch (e) {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.localizado(context))));
@@ -162,9 +223,24 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
                       leading: const Icon(Icons.receipt_long, color: AppColors.grafiteVendido),
                       title: Text(categoriaDespesaLabel(l10n, despesa.categoria)),
                       subtitle: despesa.descricao != null ? Text(despesa.descricao!) : Text(despesa.data),
-                      trailing: Text(
-                        '${despesa.valor.toStringAsFixed(0)} €',
-                        style: AppTypography.numero(fontSize: 14, color: Theme.of(context).colorScheme.onSurface),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${despesa.valor.toStringAsFixed(0)} €',
+                            style: AppTypography.numero(fontSize: 14, color: Theme.of(context).colorScheme.onSurface),
+                          ),
+                          PopupMenuButton<String>(
+                            onSelected: (value) {
+                              if (value == 'editar') _editarDespesa(despesa);
+                              if (value == 'apagar') _apagarDespesa(despesa);
+                            },
+                            itemBuilder: (context) => [
+                              PopupMenuItem(value: 'editar', child: Text(l10n.editar)),
+                              PopupMenuItem(value: 'apagar', child: Text(l10n.remover)),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                 const SizedBox(height: 8),
