@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/l10n_extension.dart';
+import '../../shared/widgets/max_width_body.dart';
 import '../auth/auth_state.dart';
 import '../vehicles/vehicle_detail.dart';
 import 'banner_calculo.dart';
@@ -198,131 +199,146 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.bannerTitulo)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              // Clicar na pré-visualização também abre o seletor de foto —
-              // por isso esta zona TEM de participar no hit-test (ao
-              // contrário do ecrã de pré-visualização final, que é só
-              // leitura). O RepaintBoundary aqui é o mesmo usado por
-              // "Guardar": captura sempre ao tamanho real (BannerWidget.
-              // tamanho), independente da escala visual do FittedBox.
-              child: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: _carregandoFoto ? null : _escolherFoto,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      FittedBox(
-                        fit: BoxFit.contain,
-                        child: AnimatedBuilder(
-                          animation: Listenable.merge(
-                            [_titulo, _subtitulo, _potencia, _ano, _combustivel, _preco, _prestacao, _social, _contacto],
-                          ),
-                          builder: (context, _) => RepaintBoundary(
-                            key: _repaintKey,
-                            child: BannerWidget(content: _conteudoAtual),
+      body: MaxWidthBody(
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            AspectRatio(
+              aspectRatio: 1,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                // Clicar na pré-visualização também abre o seletor de foto —
+                // por isso esta zona TEM de participar no hit-test (ao
+                // contrário do ecrã de pré-visualização final, que é só
+                // leitura). O RepaintBoundary aqui é o mesmo usado por
+                // "Guardar": captura sempre ao tamanho real (BannerWidget.
+                // tamanho), independente da escala visual do FittedBox.
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: _carregandoFoto ? null : _escolherFoto,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.contain,
+                          child: AnimatedBuilder(
+                            animation: Listenable.merge(
+                              [
+                                _titulo,
+                                _subtitulo,
+                                _potencia,
+                                _ano,
+                                _combustivel,
+                                _preco,
+                                _prestacao,
+                                _social,
+                                _contacto
+                              ],
+                            ),
+                            builder: (context, _) => RepaintBoundary(
+                              key: _repaintKey,
+                              child: BannerWidget(content: _conteudoAtual),
+                            ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        right: 12,
-                        bottom: 12,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.55), shape: BoxShape.circle),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 20),
+                        Positioned(
+                          right: 12,
+                          bottom: 12,
+                          child: DecoratedBox(
+                            decoration:
+                                BoxDecoration(color: Colors.black.withValues(alpha: 0.55), shape: BoxShape.circle),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 20),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 8),
-          if (_foto == null)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(
-                l10n.bannerAvisoExemplo,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic),
+            const SizedBox(height: 8),
+            if (_foto == null)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  l10n.bannerAvisoExemplo,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic),
+                ),
               ),
+            OutlinedButton.icon(
+              onPressed: _carregandoFoto ? null : _escolherFoto,
+              icon: const Icon(Icons.add_a_photo_outlined),
+              label: Text(_foto == null ? l10n.bannerCarregarFoto : l10n.bannerTrocarFoto),
             ),
-          OutlinedButton.icon(
-            onPressed: _carregandoFoto ? null : _escolherFoto,
-            icon: const Icon(Icons.add_a_photo_outlined),
-            label: Text(_foto == null ? l10n.bannerCarregarFoto : l10n.bannerTrocarFoto),
-          ),
-          const SizedBox(height: 8),
-          OutlinedButton.icon(
-            onPressed: _escolherCor,
-            icon: Icon(Icons.palette_outlined, color: _corDestaque),
-            label: Text(l10n.bannerEscolherCor),
-          ),
-          const SizedBox(height: 24),
-          TextField(controller: _titulo, decoration: InputDecoration(labelText: l10n.bannerCampoTitulo)),
-          const SizedBox(height: 12),
-          TextField(controller: _subtitulo, decoration: InputDecoration(labelText: l10n.bannerCampoSubtitulo)),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(controller: _potencia, decoration: InputDecoration(labelText: l10n.bannerCampoPotencia)),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: TextField(controller: _ano, decoration: InputDecoration(labelText: l10n.bannerCampoAno)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          TextField(controller: _combustivel, decoration: InputDecoration(labelText: l10n.bannerCampoCombustivel)),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(controller: _preco, decoration: InputDecoration(labelText: l10n.bannerCampoPreco)),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: TextField(controller: _prestacao, decoration: InputDecoration(labelText: l10n.bannerCampoPrestacao)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Text(l10n.bannerPerfilLojaSecao, style: Theme.of(context).textTheme.titleLarge),
-          const SizedBox(height: 12),
-          TextField(controller: _social, decoration: InputDecoration(labelText: l10n.bannerCampoSocial)),
-          const SizedBox(height: 12),
-          TextField(controller: _contacto, decoration: InputDecoration(labelText: l10n.bannerCampoContacto)),
-          const SizedBox(height: 32),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: _ocupado ? null : _guardarAgora,
-                  icon: const Icon(Icons.download_outlined),
-                  label: Text(l10n.guardar),
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              onPressed: _escolherCor,
+              icon: Icon(Icons.palette_outlined, color: _corDestaque),
+              label: Text(l10n.bannerEscolherCor),
+            ),
+            const SizedBox(height: 24),
+            TextField(controller: _titulo, decoration: InputDecoration(labelText: l10n.bannerCampoTitulo)),
+            const SizedBox(height: 12),
+            TextField(controller: _subtitulo, decoration: InputDecoration(labelText: l10n.bannerCampoSubtitulo)),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                      controller: _potencia, decoration: InputDecoration(labelText: l10n.bannerCampoPotencia)),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: _ocupado ? null : _continuar,
-                  child: Text(l10n.bannerContinuar),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextField(controller: _ano, decoration: InputDecoration(labelText: l10n.bannerCampoAno)),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 12),
+            TextField(controller: _combustivel, decoration: InputDecoration(labelText: l10n.bannerCampoCombustivel)),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(controller: _preco, decoration: InputDecoration(labelText: l10n.bannerCampoPreco)),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextField(
+                      controller: _prestacao, decoration: InputDecoration(labelText: l10n.bannerCampoPrestacao)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Text(l10n.bannerPerfilLojaSecao, style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 12),
+            TextField(controller: _social, decoration: InputDecoration(labelText: l10n.bannerCampoSocial)),
+            const SizedBox(height: 12),
+            TextField(controller: _contacto, decoration: InputDecoration(labelText: l10n.bannerCampoContacto)),
+            const SizedBox(height: 32),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _ocupado ? null : _guardarAgora,
+                    icon: const Icon(Icons.download_outlined),
+                    label: Text(l10n.guardar),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _ocupado ? null : _continuar,
+                    child: Text(l10n.bannerContinuar),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

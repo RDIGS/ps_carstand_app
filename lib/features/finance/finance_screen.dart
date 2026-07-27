@@ -8,6 +8,7 @@ import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
 import '../../l10n/app_localizations.dart';
+import '../../shared/widgets/max_width_body.dart';
 import '../../shared/widgets/simple_bar_chart.dart';
 import '../../shared/widgets/simple_line_chart.dart';
 import '../team/team_member.dart';
@@ -55,10 +56,8 @@ class _FinanceScreenState extends State<FinanceScreen> {
     _load();
     _futureEvolution = context.read<FinanceRepository>().evolution();
     _futureStockPotencial = context.read<FinanceRepository>().stockPotencial();
-    _futureVendedores = context
-        .read<TeamRepository>()
-        .list()
-        .then((membros) => membros.where((m) => m.role == 'vendedor').toList());
+    _futureVendedores =
+        context.read<TeamRepository>().list().then((membros) => membros.where((m) => m.role == 'vendedor').toList());
   }
 
   @override
@@ -291,137 +290,139 @@ class _FinanceScreenState extends State<FinanceScreen> {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: FutureBuilder<FinanceSummary>(
-          future: _futureSummary,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              final erro = snapshot.error;
-              return Center(child: Text(erro is ApiException ? erro.localizado(context) : '$erro'));
-            }
-            final resumo = snapshot.data!;
-            return ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                Text(
-                  '${_dataExibicaoFormat.format(DateTime.parse(resumo.periodoInicio))} — '
-                  '${_dataExibicaoFormat.format(DateTime.parse(resumo.periodoFim))}'
-                  '${_vendedorNome != null ? ' · $_vendedorNome' : ''}'
-                  '${_marcaController.text.isNotEmpty ? ' · ${_marcaController.text}' : ''}'
-                  '${_modeloController.text.isNotEmpty ? ' ${_modeloController.text}' : ''}',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 12),
-                _CashflowCard(resumo: resumo),
-                const SizedBox(height: 20),
-
-                _EvolucaoSection(future: _futureEvolution),
-                const SizedBox(height: 20),
-
-                _DespesasCategoriaSection(
-                  titulo: l10n.despesasGeraisPorCategoriaTitulo,
-                  itens: resumo.despesasGeraisPorCategoria,
-                  cor: AppColors.amberSinal,
-                  // Despesas gerais da empresa usam as categorias de
-                  // finance_entries (renda, salários, marketing, ...).
-                  label: financeCategoriaLabel,
-                ),
-                const SizedBox(height: 20),
-                _DespesasCategoriaSection(
-                  titulo: l10n.despesasVeiculosPorCategoriaTitulo,
-                  itens: resumo.despesasVeiculosPorCategoria,
-                  cor: AppColors.grafiteVendido,
-                  // Despesas por veículo usam um enum totalmente diferente
-                  // (reparação, transporte, legalização, ...) — bug real
-                  // apanhado ao testar visualmente: usar financeCategoriaLabel
-                  // aqui mostrava sempre "Sem categoria".
-                  label: (l10n, cat) => cat == null ? l10n.financeSemCategoria : categoriaDespesaLabel(l10n, cat),
-                ),
-                const SizedBox(height: 20),
-
-                _StockPotencialSection(future: _futureStockPotencial),
-                const SizedBox(height: 20),
-
-                Text(l10n.margemPorMarcaModelo, style: Theme.of(context).textTheme.titleLarge),
-                const SizedBox(height: 8),
-                if (resumo.margemPorMarcaModelo.isEmpty) Text(l10n.semVendasPeriodo),
-                if (resumo.margemPorMarcaModelo.isNotEmpty) ...[
-                  SimpleBarChart(
-                    color: AppColors.verdeDisponivel,
-                    entries: [
-                      for (final linha in resumo.margemPorMarcaModelo.take(6))
-                        BarChartEntry(
-                          label: '${linha['marca']} ${linha['modelo']}',
-                          value: parseFinanceDecimal(linha['margem_media']) ?? 0,
-                        ),
-                    ],
+      // Sem isto, o dashboard esticava para a largura toda da janela no
+      // browser de PC — gráfico de evolução muito comprido e fino, cartões
+      // a ocupar 1440px+. maxWidth só entra em jogo acima disso, o
+      // telemóvel continua a usar a largura toda do ecrã como antes.
+      body: MaxWidthBody(
+        child: RefreshIndicator(
+          onRefresh: _refresh,
+          child: FutureBuilder<FinanceSummary>(
+            future: _futureSummary,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                final erro = snapshot.error;
+                return Center(child: Text(erro is ApiException ? erro.localizado(context) : '$erro'));
+              }
+              final resumo = snapshot.data!;
+              return ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  Text(
+                    '${_dataExibicaoFormat.format(DateTime.parse(resumo.periodoInicio))} — '
+                    '${_dataExibicaoFormat.format(DateTime.parse(resumo.periodoFim))}'
+                    '${_vendedorNome != null ? ' · $_vendedorNome' : ''}'
+                    '${_marcaController.text.isNotEmpty ? ' · ${_marcaController.text}' : ''}'
+                    '${_modeloController.text.isNotEmpty ? ' ${_modeloController.text}' : ''}',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 12),
-                ],
-                for (final linha in resumo.margemPorMarcaModelo)
-                  Card(
-                    child: ListTile(
-                      title: Text('${linha['marca']} ${linha['modelo']}'),
-                      subtitle: Text(l10n.numVendas(parseCount(linha['num_vendas']))),
-                      trailing: Text(
-                        '${(parseFinanceDecimal(linha['margem_media']) ?? 0).toStringAsFixed(0)} €',
-                        style: AppTypography.numero(fontSize: 15, color: AppColors.verdeDisponivel),
-                      ),
-                    ),
+                  _CashflowCard(resumo: resumo),
+                  const SizedBox(height: 20),
+                  _EvolucaoSection(future: _futureEvolution),
+                  const SizedBox(height: 20),
+                  _DespesasCategoriaSection(
+                    titulo: l10n.despesasGeraisPorCategoriaTitulo,
+                    itens: resumo.despesasGeraisPorCategoria,
+                    cor: AppColors.amberSinal,
+                    // Despesas gerais da empresa usam as categorias de
+                    // finance_entries (renda, salários, marketing, ...).
+                    label: financeCategoriaLabel,
                   ),
-                const SizedBox(height: 20),
-                Text(l10n.rankingVendedores, style: Theme.of(context).textTheme.titleLarge),
-                const SizedBox(height: 8),
-                if (resumo.rankingVendedores.isEmpty) Text(l10n.semVendasPeriodo),
-                if (resumo.rankingVendedores.isNotEmpty) ...[
-                  SimpleBarChart(
-                    entries: [
-                      for (final linha in resumo.rankingVendedores.take(6))
-                        BarChartEntry(
-                          label: (linha['vendedor_nome'] as String?) ?? '?',
-                          value: parseFinanceDecimal(linha['valor_total']) ?? 0,
+                  const SizedBox(height: 20),
+                  _DespesasCategoriaSection(
+                    titulo: l10n.despesasVeiculosPorCategoriaTitulo,
+                    itens: resumo.despesasVeiculosPorCategoria,
+                    cor: AppColors.grafiteVendido,
+                    // Despesas por veículo usam um enum totalmente diferente
+                    // (reparação, transporte, legalização, ...) — bug real
+                    // apanhado ao testar visualmente: usar financeCategoriaLabel
+                    // aqui mostrava sempre "Sem categoria".
+                    label: (l10n, cat) => cat == null ? l10n.financeSemCategoria : categoriaDespesaLabel(l10n, cat),
+                  ),
+                  const SizedBox(height: 20),
+                  _StockPotencialSection(future: _futureStockPotencial),
+                  const SizedBox(height: 20),
+                  Text(l10n.margemPorMarcaModelo, style: Theme.of(context).textTheme.titleLarge),
+                  const SizedBox(height: 8),
+                  if (resumo.margemPorMarcaModelo.isEmpty) Text(l10n.semVendasPeriodo),
+                  if (resumo.margemPorMarcaModelo.isNotEmpty) ...[
+                    SimpleBarChart(
+                      color: AppColors.verdeDisponivel,
+                      entries: [
+                        for (final linha in resumo.margemPorMarcaModelo.take(6))
+                          BarChartEntry(
+                            label: '${linha['marca']} ${linha['modelo']}',
+                            value: parseFinanceDecimal(linha['margem_media']) ?? 0,
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  for (final linha in resumo.margemPorMarcaModelo)
+                    Card(
+                      child: ListTile(
+                        title: Text('${linha['marca']} ${linha['modelo']}'),
+                        subtitle: Text(l10n.numVendas(parseCount(linha['num_vendas']))),
+                        trailing: Text(
+                          '${(parseFinanceDecimal(linha['margem_media']) ?? 0).toStringAsFixed(0)} €',
+                          style: AppTypography.numero(fontSize: 15, color: AppColors.verdeDisponivel),
                         ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
+                      ),
+                    ),
+                  const SizedBox(height: 20),
+                  Text(l10n.rankingVendedores, style: Theme.of(context).textTheme.titleLarge),
+                  const SizedBox(height: 8),
+                  if (resumo.rankingVendedores.isEmpty) Text(l10n.semVendasPeriodo),
+                  if (resumo.rankingVendedores.isNotEmpty) ...[
+                    SimpleBarChart(
+                      entries: [
+                        for (final linha in resumo.rankingVendedores.take(6))
+                          BarChartEntry(
+                            label: (linha['vendedor_nome'] as String?) ?? '?',
+                            value: parseFinanceDecimal(linha['valor_total']) ?? 0,
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  for (final linha in resumo.rankingVendedores)
+                    Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.person, color: AppColors.azulMatricula),
+                        title: Text((linha['vendedor_nome'] as String?) ?? '?'),
+                        subtitle: Text(
+                          '${l10n.numVendas(parseCount(linha['num_vendas']))} · '
+                          '${l10n.comissaoLabel((parseFinanceDecimal(linha['comissao_total']) ?? 0).toStringAsFixed(0))}',
+                        ),
+                        trailing: Text(
+                          '${(parseFinanceDecimal(linha['valor_total']) ?? 0).toStringAsFixed(0)} €',
+                          style: AppTypography.numero(fontSize: 15, color: Theme.of(context).colorScheme.onSurface),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 20),
+                  Text(l10n.margemPorVeiculo, style: Theme.of(context).textTheme.titleLarge),
+                  const SizedBox(height: 8),
+                  if (resumo.margemPorVeiculo.isEmpty) Text(l10n.semVendasPeriodo),
+                  for (final linha in resumo.margemPorVeiculo)
+                    Card(
+                      child: ListTile(
+                        title: Text('${linha['matricula']} · ${linha['marca']} ${linha['modelo']}'),
+                        subtitle: Text(l10n.diasEmStock((linha['dias_em_stock'] as num).toInt())),
+                        trailing: Text(
+                          '${(parseFinanceDecimal(linha['margem_real']) ?? 0).toStringAsFixed(0)} €',
+                          style: AppTypography.numero(fontSize: 15, color: AppColors.verdeDisponivel),
+                        ),
+                      ),
+                    ),
                 ],
-                for (final linha in resumo.rankingVendedores)
-                  Card(
-                    child: ListTile(
-                      leading: const Icon(Icons.person, color: AppColors.azulMatricula),
-                      title: Text((linha['vendedor_nome'] as String?) ?? '?'),
-                      subtitle: Text(
-                        '${l10n.numVendas(parseCount(linha['num_vendas']))} · '
-                        '${l10n.comissaoLabel((parseFinanceDecimal(linha['comissao_total']) ?? 0).toStringAsFixed(0))}',
-                      ),
-                      trailing: Text(
-                        '${(parseFinanceDecimal(linha['valor_total']) ?? 0).toStringAsFixed(0)} €',
-                        style: AppTypography.numero(fontSize: 15, color: Theme.of(context).colorScheme.onSurface),
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 20),
-                Text(l10n.margemPorVeiculo, style: Theme.of(context).textTheme.titleLarge),
-                const SizedBox(height: 8),
-                if (resumo.margemPorVeiculo.isEmpty) Text(l10n.semVendasPeriodo),
-                for (final linha in resumo.margemPorVeiculo)
-                  Card(
-                    child: ListTile(
-                      title: Text('${linha['matricula']} · ${linha['marca']} ${linha['modelo']}'),
-                      subtitle: Text(l10n.diasEmStock((linha['dias_em_stock'] as num).toInt())),
-                      trailing: Text(
-                        '${(parseFinanceDecimal(linha['margem_real']) ?? 0).toStringAsFixed(0)} €',
-                        style: AppTypography.numero(fontSize: 15, color: AppColors.verdeDisponivel),
-                      ),
-                    ),
-                  ),
-              ],
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -594,17 +595,18 @@ class _StockPotencialSection extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(l10n.margemPotencialTitulo, style: Theme.of(context).textTheme.titleLarge),
-                if (stock.veiculos.isNotEmpty)
-                  Text(
-                    '${l10n.margemPotencialTotal}: ${stock.totalMargemPotencial.toStringAsFixed(0)} €',
-                    style: AppTypography.numero(fontSize: 14, color: AppColors.verdeDisponivel),
-                  ),
-              ],
-            ),
+            // Coluna em vez de Row com spaceBetween: título + total juntos
+            // numa linha só ultrapassavam a largura em telemóveis estreitos
+            // (bug real reportado — "Total potencial" ficava cortado atrás
+            // do FAB "Movimento").
+            Text(l10n.margemPotencialTitulo, style: Theme.of(context).textTheme.titleLarge),
+            if (stock.veiculos.isNotEmpty) ...[
+              const SizedBox(height: 2),
+              Text(
+                '${l10n.margemPotencialTotal}: ${stock.totalMargemPotencial.toStringAsFixed(0)} €',
+                style: AppTypography.numero(fontSize: 14, color: AppColors.verdeDisponivel),
+              ),
+            ],
             const SizedBox(height: 8),
             if (stock.veiculos.isEmpty)
               Text(l10n.margemPotencialVazio)

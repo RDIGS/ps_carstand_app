@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../l10n/app_localizations.dart';
+import '../../shared/widgets/max_width_body.dart';
 import 'audit_entry.dart';
 import 'audit_repository.dart';
 
@@ -53,61 +54,63 @@ class _AuditScreenState extends State<AuditScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.auditoriaTitulo)),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 48,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              children: [
-                for (final f in filtros)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: ChoiceChip(
-                      label: Text(f.label),
-                      selected: _filtroEntidade == f.entidade,
-                      onSelected: (_) => setState(() {
-                        _filtroEntidade = f.entidade;
-                        _load();
-                      }),
+      body: MaxWidthBody(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 48,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                children: [
+                  for (final f in filtros)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: ChoiceChip(
+                        label: Text(f.label),
+                        selected: _filtroEntidade == f.entidade,
+                        onSelected: (_) => setState(() {
+                          _filtroEntidade = f.entidade;
+                          _load();
+                        }),
+                      ),
                     ),
-                  ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _refresh,
-              child: FutureBuilder<List<AuditEntry>>(
-                future: _future,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return Center(child: Text('${snapshot.error}'));
-                  }
-                  final entradas = snapshot.data!;
-                  if (entradas.isEmpty) {
-                    return ListView(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(32),
-                          child: Center(child: Text(l10n.auditoriaSemRegistos)),
-                        ),
-                      ],
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: entradas.length,
-                    itemBuilder: (context, i) => _AuditTile(entrada: entradas[i]),
-                  );
-                },
+                ],
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: _refresh,
+                child: FutureBuilder<List<AuditEntry>>(
+                  future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      return Center(child: Text('${snapshot.error}'));
+                    }
+                    final entradas = snapshot.data!;
+                    if (entradas.isEmpty) {
+                      return ListView(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(32),
+                            child: Center(child: Text(l10n.auditoriaSemRegistos)),
+                          ),
+                        ],
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: entradas.length,
+                      itemBuilder: (context, i) => _AuditTile(entrada: entradas[i]),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -195,7 +198,8 @@ class _AuditTile extends StatelessWidget {
         const SizedBox(width: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-          decoration: BoxDecoration(color: AppColors.grafiteVendido.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(999)),
+          decoration: BoxDecoration(
+              color: AppColors.grafiteVendido.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(999)),
           child: Text(_labelAcao(entrada.acao, l10n), style: Theme.of(context).textTheme.bodySmall),
         ),
       ],
@@ -209,7 +213,8 @@ class _AuditTile extends StatelessWidget {
     if (!temDetalhe) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [titulo, const SizedBox(height: 4), subtitulo]),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start, children: [titulo, const SizedBox(height: 4), subtitulo]),
       );
     }
 

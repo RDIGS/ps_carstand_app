@@ -6,6 +6,7 @@ import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
+import '../../shared/widgets/max_width_body.dart';
 import '../../shared/widgets/status_badge.dart';
 import '../auth/auth_state.dart';
 import '../banner/banner_template_picker_screen.dart';
@@ -61,44 +62,46 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
     final role = context.watch<AuthState>().userRole;
     return Scaffold(
       appBar: AppBar(title: Text(context.l10n.fichaVeiculoTitulo)),
-      body: FutureBuilder<VehicleDetail>(
-        future: _future,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('${snapshot.error}'));
-          }
-          final vehicle = snapshot.data!;
-          return RefreshIndicator(
-            onRefresh: _refresh,
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                _FichaTecnicaCard(vehicle: vehicle),
-                const SizedBox(height: 16),
-                _PrecosCard(vehicle: vehicle),
-                const SizedBox(height: 16),
-                if (vehicle.importado) _ImportadoCard(vehicle: vehicle),
-                if (vehicle.importado) const SizedBox(height: 16),
-                _ActionsCard(vehicle: vehicle, busy: _busy, onAction: _runAction, onRefresh: _refresh),
-                const SizedBox(height: 16),
-                if (vehicle.estado == 'disponivel' || vehicle.estado == 'reservado') ...[
-                  _GerarBannerButton(vehicle: vehicle),
+      body: MaxWidthBody(
+        child: FutureBuilder<VehicleDetail>(
+          future: _future,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text('${snapshot.error}'));
+            }
+            final vehicle = snapshot.data!;
+            return RefreshIndicator(
+              onRefresh: _refresh,
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  _FichaTecnicaCard(vehicle: vehicle),
                   const SizedBox(height: 16),
-                ],
-                ChecklistCard(vehicleId: vehicle.id),
-                const SizedBox(height: 16),
-                if (role == 'owner') ...[
-                  VehicleExpensesCard(vehicleId: vehicle.id),
+                  _PrecosCard(vehicle: vehicle),
                   const SizedBox(height: 16),
+                  if (vehicle.importado) _ImportadoCard(vehicle: vehicle),
+                  if (vehicle.importado) const SizedBox(height: 16),
+                  _ActionsCard(vehicle: vehicle, busy: _busy, onAction: _runAction, onRefresh: _refresh),
+                  const SizedBox(height: 16),
+                  if (vehicle.estado == 'disponivel' || vehicle.estado == 'reservado') ...[
+                    _GerarBannerButton(vehicle: vehicle),
+                    const SizedBox(height: 16),
+                  ],
+                  ChecklistCard(vehicleId: vehicle.id),
+                  const SizedBox(height: 16),
+                  if (role == 'owner') ...[
+                    VehicleExpensesCard(vehicleId: vehicle.id),
+                    const SizedBox(height: 16),
+                  ],
+                  _MarketEstimateCard(vehicle: vehicle, onRefresh: _refresh),
                 ],
-                _MarketEstimateCard(vehicle: vehicle, onRefresh: _refresh),
-              ],
-            ),
-          );
-        },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -141,8 +144,7 @@ class _FichaTecnicaCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text('${vehicle.marca} ${vehicle.modelo}', style: Theme.of(context).textTheme.headlineLarge),
-                    if (vehicle.versao != null)
-                      Text(vehicle.versao!, style: Theme.of(context).textTheme.bodyMedium),
+                    if (vehicle.versao != null) Text(vehicle.versao!, style: Theme.of(context).textTheme.bodyMedium),
                     const Divider(height: 28),
                     Wrap(
                       spacing: 24,
@@ -153,14 +155,17 @@ class _FichaTecnicaCard extends StatelessWidget {
                           _Spec(
                               label: l10n.specPrimeiraMatricula, value: vehicle.dataPrimeiraMatriculaReal!, mono: true),
                         if (vehicle.categoria != null) _Spec(label: l10n.specCategoria, value: vehicle.categoria!),
-                        if (vehicle.combustivel != null) _Spec(label: l10n.specCombustivel, value: vehicle.combustivel!),
+                        if (vehicle.combustivel != null)
+                          _Spec(label: l10n.specCombustivel, value: vehicle.combustivel!),
                         if (vehicle.cilindrada != null)
                           _Spec(label: l10n.specCilindrada, value: '${vehicle.cilindrada} cm³'),
-                        if (vehicle.potenciaKw != null) _Spec(label: l10n.specPotencia, value: '${vehicle.potenciaKw} kW'),
+                        if (vehicle.potenciaKw != null)
+                          _Spec(label: l10n.specPotencia, value: '${vehicle.potenciaKw} kW'),
                         if (vehicle.cor != null) _Spec(label: l10n.specCor, value: vehicle.cor!),
                         if (vehicle.numLugares != null) _Spec(label: l10n.specLugares, value: '${vehicle.numLugares}'),
                         if (vehicle.pesoTara != null) _Spec(label: l10n.specTara, value: '${vehicle.pesoTara} kg'),
-                        if (vehicle.pesoBruto != null) _Spec(label: l10n.specPesoBruto, value: '${vehicle.pesoBruto} kg'),
+                        if (vehicle.pesoBruto != null)
+                          _Spec(label: l10n.specPesoBruto, value: '${vehicle.pesoBruto} kg'),
                       ],
                     ),
                     if (vehicle.chassis != null) ...[
@@ -280,8 +285,7 @@ class _ImportadoCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(l10n.veiculoImportado, style: Theme.of(context).textTheme.titleLarge),
-                  if (vehicle.matriculaAnterior != null)
-                    Text(l10n.matriculaAnteriorLabel(vehicle.matriculaAnterior!)),
+                  if (vehicle.matriculaAnterior != null) Text(l10n.matriculaAnteriorLabel(vehicle.matriculaAnterior!)),
                   if (vehicle.paisOrigemAnterior != null) Text(l10n.paisOrigemLabel(vehicle.paisOrigemAnterior!)),
                   if (vehicle.possivelImportado)
                     Text(l10n.confiancaBaixaAviso, style: const TextStyle(color: AppColors.amberSinal)),

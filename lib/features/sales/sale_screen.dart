@@ -7,6 +7,7 @@ import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/nif_validator.dart';
+import '../../shared/widgets/max_width_body.dart';
 import '../vehicles/vehicle_detail.dart';
 import 'identity_capture_screen.dart';
 import 'sales_repository.dart';
@@ -185,79 +186,82 @@ class _SaleScreenState extends State<SaleScreen> {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.venderTitulo(widget.vehicle.matricula))),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(l10n.dadosComprador, style: Theme.of(context).textTheme.titleLarge),
-                OutlinedButton.icon(
-                  onPressed: _submitting ? null : _digitalizarDocumento,
-                  icon: const Icon(Icons.document_scanner_outlined),
-                  label: Text(l10n.digitalizarDocumento),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _nomeController,
-              decoration: InputDecoration(labelText: l10n.campoNome),
-              validator: (v) => (v == null || v.trim().isEmpty) ? l10n.validacaoCampoObrigatorio : null,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _nifController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: l10n.campoNif),
-              validator: (v) => isValidNif(v?.trim() ?? '') ? null : l10n.validacaoNifInvalido,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(controller: _moradaController, decoration: InputDecoration(labelText: l10n.campoMorada)),
-            const SizedBox(height: 12),
-            TextFormField(controller: _cpController, decoration: InputDecoration(labelText: l10n.campoCodigoPostal)),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
-              initialValue: _identificacaoTipo,
-              decoration: InputDecoration(labelText: l10n.campoDocumentoIdentificacao),
-              items: [
-                DropdownMenuItem(value: 'cc', child: Text(l10n.documentoCC)),
-                DropdownMenuItem(value: 'bi', child: Text(l10n.documentoBI)),
-                DropdownMenuItem(value: 'titulo_residencia', child: Text(l10n.documentoTituloResidencia)),
-                DropdownMenuItem(value: 'outro', child: Text(l10n.documentoOutro)),
-              ],
-              onChanged: (v) => setState(() => _identificacaoTipo = v ?? 'cc'),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _identificacaoNumeroController,
-              decoration: InputDecoration(labelText: l10n.campoNumeroDocumento),
-            ),
-            const SizedBox(height: 24),
-            Text(l10n.condicoesVenda, style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _precoFinalController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(labelText: l10n.campoPrecoFinal),
-              validator: (v) => double.tryParse((v ?? '').replaceAll(',', '.')) == null ? l10n.validacaoValorInvalido : null,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _comissaoController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(labelText: l10n.campoComissaoVendedor),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _submitting ? null : _confirmarEVender,
-              child: _submitting
-                  ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                  : Text(l10n.registarVenda),
-            ),
-          ],
+      body: MaxWidthBody(
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(child: Text(l10n.dadosComprador, style: Theme.of(context).textTheme.titleLarge)),
+                  OutlinedButton.icon(
+                    onPressed: _submitting ? null : _digitalizarDocumento,
+                    icon: const Icon(Icons.document_scanner_outlined),
+                    label: Text(l10n.digitalizarDocumento),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _nomeController,
+                decoration: InputDecoration(labelText: l10n.campoNome),
+                validator: (v) => (v == null || v.trim().isEmpty) ? l10n.validacaoCampoObrigatorio : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _nifController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: l10n.campoNif),
+                validator: (v) => isValidNif(v?.trim() ?? '') ? null : l10n.validacaoNifInvalido,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(controller: _moradaController, decoration: InputDecoration(labelText: l10n.campoMorada)),
+              const SizedBox(height: 12),
+              TextFormField(controller: _cpController, decoration: InputDecoration(labelText: l10n.campoCodigoPostal)),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<String>(
+                initialValue: _identificacaoTipo,
+                decoration: InputDecoration(labelText: l10n.campoDocumentoIdentificacao),
+                items: [
+                  DropdownMenuItem(value: 'cc', child: Text(l10n.documentoCC)),
+                  DropdownMenuItem(value: 'bi', child: Text(l10n.documentoBI)),
+                  DropdownMenuItem(value: 'titulo_residencia', child: Text(l10n.documentoTituloResidencia)),
+                  DropdownMenuItem(value: 'outro', child: Text(l10n.documentoOutro)),
+                ],
+                onChanged: (v) => setState(() => _identificacaoTipo = v ?? 'cc'),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _identificacaoNumeroController,
+                decoration: InputDecoration(labelText: l10n.campoNumeroDocumento),
+              ),
+              const SizedBox(height: 24),
+              Text(l10n.condicoesVenda, style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _precoFinalController,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(labelText: l10n.campoPrecoFinal),
+                validator: (v) =>
+                    double.tryParse((v ?? '').replaceAll(',', '.')) == null ? l10n.validacaoValorInvalido : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _comissaoController,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(labelText: l10n.campoComissaoVendedor),
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: _submitting ? null : _confirmarEVender,
+                child: _submitting
+                    ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                    : Text(l10n.registarVenda),
+              ),
+            ],
+          ),
         ),
       ),
     );

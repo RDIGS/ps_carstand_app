@@ -6,6 +6,7 @@ import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
+import '../../shared/widgets/max_width_body.dart';
 import 'finance_categoria.dart';
 import 'finance_entry.dart';
 import 'finance_repository.dart';
@@ -84,18 +85,21 @@ class _FinanceEntriesScreenState extends State<FinanceEntriesScreen> {
                   controller: valorController,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   decoration: InputDecoration(labelText: l10n.campoValor),
-                  validator: (v) => double.tryParse((v ?? '').replaceAll(',', '.')) == null ? l10n.validacaoValorInvalido : null,
+                  validator: (v) =>
+                      double.tryParse((v ?? '').replaceAll(',', '.')) == null ? l10n.validacaoValorInvalido : null,
                 ),
                 DropdownButtonFormField<String?>(
                   initialValue: categoria,
                   decoration: InputDecoration(labelText: l10n.campoCategoriaFinanceira),
                   items: [
                     DropdownMenuItem(value: null, child: Text(l10n.financeSemCategoria)),
-                    for (final c in financeCategorias) DropdownMenuItem(value: c, child: Text(financeCategoriaLabel(l10n, c))),
+                    for (final c in financeCategorias)
+                      DropdownMenuItem(value: c, child: Text(financeCategoriaLabel(l10n, c))),
                   ],
                   onChanged: (v) => setDialogState(() => categoria = v),
                 ),
-                TextFormField(controller: descricaoController, decoration: InputDecoration(labelText: l10n.campoDescricao)),
+                TextFormField(
+                    controller: descricaoController, decoration: InputDecoration(labelText: l10n.campoDescricao)),
               ],
             ),
           ),
@@ -120,7 +124,8 @@ class _FinanceEntriesScreenState extends State<FinanceEntriesScreen> {
       if (existente == null) {
         await repo.createEntry(tipo: tipo, categoria: categoria, valor: valor, descricao: descricao);
       } else {
-        await repo.updateEntry(existente.id, tipo: tipo, categoria: categoria ?? '', valor: valor, descricao: descricao ?? '');
+        await repo.updateEntry(existente.id,
+            tipo: tipo, categoria: categoria ?? '', valor: valor, descricao: descricao ?? '');
       }
       await _refresh();
     } on ApiException catch (e) {
@@ -155,98 +160,103 @@ class _FinanceEntriesScreenState extends State<FinanceEntriesScreen> {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.lancamentosTitulo)),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField<String?>(
-                    initialValue: _tipoFiltro,
-                    decoration: InputDecoration(labelText: l10n.campoTipo, isDense: true),
-                    items: [
-                      DropdownMenuItem(value: null, child: Text(l10n.filtroTodos)),
-                      DropdownMenuItem(value: 'despesa', child: Text(l10n.tipoDespesa)),
-                      DropdownMenuItem(value: 'receita', child: Text(l10n.tipoReceita)),
-                    ],
-                    onChanged: (v) => setState(() {
-                      _tipoFiltro = v;
-                      _page = 1;
-                      _load();
-                    }),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: DropdownButtonFormField<String?>(
-                    initialValue: _categoriaFiltro,
-                    decoration: InputDecoration(labelText: l10n.campoCategoriaFinanceira, isDense: true),
-                    items: [
-                      DropdownMenuItem(value: null, child: Text(l10n.filtroTodos)),
-                      for (final c in financeCategorias)
-                        DropdownMenuItem(value: c, child: Text(financeCategoriaLabel(l10n, c))),
-                    ],
-                    onChanged: (v) => setState(() {
-                      _categoriaFiltro = v;
-                      _page = 1;
-                      _load();
-                    }),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _refresh,
-              child: FutureBuilder<FinanceEntriesPage>(
-                future: _future,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    final erro = snapshot.error;
-                    return Center(child: Text(erro is ApiException ? erro.localizado(context) : '$erro'));
-                  }
-                  final pagina = snapshot.data!;
-                  if (pagina.entries.isEmpty) {
-                    return ListView(
-                      children: [
-                        Padding(padding: const EdgeInsets.all(32), child: Center(child: Text(l10n.lancamentosVazio))),
+      // Mesmo motivo do finance_screen.dart: sem isto esticava para a
+      // largura toda da janela no browser de PC.
+      body: MaxWidthBody(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<String?>(
+                      initialValue: _tipoFiltro,
+                      decoration: InputDecoration(labelText: l10n.campoTipo, isDense: true),
+                      items: [
+                        DropdownMenuItem(value: null, child: Text(l10n.filtroTodos)),
+                        DropdownMenuItem(value: 'despesa', child: Text(l10n.tipoDespesa)),
+                        DropdownMenuItem(value: 'receita', child: Text(l10n.tipoReceita)),
                       ],
-                    );
-                  }
-                  return ListView(
-                    padding: const EdgeInsets.all(16),
-                    children: [
-                      for (final entry in pagina.entries) _EntryTile(entry: entry, onEdit: _abrirFormulario, onDelete: _apagar),
-                      if (pagina.total > pagina.limit)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                onPressed: _page > 1 ? () => _mudarPagina(-1) : null,
-                                icon: const Icon(Icons.chevron_left),
-                              ),
-                              Text('$_page / ${(pagina.total / pagina.limit).ceil()}'),
-                              IconButton(
-                                onPressed: pagina.temMaisPaginas ? () => _mudarPagina(1) : null,
-                                icon: const Icon(Icons.chevron_right),
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
-                  );
-                },
+                      onChanged: (v) => setState(() {
+                        _tipoFiltro = v;
+                        _page = 1;
+                        _load();
+                      }),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: DropdownButtonFormField<String?>(
+                      initialValue: _categoriaFiltro,
+                      decoration: InputDecoration(labelText: l10n.campoCategoriaFinanceira, isDense: true),
+                      items: [
+                        DropdownMenuItem(value: null, child: Text(l10n.filtroTodos)),
+                        for (final c in financeCategorias)
+                          DropdownMenuItem(value: c, child: Text(financeCategoriaLabel(l10n, c))),
+                      ],
+                      onChanged: (v) => setState(() {
+                        _categoriaFiltro = v;
+                        _page = 1;
+                        _load();
+                      }),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: _refresh,
+                child: FutureBuilder<FinanceEntriesPage>(
+                  future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      final erro = snapshot.error;
+                      return Center(child: Text(erro is ApiException ? erro.localizado(context) : '$erro'));
+                    }
+                    final pagina = snapshot.data!;
+                    if (pagina.entries.isEmpty) {
+                      return ListView(
+                        children: [
+                          Padding(padding: const EdgeInsets.all(32), child: Center(child: Text(l10n.lancamentosVazio))),
+                        ],
+                      );
+                    }
+                    return ListView(
+                      padding: const EdgeInsets.all(16),
+                      children: [
+                        for (final entry in pagina.entries)
+                          _EntryTile(entry: entry, onEdit: _abrirFormulario, onDelete: _apagar),
+                        if (pagina.total > pagina.limit)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: _page > 1 ? () => _mudarPagina(-1) : null,
+                                  icon: const Icon(Icons.chevron_left),
+                                ),
+                                Text('$_page / ${(pagina.total / pagina.limit).ceil()}'),
+                                IconButton(
+                                  onPressed: pagina.temMaisPaginas ? () => _mudarPagina(1) : null,
+                                  icon: const Icon(Icons.chevron_right),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         heroTag: 'finance-entries-fab',

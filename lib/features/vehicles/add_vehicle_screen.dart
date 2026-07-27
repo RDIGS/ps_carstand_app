@@ -5,6 +5,7 @@ import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/matricula_validator.dart';
+import '../../shared/widgets/max_width_body.dart';
 import 'create_vehicle_data.dart';
 import 'vehicles_repository.dart';
 
@@ -162,96 +163,98 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(_isDuaFlow ? l10n.confirmarDuaTitulo : l10n.adicionarVeiculo)),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            if (_isDuaFlow)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Text(l10n.duaRevisaoAviso),
+      body: MaxWidthBody(
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              if (_isDuaFlow)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Text(l10n.duaRevisaoAviso),
+                ),
+              if (i?.possivelImportado ?? false) _AvisoBanner(text: l10n.possivelImportadoAviso),
+              if (i?.importado ?? false)
+                _AvisoBanner(
+                  cor: AppColors.azulMatricula,
+                  text: i?.paisOrigemAnterior != null
+                      ? l10n.importadoComPais(i!.paisOrigemAnterior!, i.matriculaAnterior ?? '-')
+                      : l10n.importadoSemPais(i?.matriculaAnterior ?? '-'),
+                ),
+              for (final aviso in widget.duaAvisos) _AvisoBanner(text: aviso),
+              const SizedBox(height: 8),
+              _SectionTitle(l10n.seccaoIdentificacao),
+              TextFormField(
+                controller: _matricula,
+                textCapitalization: TextCapitalization.characters,
+                decoration: InputDecoration(labelText: l10n.campoMatricula, hintText: l10n.campoMatriculaHint),
+                validator: (v) => isValidMatricula(v?.trim() ?? '') ? null : l10n.validacaoMatriculaInvalida,
               ),
-            if (i?.possivelImportado ?? false) _AvisoBanner(text: l10n.possivelImportadoAviso),
-            if (i?.importado ?? false)
-              _AvisoBanner(
-                cor: AppColors.azulMatricula,
-                text: i?.paisOrigemAnterior != null
-                    ? l10n.importadoComPais(i!.paisOrigemAnterior!, i.matriculaAnterior ?? '-')
-                    : l10n.importadoSemPais(i?.matriculaAnterior ?? '-'),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _marca,
+                decoration: InputDecoration(labelText: l10n.campoMarca),
+                validator: (v) => (v == null || v.trim().isEmpty) ? l10n.validacaoCampoObrigatorio : null,
               ),
-            for (final aviso in widget.duaAvisos) _AvisoBanner(text: aviso),
-            const SizedBox(height: 8),
-            _SectionTitle(l10n.seccaoIdentificacao),
-            TextFormField(
-              controller: _matricula,
-              textCapitalization: TextCapitalization.characters,
-              decoration: InputDecoration(labelText: l10n.campoMatricula, hintText: l10n.campoMatriculaHint),
-              validator: (v) => isValidMatricula(v?.trim() ?? '') ? null : l10n.validacaoMatriculaInvalida,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _marca,
-              decoration: InputDecoration(labelText: l10n.campoMarca),
-              validator: (v) => (v == null || v.trim().isEmpty) ? l10n.validacaoCampoObrigatorio : null,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _modelo,
-              decoration: InputDecoration(labelText: l10n.campoModelo),
-              validator: (v) => (v == null || v.trim().isEmpty) ? l10n.validacaoCampoObrigatorio : null,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(controller: _versao, decoration: InputDecoration(labelText: l10n.campoVersao)),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _kms,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: l10n.campoQuilometros),
-              validator: (v) => int.tryParse(v?.trim() ?? '') == null ? l10n.validacaoNumeroInvalido : null,
-            ),
-            const SizedBox(height: 24),
-            _SectionTitle(l10n.seccaoEspecificacoes),
-            TextFormField(controller: _categoria, decoration: InputDecoration(labelText: l10n.campoCategoria)),
-            const SizedBox(height: 12),
-            TextFormField(controller: _combustivel, decoration: InputDecoration(labelText: l10n.campoCombustivel)),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _cilindrada,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: l10n.campoCilindrada),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _potenciaKw,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: l10n.campoPotencia),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(controller: _cor, decoration: InputDecoration(labelText: l10n.campoCor)),
-            const SizedBox(height: 12),
-            TextFormField(controller: _chassis, decoration: InputDecoration(labelText: l10n.campoChassis)),
-            const SizedBox(height: 24),
-            _SectionTitle(l10n.seccaoPrecos),
-            TextFormField(
-              controller: _precoCompra,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(labelText: l10n.campoPrecoCompra),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _precoVendaRecomendado,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(labelText: l10n.campoPrecoVendaRecomendado),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _submitting ? null : _submit,
-              child: _submitting
-                  ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                  : Text(_isDuaFlow ? l10n.confirmarEGuardar : l10n.adicionarVeiculo),
-            ),
-          ],
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _modelo,
+                decoration: InputDecoration(labelText: l10n.campoModelo),
+                validator: (v) => (v == null || v.trim().isEmpty) ? l10n.validacaoCampoObrigatorio : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(controller: _versao, decoration: InputDecoration(labelText: l10n.campoVersao)),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _kms,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: l10n.campoQuilometros),
+                validator: (v) => int.tryParse(v?.trim() ?? '') == null ? l10n.validacaoNumeroInvalido : null,
+              ),
+              const SizedBox(height: 24),
+              _SectionTitle(l10n.seccaoEspecificacoes),
+              TextFormField(controller: _categoria, decoration: InputDecoration(labelText: l10n.campoCategoria)),
+              const SizedBox(height: 12),
+              TextFormField(controller: _combustivel, decoration: InputDecoration(labelText: l10n.campoCombustivel)),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _cilindrada,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: l10n.campoCilindrada),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _potenciaKw,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: l10n.campoPotencia),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(controller: _cor, decoration: InputDecoration(labelText: l10n.campoCor)),
+              const SizedBox(height: 12),
+              TextFormField(controller: _chassis, decoration: InputDecoration(labelText: l10n.campoChassis)),
+              const SizedBox(height: 24),
+              _SectionTitle(l10n.seccaoPrecos),
+              TextFormField(
+                controller: _precoCompra,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(labelText: l10n.campoPrecoCompra),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _precoVendaRecomendado,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(labelText: l10n.campoPrecoVendaRecomendado),
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: _submitting ? null : _submit,
+                child: _submitting
+                    ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                    : Text(_isDuaFlow ? l10n.confirmarEGuardar : l10n.adicionarVeiculo),
+              ),
+            ],
+          ),
         ),
       ),
     );

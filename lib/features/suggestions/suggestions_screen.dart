@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../core/api/api_client.dart';
 import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
+import '../../shared/widgets/max_width_body.dart';
 import 'suggestions_repository.dart';
 
 /// Ecrã simples para o utilizador (owner ou vendedor) escrever sugestões
@@ -47,29 +48,31 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.sugestoesTitulo)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Text(l10n.sugestoesIntro, style: Theme.of(context).textTheme.bodyMedium),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _texto,
-            maxLines: 8,
-            minLines: 5,
-            decoration: InputDecoration(
-              labelText: l10n.sugestoesCampoTexto,
-              border: const OutlineInputBorder(),
-              alignLabelWithHint: true,
+      body: MaxWidthBody(
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            Text(l10n.sugestoesIntro, style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _texto,
+              maxLines: 8,
+              minLines: 5,
+              decoration: InputDecoration(
+                labelText: l10n.sugestoesCampoTexto,
+                border: const OutlineInputBorder(),
+                alignLabelWithHint: true,
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _enviando ? null : _enviar,
-            child: _enviando
-                ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                : Text(l10n.sugestoesEnviar),
-          ),
-        ],
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _enviando ? null : _enviar,
+              child: _enviando
+                  ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                  : Text(l10n.sugestoesEnviar),
+            ),
+          ],
+        ),
       ),
     );
   }

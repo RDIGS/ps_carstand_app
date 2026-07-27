@@ -11,6 +11,7 @@ import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/document_photo_slot.dart';
 import '../../shared/widgets/image_source_picker.dart';
+import '../../shared/widgets/max_width_body.dart';
 import 'add_vehicle_screen.dart';
 import 'vehicles_repository.dart';
 
@@ -111,55 +112,57 @@ class _DuaCaptureScreenState extends State<DuaCaptureScreen> {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.duaCaptureTitulo)),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(l10n.duaCaptureInstrucoes),
-            const SizedBox(height: 20),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: DocumentPhotoSlot(
-                      label: l10n.duaFrente,
-                      bytes: _frente,
-                      onTap: _extraindo ? null : () => _capturar(isFrente: true),
+      body: MaxWidthBody(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.duaCaptureInstrucoes),
+              const SizedBox(height: 20),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: DocumentPhotoSlot(
+                        label: l10n.duaFrente,
+                        bytes: _frente,
+                        onTap: _extraindo ? null : () => _capturar(isFrente: true),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: DocumentPhotoSlot(
-                      label: l10n.duaVerso,
-                      bytes: _verso,
-                      onTap: _extraindo ? null : () => _capturar(isFrente: false),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: DocumentPhotoSlot(
+                        label: l10n.duaVerso,
+                        bytes: _verso,
+                        onTap: _extraindo ? null : () => _capturar(isFrente: false),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            if (_erro != null) ...[
+              if (_erro != null) ...[
+                const SizedBox(height: 12),
+                Text(_erro!, style: const TextStyle(color: AppColors.amberSinal)),
+              ],
+              const SizedBox(height: 8),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                controlAffinity: ListTileControlAffinity.leading,
+                value: _fotosProntas,
+                onChanged: _extraindo ? null : (v) => setState(() => _fotosProntas = v ?? false),
+                title: Text(l10n.fotosJaProntasTitulo),
+                subtitle: Text(l10n.fotosJaProntasSubtitulo),
+              ),
               const SizedBox(height: 12),
-              Text(_erro!, style: const TextStyle(color: AppColors.amberSinal)),
+              ElevatedButton(
+                onPressed: (_prontoParaExtrair && !_extraindo) ? _extrair : null,
+                child: _extraindo
+                    ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                    : Text(l10n.extrairDados),
+              ),
             ],
-            const SizedBox(height: 8),
-            CheckboxListTile(
-              contentPadding: EdgeInsets.zero,
-              controlAffinity: ListTileControlAffinity.leading,
-              value: _fotosProntas,
-              onChanged: _extraindo ? null : (v) => setState(() => _fotosProntas = v ?? false),
-              title: Text(l10n.fotosJaProntasTitulo),
-              subtitle: Text(l10n.fotosJaProntasSubtitulo),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: (_prontoParaExtrair && !_extraindo) ? _extrair : null,
-              child: _extraindo
-                  ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                  : Text(l10n.extrairDados),
-            ),
-          ],
+          ),
         ),
       ),
     );

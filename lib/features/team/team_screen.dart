@@ -7,6 +7,7 @@ import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../l10n/app_localizations.dart';
+import '../../shared/widgets/max_width_body.dart';
 import 'team_member.dart';
 import 'team_repository.dart';
 
@@ -220,67 +221,70 @@ class _TeamScreenState extends State<TeamScreen> {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.equipaTitulo)),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: FutureBuilder<List<TeamMember>>(
-          future: _future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return Center(child: Text('${snapshot.error}'));
-            }
-            final membros = snapshot.data!;
-            return ListView.separated(
-              padding: const EdgeInsets.all(16),
-              itemCount: membros.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 8),
-              itemBuilder: (context, index) {
-                final membro = membros[index];
-                return Card(
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: membro.ativo ? AppColors.azulMatricula : AppColors.grafiteVendido,
-                      child: Text(membro.nome.isNotEmpty ? membro.nome[0].toUpperCase() : '?'),
+      body: MaxWidthBody(
+        child: RefreshIndicator(
+          onRefresh: _refresh,
+          child: FutureBuilder<List<TeamMember>>(
+            future: _future,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text('${snapshot.error}'));
+              }
+              final membros = snapshot.data!;
+              return ListView.separated(
+                padding: const EdgeInsets.all(16),
+                itemCount: membros.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 8),
+                itemBuilder: (context, index) {
+                  final membro = membros[index];
+                  return Card(
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: membro.ativo ? AppColors.azulMatricula : AppColors.grafiteVendido,
+                        child: Text(membro.nome.isNotEmpty ? membro.nome[0].toUpperCase() : '?'),
+                      ),
+                      title: Text(membro.nome),
+                      subtitle: Text(l10n.membroSubtitulo(membro.email, _funcaoLabel(l10n, membro.role))),
+                      trailing: PopupMenuButton<String>(
+                        onSelected: (value) {
+                          switch (value) {
+                            case 'toggle_role':
+                              _mudarRole(membro, membro.role == 'owner' ? 'vendedor' : 'owner');
+                              break;
+                            case 'toggle_ativo':
+                              _alternarAtivo(membro);
+                              break;
+                            case 'reset_password':
+                              _reporPassword(membro);
+                              break;
+                            case 'remove':
+                              _remover(membro);
+                              break;
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 'toggle_role',
+                            child: Text(membro.role == 'owner' ? l10n.tornarVendedor : l10n.tornarOwner),
+                          ),
+                          PopupMenuItem(
+                              value: 'toggle_ativo', child: Text(membro.ativo ? l10n.desativar : l10n.ativar)),
+                          // Só faz sentido para vendedores — o backend recusa para owners
+                          // de propósito (ver team.service.ts).
+                          if (membro.role == 'vendedor')
+                            PopupMenuItem(value: 'reset_password', child: Text(l10n.reporPasswordTitulo)),
+                          PopupMenuItem(value: 'remove', child: Text(l10n.removerAcesso)),
+                        ],
+                      ),
                     ),
-                    title: Text(membro.nome),
-                    subtitle: Text(l10n.membroSubtitulo(membro.email, _funcaoLabel(l10n, membro.role))),
-                    trailing: PopupMenuButton<String>(
-                      onSelected: (value) {
-                        switch (value) {
-                          case 'toggle_role':
-                            _mudarRole(membro, membro.role == 'owner' ? 'vendedor' : 'owner');
-                            break;
-                          case 'toggle_ativo':
-                            _alternarAtivo(membro);
-                            break;
-                          case 'reset_password':
-                            _reporPassword(membro);
-                            break;
-                          case 'remove':
-                            _remover(membro);
-                            break;
-                        }
-                      },
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          value: 'toggle_role',
-                          child: Text(membro.role == 'owner' ? l10n.tornarVendedor : l10n.tornarOwner),
-                        ),
-                        PopupMenuItem(value: 'toggle_ativo', child: Text(membro.ativo ? l10n.desativar : l10n.ativar)),
-                        // Só faz sentido para vendedores — o backend recusa para owners
-                        // de propósito (ver team.service.ts).
-                        if (membro.role == 'vendedor')
-                          PopupMenuItem(value: 'reset_password', child: Text(l10n.reporPasswordTitulo)),
-                        PopupMenuItem(value: 'remove', child: Text(l10n.removerAcesso)),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
-          },
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(

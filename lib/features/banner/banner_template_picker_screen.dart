@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/l10n_extension.dart';
+import '../../shared/widgets/max_width_body.dart';
 import '../vehicles/vehicle_detail.dart';
 import 'banner_content.dart';
 import 'banner_form_screen.dart';
@@ -37,30 +38,32 @@ class BannerTemplatePickerScreen extends StatelessWidget {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.bannerEscolherTemplateTitulo)),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 0.82,
-        ),
-        itemCount: bannerTemplates.length,
-        itemBuilder: (context, index) {
-          final template = bannerTemplates[index];
-          return _TemplateCard(
-            nome: template.nome,
-            premium: template.premium,
-            content: _conteudoDemo(template.id),
-            onTap: template.premium
-                ? null
-                : () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => BannerFormScreen(vehicle: vehicle, templateId: template.id),
+      body: MaxWidthBody(
+        child: GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+            childAspectRatio: 0.82,
+          ),
+          itemCount: bannerTemplates.length,
+          itemBuilder: (context, index) {
+            final template = bannerTemplates[index];
+            return _TemplateCard(
+              nome: template.nome,
+              premium: template.premium,
+              content: _conteudoDemo(template.id),
+              onTap: template.premium
+                  ? null
+                  : () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => BannerFormScreen(vehicle: vehicle, templateId: template.id),
+                        ),
                       ),
-                    ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

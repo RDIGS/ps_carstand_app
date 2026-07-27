@@ -5,6 +5,7 @@ import '../../core/api/api_client.dart';
 import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
+import '../../shared/widgets/max_width_body.dart';
 import '../auth/auth_state.dart';
 import 'legal_models.dart';
 import 'legal_repository.dart';
@@ -69,50 +70,52 @@ class _LegalAcceptanceScreenState extends State<LegalAcceptanceScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(_titulo(context, doc.tipo)), automaticallyImplyLeading: false),
-      body: SafeArea(
-        child: Column(
-          children: [
-            if (pendentes.length > 1)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Text(
-                  l10n.legalProgresso(pendentes.length),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.grafiteVendido),
+      body: MaxWidthBody(
+        child: SafeArea(
+          child: Column(
+            children: [
+              if (pendentes.length > 1)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text(
+                    l10n.legalProgresso(pendentes.length),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.grafiteVendido),
+                  ),
+                ),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: SelectableText(doc.conteudo, style: Theme.of(context).textTheme.bodyMedium),
                 ),
               ),
-            Expanded(
-              child: SingleChildScrollView(
+              const Divider(height: 1),
+              Padding(
                 padding: const EdgeInsets.all(16),
-                child: SelectableText(doc.conteudo, style: Theme.of(context).textTheme.bodyMedium),
-              ),
-            ),
-            const Divider(height: 1),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (_erro != null) ...[
-                    Text(_erro!, style: const TextStyle(color: AppColors.amberSinal)),
-                    const SizedBox(height: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (_erro != null) ...[
+                      Text(_erro!, style: const TextStyle(color: AppColors.amberSinal)),
+                      const SizedBox(height: 8),
+                    ],
+                    CheckboxListTile(
+                      contentPadding: EdgeInsets.zero,
+                      controlAffinity: ListTileControlAffinity.leading,
+                      value: _li,
+                      onChanged: _aceitando ? null : (v) => setState(() => _li = v ?? false),
+                      title: Text(l10n.legalLiEAceito),
+                    ),
+                    ElevatedButton(
+                      onPressed: (_li && !_aceitando) ? () => _aceitar(doc) : null,
+                      child: _aceitando
+                          ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                          : Text(l10n.legalAceitarEContinuar),
+                    ),
                   ],
-                  CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    value: _li,
-                    onChanged: _aceitando ? null : (v) => setState(() => _li = v ?? false),
-                    title: Text(l10n.legalLiEAceito),
-                  ),
-                  ElevatedButton(
-                    onPressed: (_li && !_aceitando) ? () => _aceitar(doc) : null,
-                    child: _aceitando
-                        ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                        : Text(l10n.legalAceitarEContinuar),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
