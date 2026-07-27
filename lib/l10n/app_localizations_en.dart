@@ -720,6 +720,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checklistVazio => 'No checklist items yet.';
 
   @override
+  String get galeriaTitulo => 'Vehicle photos';
+
+  @override
+  String get galeriaVazia => 'No photos of this vehicle yet.';
+
+  @override
+  String get galeriaAdicionarFotos => 'Add photos';
+
+  @override
+  String get galeriaRemoverFotoTitulo => 'Remove photo';
+
+  @override
+  String get galeriaRemoverFotoConfirmacao =>
+      'Are you sure you want to remove this photo?';
+
+  @override
   String get checklistAplicarModelo => 'Apply template';
 
   @override
@@ -1009,10 +1025,90 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navVendas => 'Sales';
 
   @override
+  String get navLeads => 'Leads';
+
+  @override
   String get navEquipa => 'Team';
 
   @override
   String get navFinanceiro => 'Finance';
+
+  @override
+  String avisoStockParado(int n, int dias) {
+    return '$n vehicle(s) in stock for over $dias days — might be worth reviewing the price.';
+  }
+
+  @override
+  String get leadNovoTitulo => 'New lead';
+
+  @override
+  String get leadEditarTitulo => 'Edit lead';
+
+  @override
+  String get leadEliminarTitulo => 'Delete lead';
+
+  @override
+  String get leadEliminarConfirmacao =>
+      'Are you sure you want to delete this lead?';
+
+  @override
+  String get leadCampoOrigem => 'Source';
+
+  @override
+  String get leadCampoEstado => 'Status';
+
+  @override
+  String get leadCampoProximoContacto => 'Next follow-up';
+
+  @override
+  String leadProximoContactoData(String data) {
+    return 'Next follow-up: $data';
+  }
+
+  @override
+  String get leadCampoNotas => 'Notes';
+
+  @override
+  String get leadFiltroTodos => 'All';
+
+  @override
+  String get leadSemResultados => 'No leads to show.';
+
+  @override
+  String get leadOrigemTelefone => 'Phone';
+
+  @override
+  String get leadOrigemWhatsapp => 'WhatsApp';
+
+  @override
+  String get leadOrigemPresencial => 'Walk-in';
+
+  @override
+  String get leadOrigemStandvirtual => 'StandVirtual';
+
+  @override
+  String get leadOrigemOlx => 'OLX';
+
+  @override
+  String get leadOrigemCustojusto => 'CustoJusto';
+
+  @override
+  String get leadOrigemOutro => 'Other';
+
+  @override
+  String get leadEstadoNovo => 'New';
+
+  @override
+  String get leadEstadoContactado => 'Contacted';
+
+  @override
+  String get leadEstadoAgendado => 'Scheduled';
+
+  @override
+  String get leadEstadoConvertido => 'Converted';
+
+  @override
+  String get leadEstadoPerdido => 'Lost';
 
   @override
   String get bannerGerarBotao => 'Generate sales banner';

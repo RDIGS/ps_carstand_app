@@ -231,6 +231,12 @@
 
   "checklistTitulo": "Prep checklist",
   "checklistVazio": "No checklist items yet.",
+
+  "galeriaTitulo": "Vehicle photos",
+  "galeriaVazia": "No photos of this vehicle yet.",
+  "galeriaAdicionarFotos": "Add photos",
+  "galeriaRemoverFotoTitulo": "Remove photo",
+  "galeriaRemoverFotoConfirmacao": "Are you sure you want to remove this photo?",
   "checklistAplicarModelo": "Apply template",
   "checklistAdicionarItem": "Add item",
   "checklistRemoverItemTitulo": "Remove item",
@@ -337,8 +343,39 @@
 
   "navVeiculos": "Vehicles",
   "navVendas": "Sales",
+  "navLeads": "Leads",
   "navEquipa": "Team",
   "navFinanceiro": "Finance",
+
+  "avisoStockParado": "{n} vehicle(s) in stock for over {dias} days — might be worth reviewing the price.",
+  "@avisoStockParado": {
+    "placeholders": { "n": { "type": "int" }, "dias": { "type": "int" } }
+  },
+
+  "leadNovoTitulo": "New lead",
+  "leadEditarTitulo": "Edit lead",
+  "leadEliminarTitulo": "Delete lead",
+  "leadEliminarConfirmacao": "Are you sure you want to delete this lead?",
+  "leadCampoOrigem": "Source",
+  "leadCampoEstado": "Status",
+  "leadCampoProximoContacto": "Next follow-up",
+  "leadProximoContactoData": "Next follow-up: {data}",
+  "@leadProximoContactoData": { "placeholders": { "data": { "type": "String" } } },
+  "leadCampoNotas": "Notes",
+  "leadFiltroTodos": "All",
+  "leadSemResultados": "No leads to show.",
+  "leadOrigemTelefone": "Phone",
+  "leadOrigemWhatsapp": "WhatsApp",
+  "leadOrigemPresencial": "Walk-in",
+  "leadOrigemStandvirtual": "StandVirtual",
+  "leadOrigemOlx": "OLX",
+  "leadOrigemCustojusto": "CustoJusto",
+  "leadOrigemOutro": "Other",
+  "leadEstadoNovo": "New",
+  "leadEstadoContactado": "Contacted",
+  "leadEstadoAgendado": "Scheduled",
+  "leadEstadoConvertido": "Converted",
+  "leadEstadoPerdido": "Lost",
 
   "bannerGerarBotao": "Generate sales banner",
   "bannerTitulo": "Sales banner",

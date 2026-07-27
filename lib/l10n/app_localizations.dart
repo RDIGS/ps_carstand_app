@@ -1376,6 +1376,36 @@ abstract class AppLocalizations {
   /// **'Ainda sem itens de checklist.'**
   String get checklistVazio;
 
+  /// No description provided for @galeriaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fotos do veículo'**
+  String get galeriaTitulo;
+
+  /// No description provided for @galeriaVazia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda sem fotos deste veículo.'**
+  String get galeriaVazia;
+
+  /// No description provided for @galeriaAdicionarFotos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar fotos'**
+  String get galeriaAdicionarFotos;
+
+  /// No description provided for @galeriaRemoverFotoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover foto'**
+  String get galeriaRemoverFotoTitulo;
+
+  /// No description provided for @galeriaRemoverFotoConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tens a certeza que queres remover esta foto?'**
+  String get galeriaRemoverFotoConfirmacao;
+
   /// No description provided for @checklistAplicarModelo.
   ///
   /// In pt, this message translates to:
@@ -1922,6 +1952,12 @@ abstract class AppLocalizations {
   /// **'Vendas'**
   String get navVendas;
 
+  /// No description provided for @navLeads.
+  ///
+  /// In pt, this message translates to:
+  /// **'Leads'**
+  String get navLeads;
+
   /// No description provided for @navEquipa.
   ///
   /// In pt, this message translates to:
@@ -1933,6 +1969,150 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Financeiro'**
   String get navFinanceiro;
+
+  /// No description provided for @avisoStockParado.
+  ///
+  /// In pt, this message translates to:
+  /// **'{n} veículo(s) em stock há mais de {dias} dias — talvez valha a pena rever o preço.'**
+  String avisoStockParado(int n, int dias);
+
+  /// No description provided for @leadNovoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo lead'**
+  String get leadNovoTitulo;
+
+  /// No description provided for @leadEditarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar lead'**
+  String get leadEditarTitulo;
+
+  /// No description provided for @leadEliminarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Eliminar lead'**
+  String get leadEliminarTitulo;
+
+  /// No description provided for @leadEliminarConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tens a certeza que queres eliminar este lead?'**
+  String get leadEliminarConfirmacao;
+
+  /// No description provided for @leadCampoOrigem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Origem'**
+  String get leadCampoOrigem;
+
+  /// No description provided for @leadCampoEstado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estado'**
+  String get leadCampoEstado;
+
+  /// No description provided for @leadCampoProximoContacto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Próximo contacto'**
+  String get leadCampoProximoContacto;
+
+  /// No description provided for @leadProximoContactoData.
+  ///
+  /// In pt, this message translates to:
+  /// **'Próximo contacto: {data}'**
+  String leadProximoContactoData(String data);
+
+  /// No description provided for @leadCampoNotas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notas'**
+  String get leadCampoNotas;
+
+  /// No description provided for @leadFiltroTodos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos'**
+  String get leadFiltroTodos;
+
+  /// No description provided for @leadSemResultados.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem leads para mostrar.'**
+  String get leadSemResultados;
+
+  /// No description provided for @leadOrigemTelefone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Telefone'**
+  String get leadOrigemTelefone;
+
+  /// No description provided for @leadOrigemWhatsapp.
+  ///
+  /// In pt, this message translates to:
+  /// **'WhatsApp'**
+  String get leadOrigemWhatsapp;
+
+  /// No description provided for @leadOrigemPresencial.
+  ///
+  /// In pt, this message translates to:
+  /// **'Presencial'**
+  String get leadOrigemPresencial;
+
+  /// No description provided for @leadOrigemStandvirtual.
+  ///
+  /// In pt, this message translates to:
+  /// **'StandVirtual'**
+  String get leadOrigemStandvirtual;
+
+  /// No description provided for @leadOrigemOlx.
+  ///
+  /// In pt, this message translates to:
+  /// **'OLX'**
+  String get leadOrigemOlx;
+
+  /// No description provided for @leadOrigemCustojusto.
+  ///
+  /// In pt, this message translates to:
+  /// **'CustoJusto'**
+  String get leadOrigemCustojusto;
+
+  /// No description provided for @leadOrigemOutro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outro'**
+  String get leadOrigemOutro;
+
+  /// No description provided for @leadEstadoNovo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo'**
+  String get leadEstadoNovo;
+
+  /// No description provided for @leadEstadoContactado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Contactado'**
+  String get leadEstadoContactado;
+
+  /// No description provided for @leadEstadoAgendado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Agendado'**
+  String get leadEstadoAgendado;
+
+  /// No description provided for @leadEstadoConvertido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convertido'**
+  String get leadEstadoConvertido;
+
+  /// No description provided for @leadEstadoPerdido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perdido'**
+  String get leadEstadoPerdido;
 
   /// No description provided for @bannerGerarBotao.
   ///

@@ -15,6 +15,7 @@ import '../sales/sale_screen.dart';
 import 'market_estimate.dart';
 import 'vehicle_detail.dart';
 import 'vehicle_expenses_card.dart';
+import 'vehicle_photo_gallery_card.dart';
 import 'vehicles_repository.dart';
 
 class VehicleDetailScreen extends StatefulWidget {
@@ -106,6 +107,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                 padding: const EdgeInsets.all(16),
                 children: [
                   _FichaTecnicaCard(vehicle: vehicle),
+                  const SizedBox(height: 16),
+                  VehiclePhotoGalleryCard(vehicleId: vehicle.id),
                   const SizedBox(height: 16),
                   _PrecosCard(vehicle: vehicle),
                   const SizedBox(height: 16),

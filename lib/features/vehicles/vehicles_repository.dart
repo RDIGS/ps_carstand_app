@@ -2,6 +2,8 @@ import '../../core/api/api_client.dart';
 import 'vehicle.dart';
 import 'vehicle_detail.dart';
 import 'vehicle_expense.dart';
+import 'vehicle_photo.dart';
+import 'stock_alerts.dart';
 import 'market_estimate.dart';
 import 'create_vehicle_data.dart';
 import 'dua_extraction_result.dart';
@@ -145,6 +147,32 @@ class VehiclesRepository {
 
   Future<void> removeExpense({required String vehicleId, required String expenseId}) {
     return _api.request('DELETE', '/vehicles/$vehicleId/expenses/$expenseId', parse: (_) {});
+  }
+
+  /// Aviso proativo, não-bloqueante (mesmo padrão da subscrição/versão):
+  /// quantos veículos estão parados em stock há muito tempo.
+  Future<StockAlerts> getStockAlerts() {
+    return _api.request('GET', '/vehicles/alerts', parse: (data) => StockAlerts.fromJson(data as Map<String, dynamic>));
+  }
+
+  Future<List<VehiclePhoto>> listPhotos(String vehicleId) {
+    return _api.request(
+      'GET',
+      '/vehicles/$vehicleId/photos',
+      parse: (data) => (data as List<dynamic>).map((e) => VehiclePhoto.fromJson(e as Map<String, dynamic>)).toList(),
+    );
+  }
+
+  Future<VehiclePhoto> addPhoto(String vehicleId, List<int> foto) {
+    return _api.uploadMultipart(
+      '/vehicles/$vehicleId/photos',
+      files: {'foto': foto},
+      parse: (data) => VehiclePhoto.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<void> removePhoto(String vehicleId, String photoId) {
+    return _api.request('DELETE', '/vehicles/$vehicleId/photos/$photoId', parse: (_) {});
   }
 
   Future<MarketEstimate> marketEstimate(

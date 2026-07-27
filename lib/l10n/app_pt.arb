@@ -266,6 +266,12 @@
 
   "checklistTitulo": "Checklist de preparação",
   "checklistVazio": "Ainda sem itens de checklist.",
+
+  "galeriaTitulo": "Fotos do veículo",
+  "galeriaVazia": "Ainda sem fotos deste veículo.",
+  "galeriaAdicionarFotos": "Adicionar fotos",
+  "galeriaRemoverFotoTitulo": "Remover foto",
+  "galeriaRemoverFotoConfirmacao": "Tens a certeza que queres remover esta foto?",
   "checklistAplicarModelo": "Aplicar modelo",
   "checklistAdicionarItem": "Adicionar item",
   "checklistRemoverItemTitulo": "Remover item",
@@ -373,8 +379,39 @@
 
   "navVeiculos": "Veículos",
   "navVendas": "Vendas",
+  "navLeads": "Leads",
   "navEquipa": "Equipa",
   "navFinanceiro": "Financeiro",
+
+  "avisoStockParado": "{n} veículo(s) em stock há mais de {dias} dias — talvez valha a pena rever o preço.",
+  "@avisoStockParado": {
+    "placeholders": { "n": { "type": "int" }, "dias": { "type": "int" } }
+  },
+
+  "leadNovoTitulo": "Novo lead",
+  "leadEditarTitulo": "Editar lead",
+  "leadEliminarTitulo": "Eliminar lead",
+  "leadEliminarConfirmacao": "Tens a certeza que queres eliminar este lead?",
+  "leadCampoOrigem": "Origem",
+  "leadCampoEstado": "Estado",
+  "leadCampoProximoContacto": "Próximo contacto",
+  "leadProximoContactoData": "Próximo contacto: {data}",
+  "@leadProximoContactoData": { "placeholders": { "data": { "type": "String" } } },
+  "leadCampoNotas": "Notas",
+  "leadFiltroTodos": "Todos",
+  "leadSemResultados": "Sem leads para mostrar.",
+  "leadOrigemTelefone": "Telefone",
+  "leadOrigemWhatsapp": "WhatsApp",
+  "leadOrigemPresencial": "Presencial",
+  "leadOrigemStandvirtual": "StandVirtual",
+  "leadOrigemOlx": "OLX",
+  "leadOrigemCustojusto": "CustoJusto",
+  "leadOrigemOutro": "Outro",
+  "leadEstadoNovo": "Novo",
+  "leadEstadoContactado": "Contactado",
+  "leadEstadoAgendado": "Agendado",
+  "leadEstadoConvertido": "Convertido",
+  "leadEstadoPerdido": "Perdido",
 
   "bannerGerarBotao": "Gerar banner de venda",
   "bannerTitulo": "Banner de venda",
