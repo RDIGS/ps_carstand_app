@@ -146,6 +146,24 @@ abstract class AppLocalizations {
   /// **'Email ou password inválidos.'**
   String get loginErroGenerico;
 
+  /// No description provided for @loginEsqueceuPassword.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esqueceste-te da password?'**
+  String get loginEsqueceuPassword;
+
+  /// No description provided for @esqueceuPasswordTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esqueceste-te da password?'**
+  String get esqueceuPasswordTitulo;
+
+  /// No description provided for @esqueceuPasswordTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Se és vendedor, pede ao responsável do teu stand para te repor a password em Equipa. Se és owner, contacta o suporte PS CarStand: +351 911 038 529.'**
+  String get esqueceuPasswordTexto;
+
   /// No description provided for @appBarStandNome.
   ///
   /// In pt, this message translates to:
@@ -1069,6 +1087,30 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Partilha esta password temporária com {nome} — ainda não há envio automático por email.'**
   String contaCriadaTexto(String nome);
+
+  /// No description provided for @reporPasswordTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Repor password'**
+  String get reporPasswordTitulo;
+
+  /// No description provided for @reporPasswordConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Isto define uma password temporária nova para {nome} e termina a sessão dele em todos os dispositivos. Continuar?'**
+  String reporPasswordConfirmacao(String nome);
+
+  /// No description provided for @passwordRepostaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Password reposta'**
+  String get passwordRepostaTitulo;
+
+  /// No description provided for @passwordRepostaTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partilha esta password temporária nova com {nome} — ainda não há envio automático por email.'**
+  String passwordRepostaTexto(String nome);
 
   /// No description provided for @copiar.
   ///

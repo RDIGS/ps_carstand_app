@@ -56,4 +56,12 @@ class TeamRepository {
   Future<void> remove(String memberId) {
     return _api.request('DELETE', '/team/$memberId', parse: (_) {});
   }
+
+  Future<String> resetPassword(String memberId) {
+    return _api.request(
+      'POST',
+      '/team/$memberId/reset-password',
+      parse: (data) => (data as Map<String, dynamic>)['tempPassword'] as String,
+    );
+  }
 }

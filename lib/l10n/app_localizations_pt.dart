@@ -34,6 +34,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get loginErroGenerico => 'Email ou password inválidos.';
 
   @override
+  String get loginEsqueceuPassword => 'Esqueceste-te da password?';
+
+  @override
+  String get esqueceuPasswordTitulo => 'Esqueceste-te da password?';
+
+  @override
+  String get esqueceuPasswordTexto =>
+      'Se és vendedor, pede ao responsável do teu stand para te repor a password em Equipa. Se és owner, contacta o suporte PS CarStand: +351 911 038 529.';
+
+  @override
   String appBarStandNome(String standNome) {
     return 'PS CarStand · $standNome';
   }
@@ -539,6 +549,22 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String contaCriadaTexto(String nome) {
     return 'Partilha esta password temporária com $nome — ainda não há envio automático por email.';
+  }
+
+  @override
+  String get reporPasswordTitulo => 'Repor password';
+
+  @override
+  String reporPasswordConfirmacao(String nome) {
+    return 'Isto define uma password temporária nova para $nome e termina a sessão dele em todos os dispositivos. Continuar?';
+  }
+
+  @override
+  String get passwordRepostaTitulo => 'Password reposta';
+
+  @override
+  String passwordRepostaTexto(String nome) {
+    return 'Partilha esta password temporária nova com $nome — ainda não há envio automático por email.';
   }
 
   @override

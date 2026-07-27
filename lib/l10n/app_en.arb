@@ -10,6 +10,9 @@
   "loginEmail": "Email",
   "loginPassword": "Password",
   "loginErroGenerico": "Invalid email or password.",
+  "loginEsqueceuPassword": "Forgot your password?",
+  "esqueceuPasswordTitulo": "Forgot your password?",
+  "esqueceuPasswordTexto": "If you're a salesperson, ask your stand's owner to reset your password in Team. If you're the owner, contact PS CarStand support: +351 911 038 529.",
 
   "appBarStandNome": "PS CarStand · {standNome}",
 
@@ -173,6 +176,10 @@
   "convidar": "Invite",
   "contaCriadaTitulo": "Account created",
   "contaCriadaTexto": "Share this temporary password with {nome} — there's no automatic email yet.",
+  "reporPasswordTitulo": "Reset password",
+  "reporPasswordConfirmacao": "This sets a new temporary password for {nome} and signs them out on every device. Continue?",
+  "passwordRepostaTitulo": "Password reset",
+  "passwordRepostaTexto": "Share this new temporary password with {nome} — there's no automatic email yet.",
   "copiar": "Copy",
   "ok": "Ok",
   "membroSubtitulo": "{email} · {role}",

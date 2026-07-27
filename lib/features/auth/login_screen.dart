@@ -29,6 +29,39 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  // Sem envio de email (secção 3.2): vendedor pede ao owner para lhe repor a
+  // password em Equipa (team_screen.dart); owner (não tem ninguém acima dele
+  // dentro da app) só tem o contacto de suporte por agora.
+  Future<void> _mostrarEsqueceuPassword(BuildContext context) async {
+    final l10n = context.l10n;
+    await showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.esqueceuPasswordTitulo),
+        content: Text(l10n.esqueceuPasswordTexto),
+        actions: [ElevatedButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.ok))],
+      ),
+    );
+  }
+
+  // Mesmo padrão/strings do menu de perfil (vehicle_list_screen.dart) — aqui
+  // dá para trocar de stand mesmo antes de fazer login, sem reinstalar.
+  Future<void> _trocarDeStand() async {
+    final l10n = context.l10n;
+    final confirmou = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.trocarDeStandTitulo),
+        content: Text(l10n.trocarDeStandTexto),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancelar)),
+          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.trocarDeStandTitulo)),
+        ],
+      ),
+    );
+    if (confirmou == true && mounted) await context.read<AuthState>().logoutCompleto();
+  }
+
   @override
   Widget build(BuildContext context) {
     final standNome = context.watch<AuthState>().standNome;
@@ -75,6 +108,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: _loading
                         ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
                         : Text(l10n.loginTitulo),
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: _loading ? null : () => _mostrarEsqueceuPassword(context),
+                    child: Text(l10n.loginEsqueceuPassword),
+                  ),
+                  TextButton(
+                    onPressed: _loading ? null : _trocarDeStand,
+                    child: Text(l10n.trocarDeStandTitulo),
                   ),
                 ],
               ),

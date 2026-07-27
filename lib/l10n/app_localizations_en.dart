@@ -34,6 +34,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginErroGenerico => 'Invalid email or password.';
 
   @override
+  String get loginEsqueceuPassword => 'Forgot your password?';
+
+  @override
+  String get esqueceuPasswordTitulo => 'Forgot your password?';
+
+  @override
+  String get esqueceuPasswordTexto =>
+      'If you\'re a salesperson, ask your stand\'s owner to reset your password in Team. If you\'re the owner, contact PS CarStand support: +351 911 038 529.';
+
+  @override
   String appBarStandNome(String standNome) {
     return 'PS CarStand · $standNome';
   }
@@ -539,6 +549,22 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String contaCriadaTexto(String nome) {
     return 'Share this temporary password with $nome — there\'s no automatic email yet.';
+  }
+
+  @override
+  String get reporPasswordTitulo => 'Reset password';
+
+  @override
+  String reporPasswordConfirmacao(String nome) {
+    return 'This sets a new temporary password for $nome and signs them out on every device. Continue?';
+  }
+
+  @override
+  String get passwordRepostaTitulo => 'Password reset';
+
+  @override
+  String passwordRepostaTexto(String nome) {
+    return 'Share this new temporary password with $nome — there\'s no automatic email yet.';
   }
 
   @override

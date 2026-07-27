@@ -146,6 +146,51 @@ class _TeamScreenState extends State<TeamScreen> {
     }
   }
 
+  Future<void> _reporPassword(TeamMember member) async {
+    final l10n = context.l10n;
+    final confirmou = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.reporPasswordTitulo),
+        content: Text(l10n.reporPasswordConfirmacao(member.nome)),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancelar)),
+          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.reporPasswordTitulo)),
+        ],
+      ),
+    );
+    if (confirmou != true || !mounted) return;
+
+    try {
+      final tempPassword = await context.read<TeamRepository>().resetPassword(member.id);
+      if (!mounted) return;
+      await showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(l10n.passwordRepostaTitulo),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.passwordRepostaTexto(member.nome)),
+              const SizedBox(height: 12),
+              SelectableText(tempPassword, style: const TextStyle(fontWeight: FontWeight.bold)),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Clipboard.setData(ClipboardData(text: tempPassword)),
+              child: Text(l10n.copiar),
+            ),
+            ElevatedButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.ok)),
+          ],
+        ),
+      );
+    } on ApiException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.localizado(context))));
+    }
+  }
+
   Future<void> _remover(TeamMember member) async {
     final l10n = context.l10n;
     final confirmou = await showDialog<bool>(
@@ -210,6 +255,9 @@ class _TeamScreenState extends State<TeamScreen> {
                           case 'toggle_ativo':
                             _alternarAtivo(membro);
                             break;
+                          case 'reset_password':
+                            _reporPassword(membro);
+                            break;
                           case 'remove':
                             _remover(membro);
                             break;
@@ -221,6 +269,10 @@ class _TeamScreenState extends State<TeamScreen> {
                           child: Text(membro.role == 'owner' ? l10n.tornarVendedor : l10n.tornarOwner),
                         ),
                         PopupMenuItem(value: 'toggle_ativo', child: Text(membro.ativo ? l10n.desativar : l10n.ativar)),
+                        // Só faz sentido para vendedores — o backend recusa para owners
+                        // de propósito (ver team.service.ts).
+                        if (membro.role == 'vendedor')
+                          PopupMenuItem(value: 'reset_password', child: Text(l10n.reporPasswordTitulo)),
                         PopupMenuItem(value: 'remove', child: Text(l10n.removerAcesso)),
                       ],
                     ),
