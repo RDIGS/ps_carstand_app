@@ -57,6 +57,33 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
     }
   }
 
+  Future<void> _eliminarVeiculo(VehicleDetail vehicle) async {
+    final l10n = context.l10n;
+    final confirmou = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.eliminarVeiculoTitulo),
+        content: Text(l10n.eliminarVeiculoTexto(vehicle.matricula)),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancelar)),
+          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.eliminarVeiculoTitulo)),
+        ],
+      ),
+    );
+    if (confirmou != true || !mounted) return;
+
+    setState(() => _busy = true);
+    try {
+      await context.read<VehiclesRepository>().remove(vehicle.id);
+      if (mounted) Navigator.of(context).pop();
+    } on ApiException catch (e) {
+      if (mounted) {
+        setState(() => _busy = false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.localizado(context))));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final role = context.watch<AuthState>().userRole;
@@ -84,7 +111,13 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                   const SizedBox(height: 16),
                   if (vehicle.importado) _ImportadoCard(vehicle: vehicle),
                   if (vehicle.importado) const SizedBox(height: 16),
-                  _ActionsCard(vehicle: vehicle, busy: _busy, onAction: _runAction, onRefresh: _refresh),
+                  _ActionsCard(
+                    vehicle: vehicle,
+                    busy: _busy,
+                    onAction: _runAction,
+                    onRefresh: _refresh,
+                    onDelete: () => _eliminarVeiculo(vehicle),
+                  ),
                   const SizedBox(height: 16),
                   if (vehicle.estado == 'disponivel' || vehicle.estado == 'reservado') ...[
                     _GerarBannerButton(vehicle: vehicle),
@@ -300,12 +333,19 @@ class _ImportadoCard extends StatelessWidget {
 }
 
 class _ActionsCard extends StatelessWidget {
-  const _ActionsCard({required this.vehicle, required this.busy, required this.onAction, required this.onRefresh});
+  const _ActionsCard({
+    required this.vehicle,
+    required this.busy,
+    required this.onAction,
+    required this.onRefresh,
+    required this.onDelete,
+  });
 
   final VehicleDetail vehicle;
   final bool busy;
   final Future<void> Function(Future<void> Function()) onAction;
   final Future<void> Function() onRefresh;
+  final VoidCallback onDelete;
 
   Future<void> _venderEAtualizar(BuildContext context) async {
     final vendido = await Navigator.of(context).push<bool>(
@@ -368,6 +408,19 @@ class _ActionsCard extends StatelessWidget {
           onPressed: busy ? null : () => _venderEAtualizar(context),
           icon: const Icon(Icons.sell),
           label: Text(l10n.vender),
+        ),
+      );
+    }
+
+    // Owner only (mesmo padrão de aprovar/rejeitar) — escondido para veículos
+    // vendidos porque o backend recusa sempre (histórico de vendas associado).
+    if (role == 'owner' && vehicle.estado != 'vendido') {
+      buttons.add(
+        OutlinedButton.icon(
+          onPressed: busy ? null : onDelete,
+          icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
+          label: Text(l10n.eliminarVeiculoTitulo, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+          style: OutlinedButton.styleFrom(side: BorderSide(color: Theme.of(context).colorScheme.error)),
         ),
       );
     }

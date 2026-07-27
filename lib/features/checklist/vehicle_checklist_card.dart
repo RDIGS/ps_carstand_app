@@ -59,6 +59,25 @@ class _ChecklistCardState extends State<ChecklistCard> {
     );
   }
 
+  Future<void> _removerItem(VehicleChecklistItem item) async {
+    final l10n = context.l10n;
+    final confirmou = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.checklistRemoverItemTitulo),
+        content: Text(l10n.checklistRemoverItemConfirmacao),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancelar)),
+          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.remover)),
+        ],
+      ),
+    );
+    if (confirmou != true || !mounted) return;
+    await _runAction(
+      () => context.read<ChecklistRepository>().removeItem(vehicleId: widget.vehicleId, itemId: item.id),
+    );
+  }
+
   Future<void> _addItem() async {
     final l10n = context.l10n;
     final controller = TextEditingController();
@@ -202,6 +221,10 @@ class _ChecklistCardState extends State<ChecklistCard> {
                         style: item.concluido
                             ? const TextStyle(decoration: TextDecoration.lineThrough, color: AppColors.grafiteVendido)
                             : null,
+                      ),
+                      secondary: IconButton(
+                        icon: const Icon(Icons.delete_outline, size: 20),
+                        onPressed: _busy ? null : () => _removerItem(item),
                       ),
                     ),
                 const SizedBox(height: 8),

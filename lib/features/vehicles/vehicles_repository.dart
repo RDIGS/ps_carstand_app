@@ -74,6 +74,12 @@ class VehiclesRepository {
     return _api.request('PATCH', '/vehicles/$vehicleId/reject', parse: (_) {});
   }
 
+  /// Owner only — elimina o veículo (ex.: adicionado por engano). O backend
+  /// recusa se já houver histórico de vendas associado.
+  Future<void> remove(String vehicleId) {
+    return _api.request('DELETE', '/vehicles/$vehicleId', parse: (_) {});
+  }
+
   Future<void> update(
     String vehicleId, {
     String? versao,

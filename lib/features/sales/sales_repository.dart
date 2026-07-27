@@ -25,6 +25,7 @@ class SalesRepository {
     required String compradorNif,
     String? compradorMorada,
     String? compradorCp,
+    String? compradorTelefone,
     String? compradorIdentificacaoTipo,
     String? compradorIdentificacaoNumero,
     required double precoFinal,
@@ -39,6 +40,7 @@ class SalesRepository {
         'compradorNif': compradorNif,
         if (compradorMorada != null) 'compradorMorada': compradorMorada,
         if (compradorCp != null) 'compradorCp': compradorCp,
+        if (compradorTelefone != null) 'compradorTelefone': compradorTelefone,
         if (compradorIdentificacaoTipo != null) 'compradorIdentificacaoTipo': compradorIdentificacaoTipo,
         if (compradorIdentificacaoNumero != null) 'compradorIdentificacaoNumero': compradorIdentificacaoNumero,
         'precoFinal': precoFinal,
@@ -46,6 +48,12 @@ class SalesRepository {
       },
       parse: (data) => SaleResult.fromJson(data as Map<String, dynamic>),
     );
+  }
+
+  /// Owner only (O9): reverte a venda, liberta o veículo e invalida os
+  /// documentos gerados no backend.
+  Future<void> revert(String saleId) {
+    return _api.request('POST', '/sales/$saleId/revert', parse: (_) {});
   }
 
   /// Transitório, nunca grava (secção 23) — só pré-preenche o formulário.

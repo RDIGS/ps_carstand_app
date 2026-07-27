@@ -30,6 +30,7 @@ class _SaleScreenState extends State<SaleScreen> {
   final _nifController = TextEditingController();
   final _moradaController = TextEditingController();
   final _cpController = TextEditingController();
+  final _telefoneController = TextEditingController();
   final _identificacaoNumeroController = TextEditingController();
   final _precoFinalController = TextEditingController();
   final _comissaoController = TextEditingController();
@@ -56,6 +57,7 @@ class _SaleScreenState extends State<SaleScreen> {
       _nifController,
       _moradaController,
       _cpController,
+      _telefoneController,
       _identificacaoNumeroController,
       _precoFinalController,
       _comissaoController,
@@ -114,6 +116,7 @@ class _SaleScreenState extends State<SaleScreen> {
             compradorNif: _nifController.text.trim(),
             compradorMorada: _moradaController.text.trim().isEmpty ? null : _moradaController.text.trim(),
             compradorCp: _cpController.text.trim().isEmpty ? null : _cpController.text.trim(),
+            compradorTelefone: _telefoneController.text.trim().isEmpty ? null : _telefoneController.text.trim(),
             compradorIdentificacaoTipo: _identificacaoTipo,
             compradorIdentificacaoNumero:
                 _identificacaoNumeroController.text.trim().isEmpty ? null : _identificacaoNumeroController.text.trim(),
@@ -219,7 +222,22 @@ class _SaleScreenState extends State<SaleScreen> {
               const SizedBox(height: 12),
               TextFormField(controller: _moradaController, decoration: InputDecoration(labelText: l10n.campoMorada)),
               const SizedBox(height: 12),
-              TextFormField(controller: _cpController, decoration: InputDecoration(labelText: l10n.campoCodigoPostal)),
+              TextFormField(
+                controller: _cpController,
+                decoration: InputDecoration(labelText: l10n.campoCodigoPostal, hintText: '0000-000'),
+                inputFormatters: [_CodigoPostalFormatter()],
+                validator: (v) {
+                  final texto = (v ?? '').trim();
+                  if (texto.isEmpty) return null;
+                  return RegExp(r'^\d{4}-\d{3}$').hasMatch(texto) ? null : l10n.validacaoCodigoPostalInvalido;
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _telefoneController,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(labelText: l10n.campoTelefone),
+              ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 initialValue: _identificacaoTipo,
@@ -265,5 +283,16 @@ class _SaleScreenState extends State<SaleScreen> {
         ),
       ),
     );
+  }
+}
+
+/// Formata código postal português enquanto se escreve: ####-###.
+class _CodigoPostalFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final todosDigitos = newValue.text.replaceAll(RegExp(r'\D'), '');
+    final digitos = todosDigitos.substring(0, todosDigitos.length.clamp(0, 7));
+    final formatado = digitos.length > 4 ? '${digitos.substring(0, 4)}-${digitos.substring(4)}' : digitos;
+    return TextEditingValue(text: formatado, selection: TextSelection.collapsed(offset: formatado.length));
   }
 }

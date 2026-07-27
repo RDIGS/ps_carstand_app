@@ -103,6 +103,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'This vehicle has already been confirmed.';
 
   @override
+  String get erroVeiculoTemHistorico =>
+      'This vehicle can\'t be deleted: it already has sales history attached.';
+
+  @override
   String get erroCamposEmFalta =>
       'You need to send both the front and back of the document.';
 
@@ -276,6 +280,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rejeitar => 'Reject';
+
+  @override
+  String get eliminarVeiculoTitulo => 'Delete vehicle';
+
+  @override
+  String eliminarVeiculoTexto(String matricula) {
+    return 'You\'re about to permanently delete vehicle $matricula. This action cannot be undone.';
+  }
 
   @override
   String get reservar => 'Reserve';
@@ -464,6 +476,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get campoCodigoPostal => 'Postal code';
 
   @override
+  String get campoTelefone => 'Phone';
+
+  @override
   String get campoDocumentoIdentificacao => 'ID document';
 
   @override
@@ -480,6 +495,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get validacaoNifInvalido => 'Invalid tax number.';
+
+  @override
+  String get validacaoCodigoPostalInvalido => 'Invalid format (e.g. 1000-100).';
 
   @override
   String get condicoesVenda => 'Sale conditions';
@@ -706,6 +724,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checklistAdicionarItem => 'Add item';
+
+  @override
+  String get checklistRemoverItemTitulo => 'Remove item';
+
+  @override
+  String get checklistRemoverItemConfirmacao =>
+      'Are you sure you want to remove this checklist item?';
 
   @override
   String get checklistNovoItemTitulo => 'New item';
@@ -950,6 +975,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get semVendasRegistadas => 'No sales registered yet.';
+
+  @override
+  String get verRegistoCompra => 'View purchase record';
+
+  @override
+  String get reverterVendaTitulo => 'Revert sale';
+
+  @override
+  String reverterVendaTexto(String nome) {
+    return 'You\'re about to revert the sale to $nome. The vehicle becomes available again and the generated documents (purchase record, identity documents) stop being accessible. This action cannot be undone.';
+  }
 
   @override
   String get statusDisponivel => 'Available';

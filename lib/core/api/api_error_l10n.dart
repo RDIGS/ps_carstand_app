@@ -49,6 +49,8 @@ extension ApiExceptionL10n on ApiException {
         return l10n.erroMembroJaExiste;
       case 'veiculo_ja_confirmado':
         return l10n.erroVeiculoJaConfirmado;
+      case 'veiculo_tem_historico':
+        return l10n.erroVeiculoTemHistorico;
       case 'campos_em_falta':
         return l10n.erroCamposEmFalta;
       case 'erro_rede':

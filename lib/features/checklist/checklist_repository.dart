@@ -59,4 +59,8 @@ class ChecklistRepository {
       parse: (_) {},
     );
   }
+
+  Future<void> removeItem({required String vehicleId, required String itemId}) {
+    return _api.request('DELETE', '/vehicles/$vehicleId/checklist/$itemId', parse: (_) {});
+  }
 }

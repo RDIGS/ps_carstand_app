@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/api/api_client.dart';
+import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
@@ -35,6 +38,35 @@ class _SalesListScreenState extends State<SalesListScreen> {
     await _future;
   }
 
+  Future<void> _abrirDocumento(String url) async {
+    final uri = Uri.tryParse(url);
+    if (uri == null) return;
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> _reverterVenda(SaleRow venda) async {
+    final l10n = context.l10n;
+    final confirmou = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.reverterVendaTitulo),
+        content: Text(l10n.reverterVendaTexto(venda.compradorNome)),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancelar)),
+          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.reverterVendaTitulo)),
+        ],
+      ),
+    );
+    if (confirmou != true || !mounted) return;
+
+    try {
+      await context.read<SalesRepository>().revert(venda.id);
+      if (mounted) setState(_load);
+    } on ApiException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.localizado(context))));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isOwner = context.watch<AuthState>().userRole == 'owner';
@@ -64,6 +96,8 @@ class _SalesListScreenState extends State<SalesListScreen> {
                 itemBuilder: (context, index) {
                   final venda = vendas[index];
                   final revertida = venda.estado == 'revertida';
+                  final podeReverter = isOwner && !revertida;
+                  final temDocumento = venda.docRegistoCompraUrl != null;
                   return Card(
                     child: ListTile(
                       leading: Icon(
@@ -72,12 +106,36 @@ class _SalesListScreenState extends State<SalesListScreen> {
                       ),
                       title: Text(venda.compradorNome),
                       subtitle: Text(venda.dataVenda.split('T').first),
-                      trailing: Text(
-                        '${venda.precoFinal.toStringAsFixed(0)} €',
-                        style: AppTypography.numero(
-                          fontSize: 16,
-                          color: revertida ? AppColors.grafiteVendido : Theme.of(context).colorScheme.onSurface,
-                        ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${venda.precoFinal.toStringAsFixed(0)} €',
+                            style: AppTypography.numero(
+                              fontSize: 16,
+                              color: revertida ? AppColors.grafiteVendido : Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                          if (temDocumento || podeReverter)
+                            PopupMenuButton<String>(
+                              onSelected: (opcao) {
+                                if (opcao == 'documento') _abrirDocumento(venda.docRegistoCompraUrl!);
+                                if (opcao == 'reverter') _reverterVenda(venda);
+                              },
+                              itemBuilder: (context) => [
+                                if (temDocumento)
+                                  PopupMenuItem(
+                                    value: 'documento',
+                                    child: Text(l10n.verRegistoCompra),
+                                  ),
+                                if (podeReverter)
+                                  PopupMenuItem(
+                                    value: 'reverter',
+                                    child: Text(l10n.reverterVendaTitulo),
+                                  ),
+                              ],
+                            ),
+                        ],
                       ),
                     ),
                   );

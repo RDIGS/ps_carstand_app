@@ -266,6 +266,12 @@ abstract class AppLocalizations {
   /// **'Este veículo já foi confirmado anteriormente.'**
   String get erroVeiculoJaConfirmado;
 
+  /// No description provided for @erroVeiculoTemHistorico.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não é possível eliminar este veículo: já tem um histórico de vendas associado.'**
+  String get erroVeiculoTemHistorico;
+
   /// No description provided for @erroCamposEmFalta.
   ///
   /// In pt, this message translates to:
@@ -596,6 +602,18 @@ abstract class AppLocalizations {
   /// **'Rejeitar'**
   String get rejeitar;
 
+  /// No description provided for @eliminarVeiculoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Eliminar veículo'**
+  String get eliminarVeiculoTitulo;
+
+  /// No description provided for @eliminarVeiculoTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vais eliminar definitivamente o veículo {matricula}. Esta ação não pode ser desfeita.'**
+  String eliminarVeiculoTexto(String matricula);
+
   /// No description provided for @reservar.
   ///
   /// In pt, this message translates to:
@@ -920,6 +938,12 @@ abstract class AppLocalizations {
   /// **'Código postal'**
   String get campoCodigoPostal;
 
+  /// No description provided for @campoTelefone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Telefone'**
+  String get campoTelefone;
+
   /// No description provided for @campoDocumentoIdentificacao.
   ///
   /// In pt, this message translates to:
@@ -955,6 +979,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'NIF inválido.'**
   String get validacaoNifInvalido;
+
+  /// No description provided for @validacaoCodigoPostalInvalido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Formato inválido (ex: 1000-100).'**
+  String get validacaoCodigoPostalInvalido;
 
   /// No description provided for @condicoesVenda.
   ///
@@ -1357,6 +1387,18 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Adicionar item'**
   String get checklistAdicionarItem;
+
+  /// No description provided for @checklistRemoverItemTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover item'**
+  String get checklistRemoverItemTitulo;
+
+  /// No description provided for @checklistRemoverItemConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tens a certeza que queres remover este item da checklist?'**
+  String get checklistRemoverItemConfirmacao;
 
   /// No description provided for @checklistNovoItemTitulo.
   ///
@@ -1819,6 +1861,24 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ainda não há vendas registadas.'**
   String get semVendasRegistadas;
+
+  /// No description provided for @verRegistoCompra.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver Registo de Compra'**
+  String get verRegistoCompra;
+
+  /// No description provided for @reverterVendaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reverter venda'**
+  String get reverterVendaTitulo;
+
+  /// No description provided for @reverterVendaTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vais reverter a venda a {nome}. O veículo volta a ficar disponível e os documentos gerados (Registo de Compra, documentos de identificação) deixam de estar acessíveis. Esta ação não pode ser desfeita.'**
+  String reverterVendaTexto(String nome);
 
   /// No description provided for @statusDisponivel.
   ///
