@@ -41,7 +41,17 @@ class ApiClient {
     // de ~15 min sem pedidos e pode demorar dezenas de segundos a "acordar"
     // no primeiro pedido — um timeout curto dava falso "Sem ligação ao
     // servidor" nesse cenário (mesmo ajuste feito em ps_carstand_admin).
-    _dio = Dio(BaseOptions(baseUrl: apiBaseUrl, connectTimeout: const Duration(seconds: 60)));
+    // receiveTimeout é a rede de segurança para o OCR (DUA/CC): o backend já
+    // tem o seu próprio timeout de 60s à chamada ao Gemini
+    // (gemini-fetch.util.ts) e devolve erro antes disso, mas sem isto aqui
+    // também, se o próprio backend ficasse preso por qualquer outro motivo a
+    // app ficava com o spinner infinito — bug real reportado em produção
+    // (2026-07-27).
+    _dio = Dio(BaseOptions(
+      baseUrl: apiBaseUrl,
+      connectTimeout: const Duration(seconds: 60),
+      receiveTimeout: const Duration(seconds: 75),
+    ));
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
