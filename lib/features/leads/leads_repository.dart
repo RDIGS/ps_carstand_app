@@ -6,12 +6,12 @@ class LeadsRepository {
 
   final ApiClient _api;
 
-  Future<List<Lead>> list({String? estado}) {
+  Future<LeadListPage> list({String? estado, int page = 1, int limit = 50}) {
     return _api.request(
       'GET',
       '/leads',
-      queryParameters: {if (estado != null) 'estado': estado},
-      parse: (data) => (data as List<dynamic>).map((e) => Lead.fromJson(e as Map<String, dynamic>)).toList(),
+      queryParameters: {if (estado != null) 'estado': estado, 'page': page, 'limit': limit},
+      parse: (data) => LeadListPage.fromJson(data as Map<String, dynamic>),
     );
   }
 

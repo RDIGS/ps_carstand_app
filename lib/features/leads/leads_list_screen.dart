@@ -28,7 +28,7 @@ class _LeadsListScreenState extends State<LeadsListScreen> {
   }
 
   void _load() {
-    _future = context.read<LeadsRepository>().list(estado: _filtroEstado);
+    _future = context.read<LeadsRepository>().list(estado: _filtroEstado).then((page) => page.data);
   }
 
   Future<void> _refresh() async {

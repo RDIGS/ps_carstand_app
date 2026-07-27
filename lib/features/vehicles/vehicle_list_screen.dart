@@ -21,22 +21,81 @@ class VehicleListScreen extends StatefulWidget {
 }
 
 class _VehicleListScreenState extends State<VehicleListScreen> {
-  late Future<VehicleListPage> _future;
+  // Antes disto a lista chamava .list() sem paginação nenhuma — qualquer
+  // stand com mais de 20 veículos (limite por omissão do repositório) nunca
+  // conseguia ver os restantes, sem sinal nenhum de que faltava algo. Scroll
+  // infinito em vez de um Future único, para carregar a página seguinte
+  // perto do fim sem o utilizador ter de fazer nada.
+  final _scrollController = ScrollController();
+  final List<Vehicle> _vehicles = [];
+  int _page = 1;
+  int _totalPages = 1;
+  bool _loading = true;
+  bool _loadingMore = false;
+  Object? _error;
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     _load();
   }
 
-  void _load() {
-    _future = context.read<VehiclesRepository>().list();
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
-  Future<void> _refresh() async {
-    setState(_load);
-    await _future;
+  void _onScroll() {
+    if (_loadingMore || _loading || _page >= _totalPages) return;
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 400) {
+      _loadMore();
+    }
   }
+
+  Future<void> _load() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    try {
+      final resultado = await context.read<VehiclesRepository>().list();
+      setState(() {
+        _vehicles
+          ..clear()
+          ..addAll(resultado.data);
+        _page = resultado.page;
+        _totalPages = resultado.totalPages;
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e;
+        _loading = false;
+      });
+    }
+  }
+
+  Future<void> _loadMore() async {
+    setState(() => _loadingMore = true);
+    try {
+      final resultado = await context.read<VehiclesRepository>().list(page: _page + 1);
+      setState(() {
+        _vehicles.addAll(resultado.data);
+        _page = resultado.page;
+        _totalPages = resultado.totalPages;
+        _loadingMore = false;
+      });
+    } catch (_) {
+      // Best-effort: continuar a fazer scroll tenta de novo naturalmente, e
+      // puxar para atualizar recomeça do zero — nunca bloqueia a lista já
+      // carregada por causa de 1 página falhada.
+      if (mounted) setState(() => _loadingMore = false);
+    }
+  }
+
+  Future<void> _refresh() => _load();
 
   Future<void> _logoutCompleto() async {
     final l10n = context.l10n;
@@ -167,18 +226,15 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: _refresh,
-        child: FutureBuilder<VehicleListPage>(
-          future: _future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+        child: Builder(
+          builder: (context) {
+            if (_loading) {
               return _LoadingSkeleton(colunas: _colunas(MediaQuery.of(context).size.width));
             }
-            if (snapshot.hasError) {
-              return _ErrorState(message: snapshot.error.toString(), onRetry: _refresh);
+            if (_error != null) {
+              return _ErrorState(message: _error.toString(), onRetry: _refresh);
             }
-
-            final vehicles = snapshot.data!.data;
-            if (vehicles.isEmpty) {
+            if (_vehicles.isEmpty) {
               return _EmptyState(onAdd: _abrirOpcoesAdicionar);
             }
 
@@ -186,23 +242,30 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
               builder: (context, constraints) {
                 final colunas = _colunas(constraints.maxWidth);
                 return GridView.builder(
+                  controller: _scrollController,
                   padding: const EdgeInsets.all(16),
-                  itemCount: vehicles.length,
+                  itemCount: _vehicles.length + (_loadingMore ? 1 : 0),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: colunas,
                     mainAxisExtent: 168,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
                   ),
-                  itemBuilder: (context, index) => VehicleCard(
-                    vehicle: vehicles[index],
-                    onTap: () async {
-                      await Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => VehicleDetailScreen(vehicleId: vehicles[index].id)),
-                      );
-                      if (context.mounted) _refresh();
-                    },
-                  ),
+                  itemBuilder: (context, index) {
+                    if (index >= _vehicles.length) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    final vehicle = _vehicles[index];
+                    return VehicleCard(
+                      vehicle: vehicle,
+                      onTap: () async {
+                        await Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => VehicleDetailScreen(vehicleId: vehicle.id)),
+                        );
+                        if (context.mounted) _refresh();
+                      },
+                    );
+                  },
                 );
               },
             );

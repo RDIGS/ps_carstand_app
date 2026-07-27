@@ -39,3 +39,19 @@ class Lead {
 
 const leadOrigens = ['telefone', 'whatsapp', 'presencial', 'standvirtual', 'olx', 'custojusto', 'outro'];
 const leadEstados = ['novo', 'contactado', 'agendado', 'convertido', 'perdido'];
+
+class LeadListPage {
+  LeadListPage({required this.data, required this.page, required this.totalPages, required this.totalItems});
+
+  factory LeadListPage.fromJson(Map<String, dynamic> json) => LeadListPage(
+        data: (json['data'] as List<dynamic>).map((e) => Lead.fromJson(e as Map<String, dynamic>)).toList(),
+        page: json['page'] as int,
+        totalPages: json['total_pages'] as int,
+        totalItems: json['total_items'] as int,
+      );
+
+  final List<Lead> data;
+  final int page;
+  final int totalPages;
+  final int totalItems;
+}

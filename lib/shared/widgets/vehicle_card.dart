@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
@@ -27,6 +28,7 @@ class VehicleCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(width: 6, color: corEstado), // faixa lateral do estado
+              _Thumbnail(url: vehicle.fotoCapa),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(14),
@@ -83,6 +85,39 @@ class VehicleCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Primeira foto da galeria do veículo (ou um placeholder neutro se ainda
+/// não houver nenhuma) — sem isto a lista inteira era só texto, o que não
+/// dá a sentir um marketplace de automóveis.
+class _Thumbnail extends StatelessWidget {
+  const _Thumbnail({required this.url});
+
+  final String? url;
+
+  @override
+  Widget build(BuildContext context) {
+    const tamanho = 84.0;
+    if (url == null) {
+      return Container(
+        width: tamanho,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        child: const Icon(Icons.directions_car_outlined, color: AppColors.grafiteVendido, size: 28),
+      );
+    }
+    return SizedBox(
+      width: tamanho,
+      child: CachedNetworkImage(
+        imageUrl: url!,
+        fit: BoxFit.cover,
+        placeholder: (context, _) => Container(color: Theme.of(context).colorScheme.surfaceContainerHighest),
+        errorWidget: (context, _, __) => Container(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          child: const Icon(Icons.directions_car_outlined, color: AppColors.grafiteVendido, size: 28),
         ),
       ),
     );

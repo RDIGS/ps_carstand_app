@@ -44,6 +44,12 @@ dependencies:
   # que já existia no protótipo HTML fornecido pelo utilizador).
   flutter_colorpicker: ^1.1.0
 
+  # Fotos de veículos/anúncios (URLs assinadas do Supabase Storage): cache em
+  # disco entre sessões + placeholder/erro tratados, em vez de Image.network
+  # simples (sem isto, cada scroll refaz o download e uma foto que falhe
+  # mostra o ícone genérico de imagem partida do Flutter).
+  cached_network_image: ^3.4.1
+
   # i18n (secção 18) — texto da interface vive em lib/l10n/*.arb, nunca no código
   flutter_localizations:
     sdk: flutter

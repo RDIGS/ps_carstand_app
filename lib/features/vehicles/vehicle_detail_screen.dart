@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -629,7 +630,14 @@ class _FonteEstimativa extends StatelessWidget {
             leading: anuncio.foto != null
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(4),
-                    child: Image.network(anuncio.foto!, width: 48, height: 36, fit: BoxFit.cover),
+                    child: CachedNetworkImage(
+                      imageUrl: anuncio.foto!,
+                      width: 48,
+                      height: 36,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, _, __) =>
+                          const Icon(Icons.directions_car, color: AppColors.grafiteVendido),
+                    ),
                   )
                 : const Icon(Icons.directions_car, color: AppColors.grafiteVendido),
             title: Text(anuncio.titulo, maxLines: 1, overflow: TextOverflow.ellipsis),

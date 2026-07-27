@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -145,7 +146,23 @@ class _VehiclePhotoGalleryCardState extends State<VehiclePhotoGalleryCard> {
                           onLongPress: () => _removerFoto(foto),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.network(foto.url, width: 96, height: 96, fit: BoxFit.cover),
+                            child: CachedNetworkImage(
+                              imageUrl: foto.url,
+                              width: 96,
+                              height: 96,
+                              fit: BoxFit.cover,
+                              placeholder: (context, _) => Container(
+                                width: 96,
+                                height: 96,
+                                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                              ),
+                              errorWidget: (context, _, __) => Container(
+                                width: 96,
+                                height: 96,
+                                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                child: const Icon(Icons.broken_image_outlined),
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -183,7 +200,13 @@ class _GaleriaEcraCompleto extends StatelessWidget {
         controller: PageController(initialPage: indiceInicial),
         itemCount: fotos.length,
         itemBuilder: (context, index) => Center(
-          child: InteractiveViewer(child: Image.network(fotos[index].url)),
+          child: InteractiveViewer(
+            child: CachedNetworkImage(
+              imageUrl: fotos[index].url,
+              placeholder: (context, _) => const CircularProgressIndicator(),
+              errorWidget: (context, _, __) => const Icon(Icons.broken_image_outlined, color: Colors.white, size: 48),
+            ),
+          ),
         ),
       ),
     );
