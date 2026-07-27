@@ -33,6 +33,7 @@
   "erroMembroJaExiste": "This person is already part of the team.",
   "erroVeiculoJaConfirmado": "This vehicle has already been confirmed.",
   "erroVeiculoTemHistorico": "This vehicle can't be deleted: it already has sales history attached.",
+  "erroComissaoInvalida": "The commission can't be higher than the final price.",
   "erroCamposEmFalta": "You need to send both the front and back of the document.",
   "erroRede": "No connection to the server. Check your internet connection.",
   "erroGenerico": "An unexpected error occurred. Please try again.",

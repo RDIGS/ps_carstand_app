@@ -107,6 +107,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'This vehicle can\'t be deleted: it already has sales history attached.';
 
   @override
+  String get erroComissaoInvalida =>
+      'The commission can\'t be higher than the final price.';
+
+  @override
   String get erroCamposEmFalta =>
       'You need to send both the front and back of the document.';
 

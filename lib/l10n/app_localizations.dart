@@ -272,6 +272,12 @@ abstract class AppLocalizations {
   /// **'Não é possível eliminar este veículo: já tem um histórico de vendas associado.'**
   String get erroVeiculoTemHistorico;
 
+  /// No description provided for @erroComissaoInvalida.
+  ///
+  /// In pt, this message translates to:
+  /// **'A comissão não pode ser maior do que o preço final.'**
+  String get erroComissaoInvalida;
+
   /// No description provided for @erroCamposEmFalta.
   ///
   /// In pt, this message translates to:

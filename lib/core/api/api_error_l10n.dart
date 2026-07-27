@@ -51,6 +51,8 @@ extension ApiExceptionL10n on ApiException {
         return l10n.erroVeiculoJaConfirmado;
       case 'veiculo_tem_historico':
         return l10n.erroVeiculoTemHistorico;
+      case 'comissao_invalida':
+        return l10n.erroComissaoInvalida;
       case 'campos_em_falta':
         return l10n.erroCamposEmFalta;
       case 'erro_rede':

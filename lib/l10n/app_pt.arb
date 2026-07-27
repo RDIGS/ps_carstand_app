@@ -34,6 +34,7 @@
   "erroMembroJaExiste": "Esta pessoa já faz parte da equipa.",
   "erroVeiculoJaConfirmado": "Este veículo já foi confirmado anteriormente.",
   "erroVeiculoTemHistorico": "Não é possível eliminar este veículo: já tem um histórico de vendas associado.",
+  "erroComissaoInvalida": "A comissão não pode ser maior do que o preço final.",
   "erroCamposEmFalta": "É necessário enviar a frente e o verso do documento.",
   "erroRede": "Sem ligação ao servidor. Verifica a tua ligação à internet.",
   "erroGenerico": "Ocorreu um erro inesperado. Tenta novamente.",

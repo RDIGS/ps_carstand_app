@@ -107,6 +107,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não é possível eliminar este veículo: já tem um histórico de vendas associado.';
 
   @override
+  String get erroComissaoInvalida =>
+      'A comissão não pode ser maior do que o preço final.';
+
+  @override
   String get erroCamposEmFalta =>
       'É necessário enviar a frente e o verso do documento.';
 
