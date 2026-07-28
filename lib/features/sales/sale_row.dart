@@ -12,6 +12,7 @@ class SaleRow {
     required this.estado,
     this.comissaoVendedor,
     this.docRegistoCompraUrl,
+    this.docDuaFinalUrl,
   });
 
   factory SaleRow.fromJson(Map<String, dynamic> json) => SaleRow(
@@ -23,6 +24,7 @@ class SaleRow {
         dataVenda: json['data_venda'] as String,
         estado: json['estado'] as String,
         docRegistoCompraUrl: json['doc_registo_compra_url'] as String?,
+        docDuaFinalUrl: json['doc_dua_final_url'] as String?,
       );
 
   final String id;
@@ -33,4 +35,5 @@ class SaleRow {
   final String dataVenda;
   final String estado;
   final String? docRegistoCompraUrl;
+  final String? docDuaFinalUrl;
 }

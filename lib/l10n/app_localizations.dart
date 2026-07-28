@@ -1136,6 +1136,48 @@ abstract class AppLocalizations {
   /// **'Copiar link'**
   String get copiarLink;
 
+  /// No description provided for @duaFinalLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'DUA_Final (Modelo 1 RA, IRN):'**
+  String get duaFinalLabel;
+
+  /// No description provided for @duaFinalCopiarLink.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copiar link do DUA_Final'**
+  String get duaFinalCopiarLink;
+
+  /// No description provided for @duaFinalVendedorLegalTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vendedor legal (para o DUA_Final)'**
+  String get duaFinalVendedorLegalTitulo;
+
+  /// No description provided for @duaFinalVendedorLegalTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem aparece como vendedor no requerimento de registo automóvel oficial (Modelo 1 RA do IRN) — nem sempre é o stand.'**
+  String get duaFinalVendedorLegalTexto;
+
+  /// No description provided for @duaFinalVendedorEStand.
+  ///
+  /// In pt, this message translates to:
+  /// **'É o stand'**
+  String get duaFinalVendedorEStand;
+
+  /// No description provided for @duaFinalVendedorOutro.
+  ///
+  /// In pt, this message translates to:
+  /// **'É outra pessoa/entidade'**
+  String get duaFinalVendedorOutro;
+
+  /// No description provided for @verDuaFinal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver DUA_Final'**
+  String get verDuaFinal;
+
   /// No description provided for @concluir.
   ///
   /// In pt, this message translates to:

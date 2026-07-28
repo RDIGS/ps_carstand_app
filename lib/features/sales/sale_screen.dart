@@ -34,7 +34,14 @@ class _SaleScreenState extends State<SaleScreen> {
   final _identificacaoNumeroController = TextEditingController();
   final _precoFinalController = TextEditingController();
   final _comissaoController = TextEditingController();
+  final _transmitenteNomeController = TextEditingController();
+  final _transmitenteNifController = TextEditingController();
+  final _transmitenteMoradaController = TextEditingController();
+  final _transmitenteCpController = TextEditingController();
+  final _transmitenteIdentificacaoNumeroController = TextEditingController();
   String _identificacaoTipo = 'cc';
+  String _transmitenteIdentificacaoTipo = 'cc';
+  bool _transmitenteEStand = true;
   bool _submitting = false;
   // Só não-null se o utilizador confirmou no ecrã de captura que as fotos já
   // estavam cortadas/prontas (secção 23) — anexadas só depois de a venda ser
@@ -61,6 +68,11 @@ class _SaleScreenState extends State<SaleScreen> {
       _identificacaoNumeroController,
       _precoFinalController,
       _comissaoController,
+      _transmitenteNomeController,
+      _transmitenteNifController,
+      _transmitenteMoradaController,
+      _transmitenteCpController,
+      _transmitenteIdentificacaoNumeroController,
     ]) {
       c.dispose();
     }
@@ -122,6 +134,20 @@ class _SaleScreenState extends State<SaleScreen> {
                 _identificacaoNumeroController.text.trim().isEmpty ? null : _identificacaoNumeroController.text.trim(),
             precoFinal: double.parse(_precoFinalController.text.replaceAll(',', '.')),
             comissaoVendedor: double.tryParse(_comissaoController.text.replaceAll(',', '.')),
+            transmitenteEStand: _transmitenteEStand,
+            transmitenteNome: _transmitenteEStand ? null : _transmitenteNomeController.text.trim(),
+            transmitenteNif: _transmitenteEStand ? null : _transmitenteNifController.text.trim(),
+            transmitenteMorada: _transmitenteEStand || _transmitenteMoradaController.text.trim().isEmpty
+                ? null
+                : _transmitenteMoradaController.text.trim(),
+            transmitenteCp: _transmitenteEStand || _transmitenteCpController.text.trim().isEmpty
+                ? null
+                : _transmitenteCpController.text.trim(),
+            transmitenteIdentificacaoTipo: _transmitenteEStand ? null : _transmitenteIdentificacaoTipo,
+            transmitenteIdentificacaoNumero:
+                _transmitenteEStand || _transmitenteIdentificacaoNumeroController.text.trim().isEmpty
+                    ? null
+                    : _transmitenteIdentificacaoNumeroController.text.trim(),
           );
 
       if (!mounted) return;
@@ -158,6 +184,11 @@ class _SaleScreenState extends State<SaleScreen> {
                 Text(l10n.registoCompraLabel),
                 SelectableText(resultado.docRegistoCompraUrl!, style: const TextStyle(color: AppColors.azulMatricula)),
               ],
+              if (resultado.docDuaFinalUrl != null) ...[
+                const SizedBox(height: 12),
+                Text(l10n.duaFinalLabel),
+                SelectableText(resultado.docDuaFinalUrl!, style: const TextStyle(color: AppColors.azulMatricula)),
+              ],
             ],
           ),
           actions: [
@@ -165,6 +196,11 @@ class _SaleScreenState extends State<SaleScreen> {
               TextButton(
                 onPressed: () => Clipboard.setData(ClipboardData(text: resultado.docRegistoCompraUrl!)),
                 child: Text(l10n.copiarLink),
+              ),
+            if (resultado.docDuaFinalUrl != null)
+              TextButton(
+                onPressed: () => Clipboard.setData(ClipboardData(text: resultado.docDuaFinalUrl!)),
+                child: Text(l10n.duaFinalCopiarLink),
               ),
             ElevatedButton(
               onPressed: () {
@@ -255,6 +291,63 @@ class _SaleScreenState extends State<SaleScreen> {
                 controller: _identificacaoNumeroController,
                 decoration: InputDecoration(labelText: l10n.campoNumeroDocumento),
               ),
+              const SizedBox(height: 24),
+              Text(l10n.duaFinalVendedorLegalTitulo, style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: 4),
+              Text(l10n.duaFinalVendedorLegalTexto, style: Theme.of(context).textTheme.bodySmall),
+              const SizedBox(height: 8),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                value: _transmitenteEStand,
+                title: Text(_transmitenteEStand ? l10n.duaFinalVendedorEStand : l10n.duaFinalVendedorOutro),
+                onChanged: (v) => setState(() => _transmitenteEStand = v),
+              ),
+              if (!_transmitenteEStand) ...[
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _transmitenteNomeController,
+                  decoration: InputDecoration(labelText: l10n.campoNome),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _transmitenteNifController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(labelText: l10n.campoNif),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _transmitenteMoradaController,
+                  decoration: InputDecoration(labelText: l10n.campoMorada),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _transmitenteCpController,
+                  decoration: InputDecoration(labelText: l10n.campoCodigoPostal, hintText: '0000-000'),
+                  inputFormatters: [_CodigoPostalFormatter()],
+                  validator: (v) {
+                    final texto = (v ?? '').trim();
+                    if (texto.isEmpty) return null;
+                    return RegExp(r'^\d{4}-\d{3}$').hasMatch(texto) ? null : l10n.validacaoCodigoPostalInvalido;
+                  },
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  initialValue: _transmitenteIdentificacaoTipo,
+                  decoration: InputDecoration(labelText: l10n.campoDocumentoIdentificacao),
+                  items: [
+                    DropdownMenuItem(value: 'cc', child: Text(l10n.documentoCC)),
+                    DropdownMenuItem(value: 'bi', child: Text(l10n.documentoBI)),
+                    DropdownMenuItem(value: 'titulo_residencia', child: Text(l10n.documentoTituloResidencia)),
+                    DropdownMenuItem(value: 'outro', child: Text(l10n.documentoOutro)),
+                  ],
+                  onChanged: (v) => setState(() => _transmitenteIdentificacaoTipo = v ?? 'cc'),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _transmitenteIdentificacaoNumeroController,
+                  decoration: InputDecoration(labelText: l10n.campoNumeroDocumento),
+                ),
+              ],
               const SizedBox(height: 24),
               Text(l10n.condicoesVenda, style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 12),

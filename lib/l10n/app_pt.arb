@@ -210,6 +210,13 @@
   "vendaRegistadaTexto": "Veículo marcado como vendido.",
   "registoCompraLabel": "Registo de Compra:",
   "copiarLink": "Copiar link",
+  "duaFinalLabel": "DUA_Final (Modelo 1 RA, IRN):",
+  "duaFinalCopiarLink": "Copiar link do DUA_Final",
+  "duaFinalVendedorLegalTitulo": "Vendedor legal (para o DUA_Final)",
+  "duaFinalVendedorLegalTexto": "Quem aparece como vendedor no requerimento de registo automóvel oficial (Modelo 1 RA do IRN) — nem sempre é o stand.",
+  "duaFinalVendedorEStand": "É o stand",
+  "duaFinalVendedorOutro": "É outra pessoa/entidade",
+  "verDuaFinal": "Ver DUA_Final",
   "concluir": "Concluir",
 
   "equipaTitulo": "Equipa",

@@ -98,6 +98,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                   final revertida = venda.estado == 'revertida';
                   final podeReverter = isOwner && !revertida;
                   final temDocumento = venda.docRegistoCompraUrl != null;
+                  final temDuaFinal = venda.docDuaFinalUrl != null;
                   return Card(
                     child: ListTile(
                       leading: Icon(
@@ -116,10 +117,11 @@ class _SalesListScreenState extends State<SalesListScreen> {
                               color: revertida ? AppColors.grafiteVendido : Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
-                          if (temDocumento || podeReverter)
+                          if (temDocumento || temDuaFinal || podeReverter)
                             PopupMenuButton<String>(
                               onSelected: (opcao) {
                                 if (opcao == 'documento') _abrirDocumento(venda.docRegistoCompraUrl!);
+                                if (opcao == 'dua_final') _abrirDocumento(venda.docDuaFinalUrl!);
                                 if (opcao == 'reverter') _reverterVenda(venda);
                               },
                               itemBuilder: (context) => [
@@ -127,6 +129,11 @@ class _SalesListScreenState extends State<SalesListScreen> {
                                   PopupMenuItem(
                                     value: 'documento',
                                     child: Text(l10n.verRegistoCompra),
+                                  ),
+                                if (temDuaFinal)
+                                  PopupMenuItem(
+                                    value: 'dua_final',
+                                    child: Text(l10n.verDuaFinal),
                                   ),
                                 if (podeReverter)
                                   PopupMenuItem(

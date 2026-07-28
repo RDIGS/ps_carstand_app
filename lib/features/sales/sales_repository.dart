@@ -30,6 +30,14 @@ class SalesRepository {
     String? compradorIdentificacaoNumero,
     required double precoFinal,
     double? comissaoVendedor,
+    // Q4 do DUA_Final (vendedor legal) — por omissão é o stand.
+    required bool transmitenteEStand,
+    String? transmitenteNome,
+    String? transmitenteNif,
+    String? transmitenteMorada,
+    String? transmitenteCp,
+    String? transmitenteIdentificacaoTipo,
+    String? transmitenteIdentificacaoNumero,
   }) {
     return _api.request(
       'POST',
@@ -45,6 +53,15 @@ class SalesRepository {
         if (compradorIdentificacaoNumero != null) 'compradorIdentificacaoNumero': compradorIdentificacaoNumero,
         'precoFinal': precoFinal,
         if (comissaoVendedor != null) 'comissaoVendedor': comissaoVendedor,
+        'transmitenteEStand': transmitenteEStand,
+        if (!transmitenteEStand) ...{
+          if (transmitenteNome != null) 'transmitenteNome': transmitenteNome,
+          if (transmitenteNif != null) 'transmitenteNif': transmitenteNif,
+          if (transmitenteMorada != null) 'transmitenteMorada': transmitenteMorada,
+          if (transmitenteCp != null) 'transmitenteCp': transmitenteCp,
+          if (transmitenteIdentificacaoTipo != null) 'transmitenteIdentificacaoTipo': transmitenteIdentificacaoTipo,
+          if (transmitenteIdentificacaoNumero != null) 'transmitenteIdentificacaoNumero': transmitenteIdentificacaoNumero,
+        },
       },
       parse: (data) => SaleResult.fromJson(data as Map<String, dynamic>),
     );

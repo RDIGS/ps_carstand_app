@@ -582,6 +582,28 @@ class AppLocalizationsPt extends AppLocalizations {
   String get copiarLink => 'Copiar link';
 
   @override
+  String get duaFinalLabel => 'DUA_Final (Modelo 1 RA, IRN):';
+
+  @override
+  String get duaFinalCopiarLink => 'Copiar link do DUA_Final';
+
+  @override
+  String get duaFinalVendedorLegalTitulo => 'Vendedor legal (para o DUA_Final)';
+
+  @override
+  String get duaFinalVendedorLegalTexto =>
+      'Quem aparece como vendedor no requerimento de registo automóvel oficial (Modelo 1 RA do IRN) — nem sempre é o stand.';
+
+  @override
+  String get duaFinalVendedorEStand => 'É o stand';
+
+  @override
+  String get duaFinalVendedorOutro => 'É outra pessoa/entidade';
+
+  @override
+  String get verDuaFinal => 'Ver DUA_Final';
+
+  @override
   String get concluir => 'Concluir';
 
   @override

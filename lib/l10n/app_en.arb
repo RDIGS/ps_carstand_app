@@ -186,6 +186,13 @@
   "vendaRegistadaTexto": "Vehicle marked as sold.",
   "registoCompraLabel": "Purchase record:",
   "copiarLink": "Copy link",
+  "duaFinalLabel": "DUA_Final (Modelo 1 RA, IRN):",
+  "duaFinalCopiarLink": "Copy DUA_Final link",
+  "duaFinalVendedorLegalTitulo": "Legal seller (for the DUA_Final)",
+  "duaFinalVendedorLegalTexto": "Who appears as the seller on the official vehicle registration request (Modelo 1 RA, IRN) — not always the stand.",
+  "duaFinalVendedorEStand": "It's the stand",
+  "duaFinalVendedorOutro": "It's someone else",
+  "verDuaFinal": "View DUA_Final",
   "concluir": "Done",
 
   "equipaTitulo": "Team",
