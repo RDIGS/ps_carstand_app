@@ -109,6 +109,17 @@ class AuthRepository {
     return _api.request('POST', '/auth/logout', data: {'refreshToken': refreshToken}, parse: (_) {});
   }
 
+  /// Código gerado pelo super-admin (secção 29) — resolve "Esqueceste-te da
+  /// password?" para um owner sem ninguém acima dele dentro da app.
+  Future<void> resetPasswordWithCode({required String email, required String code, required String novaPassword}) {
+    return _api.request(
+      'POST',
+      '/auth/reset-password-with-code',
+      data: {'email': email, 'code': code, 'novaPassword': novaPassword},
+      parse: (_) {},
+    );
+  }
+
   Future<void> updateIdioma(String idioma) {
     return _api.request('PATCH', '/auth/idioma', data: {'idioma': idioma}, parse: (_) {});
   }

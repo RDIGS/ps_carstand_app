@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../core/api/api_client.dart';
 import '../../core/api/api_error_l10n.dart';
@@ -8,6 +9,8 @@ import '../../core/utils/matricula_validator.dart';
 import '../../shared/widgets/max_width_body.dart';
 import 'create_vehicle_data.dart';
 import 'vehicles_repository.dart';
+
+final _dataFormat = DateFormat('dd/MM/yyyy');
 
 /// Formulário único para adicionar veículo — serve os dois caminhos da
 /// secção 5: "Opção A — Manual" (sem `initial`/`confirmId`) e "Opção B — via
@@ -52,6 +55,9 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
   late final TextEditingController _cilindrada;
   late final TextEditingController _potenciaKw;
   late final TextEditingController _chassis;
+  late final TextEditingController _numLugares;
+  DateTime? _dataPrimeiraMatricula;
+  late bool _importado;
 
   bool _submitting = false;
 
@@ -74,6 +80,9 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
     _cilindrada = TextEditingController(text: i?.cilindrada?.toString() ?? '');
     _potenciaKw = TextEditingController(text: i?.potenciaKw?.toString() ?? '');
     _chassis = TextEditingController(text: i?.chassis ?? '');
+    _numLugares = TextEditingController(text: i?.numLugares?.toString() ?? '');
+    _dataPrimeiraMatricula = i?.dataPrimeiraMatricula != null ? DateTime.tryParse(i!.dataPrimeiraMatricula!) : null;
+    _importado = i?.importado ?? false;
   }
 
   @override
@@ -92,6 +101,7 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
       _cilindrada,
       _potenciaKw,
       _chassis,
+      _numLugares,
     ]) {
       c.dispose();
     }
@@ -118,11 +128,11 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
       cilindrada: int.tryParse(_cilindrada.text.trim()),
       potenciaKw: int.tryParse(_potenciaKw.text.trim()),
       chassis: _chassis.text.trim().isEmpty ? null : _chassis.text.trim(),
-      dataPrimeiraMatricula: i?.dataPrimeiraMatricula,
+      dataPrimeiraMatricula: _dataPrimeiraMatricula?.toIso8601String().split('T').first,
       pesoTara: i?.pesoTara,
       pesoBruto: i?.pesoBruto,
-      numLugares: i?.numLugares,
-      importado: i?.importado ?? false,
+      numLugares: int.tryParse(_numLugares.text.trim()),
+      importado: _importado,
       matriculaAnterior: i?.matriculaAnterior,
       paisOrigemAnterior: i?.paisOrigemAnterior,
       dataPrimeiraMatriculaOriginal: i?.dataPrimeiraMatriculaOriginal,
@@ -212,6 +222,31 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                 decoration: InputDecoration(labelText: l10n.campoQuilometros),
                 validator: (v) => int.tryParse(v?.trim() ?? '') == null ? l10n.validacaoNumeroInvalido : null,
               ),
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
+                onPressed: () async {
+                  final escolhida = await showDatePicker(
+                    context: context,
+                    initialDate: _dataPrimeiraMatricula ?? DateTime.now(),
+                    firstDate: DateTime(1980),
+                    lastDate: DateTime.now(),
+                  );
+                  if (escolhida != null) setState(() => _dataPrimeiraMatricula = escolhida);
+                },
+                icon: const Icon(Icons.calendar_today, size: 18),
+                label: Text(
+                  _dataPrimeiraMatricula != null
+                      ? '${l10n.campoPrimeiraMatricula}: ${_dataFormat.format(_dataPrimeiraMatricula!)}'
+                      : l10n.campoPrimeiraMatricula,
+                ),
+              ),
+              const SizedBox(height: 12),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                value: _importado,
+                onChanged: (v) => setState(() => _importado = v),
+                title: Text(l10n.campoImportado),
+              ),
               const SizedBox(height: 24),
               _SectionTitle(l10n.seccaoEspecificacoes),
               TextFormField(controller: _categoria, decoration: InputDecoration(labelText: l10n.campoCategoria)),
@@ -233,6 +268,12 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
               TextFormField(controller: _cor, decoration: InputDecoration(labelText: l10n.campoCor)),
               const SizedBox(height: 12),
               TextFormField(controller: _chassis, decoration: InputDecoration(labelText: l10n.campoChassis)),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _numLugares,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: l10n.campoNumLugares),
+              ),
               const SizedBox(height: 24),
               _SectionTitle(l10n.seccaoPrecos),
               TextFormField(

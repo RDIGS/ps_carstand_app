@@ -161,8 +161,56 @@ abstract class AppLocalizations {
   /// No description provided for @esqueceuPasswordTexto.
   ///
   /// In pt, this message translates to:
-  /// **'Se és vendedor, pede ao responsável do teu stand para te repor a password em Equipa. Se és owner, contacta o suporte PS CarStand: +351 911 038 529.'**
+  /// **'Se és vendedor, pede ao responsável do teu stand para te repor a password em Equipa. Se és owner, contacta o suporte PS CarStand (+351 911 038 529) para receberes um código de reposição.'**
   String get esqueceuPasswordTexto;
+
+  /// No description provided for @esqueceuPasswordJaTenhoCodigo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já tenho um código'**
+  String get esqueceuPasswordJaTenhoCodigo;
+
+  /// No description provided for @resetPasswordTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Repor password'**
+  String get resetPasswordTitulo;
+
+  /// No description provided for @resetPasswordTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Introduz o código de reposição que recebeste do suporte PS CarStand, junto com a tua password nova. O código só é válido durante 1 hora e só pode ser usado uma vez.'**
+  String get resetPasswordTexto;
+
+  /// No description provided for @campoCodigoReset.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código de reposição'**
+  String get campoCodigoReset;
+
+  /// No description provided for @campoNovaPassword.
+  ///
+  /// In pt, this message translates to:
+  /// **'Password nova'**
+  String get campoNovaPassword;
+
+  /// No description provided for @validacaoPasswordCurta.
+  ///
+  /// In pt, this message translates to:
+  /// **'A password tem de ter pelo menos 8 caracteres.'**
+  String get validacaoPasswordCurta;
+
+  /// No description provided for @resetPasswordSucessoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Password reposta'**
+  String get resetPasswordSucessoTitulo;
+
+  /// No description provided for @resetPasswordSucessoTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'A tua password foi alterada com sucesso. Usa-a para entrar.'**
+  String get resetPasswordSucessoTexto;
 
   /// No description provided for @appBarStandNome.
   ///
@@ -854,6 +902,24 @@ abstract class AppLocalizations {
   /// **'Preço de venda recomendado (€)'**
   String get campoPrecoVendaRecomendado;
 
+  /// No description provided for @campoPrimeiraMatricula.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data de primeira matrícula'**
+  String get campoPrimeiraMatricula;
+
+  /// No description provided for @campoNumLugares.
+  ///
+  /// In pt, this message translates to:
+  /// **'Número de lugares'**
+  String get campoNumLugares;
+
+  /// No description provided for @campoImportado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Veículo importado'**
+  String get campoImportado;
+
   /// No description provided for @validacaoMatriculaInvalida.
   ///
   /// In pt, this message translates to:
@@ -877,6 +943,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Confirmar e guardar'**
   String get confirmarEGuardar;
+
+  /// No description provided for @editarVeiculoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar veículo'**
+  String get editarVeiculoTitulo;
 
   /// No description provided for @duaCaptureTitulo.
   ///

@@ -12,7 +12,15 @@
   "loginErroGenerico": "Invalid email or password.",
   "loginEsqueceuPassword": "Forgot your password?",
   "esqueceuPasswordTitulo": "Forgot your password?",
-  "esqueceuPasswordTexto": "If you're a salesperson, ask your stand's owner to reset your password in Team. If you're the owner, contact PS CarStand support: +351 911 038 529.",
+  "esqueceuPasswordTexto": "If you're a salesperson, ask your stand's owner to reset your password in Team. If you're the owner, contact PS CarStand support (+351 911 038 529) to get a reset code.",
+  "esqueceuPasswordJaTenhoCodigo": "I already have a code",
+  "resetPasswordTitulo": "Reset password",
+  "resetPasswordTexto": "Enter the reset code you received from PS CarStand support, along with your new password. The code is valid for 1 hour and can only be used once.",
+  "campoCodigoReset": "Reset code",
+  "campoNovaPassword": "New password",
+  "validacaoPasswordCurta": "Password must be at least 8 characters.",
+  "resetPasswordSucessoTitulo": "Password reset",
+  "resetPasswordSucessoTexto": "Your password has been changed successfully. Use it to sign in.",
 
   "appBarStandNome": "PS CarStand · {standNome}",
 
@@ -141,6 +149,10 @@
   "validacaoCampoObrigatorio": "Required field",
   "validacaoNumeroInvalido": "Enter a valid number",
   "confirmarEGuardar": "Confirm and save",
+  "campoPrimeiraMatricula": "First registration date",
+  "campoNumLugares": "Number of seats",
+  "campoImportado": "Imported vehicle",
+  "editarVeiculoTitulo": "Edit vehicle",
 
   "duaCaptureTitulo": "Add from registration document",
   "duaCaptureInstrucoes": "Take a photo of the front and back of the registration document.",

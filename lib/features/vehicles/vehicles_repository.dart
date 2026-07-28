@@ -89,6 +89,9 @@ class VehiclesRepository {
     int? kms,
     double? precoCompra,
     double? precoVendaRecomendado,
+    String? dataPrimeiraMatricula,
+    int? numLugares,
+    bool? importado,
   }) {
     return _api.request(
       'PATCH',
@@ -99,6 +102,9 @@ class VehiclesRepository {
         if (kms != null) 'kms': kms,
         if (precoCompra != null) 'precoCompra': precoCompra,
         if (precoVendaRecomendado != null) 'precoVendaRecomendado': precoVendaRecomendado,
+        if (dataPrimeiraMatricula != null) 'dataPrimeiraMatricula': dataPrimeiraMatricula,
+        if (numLugares != null) 'numLugares': numLugares,
+        if (importado != null) 'importado': importado,
       },
       parse: (_) {},
     );

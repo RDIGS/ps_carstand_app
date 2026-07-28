@@ -13,6 +13,7 @@ import '../auth/auth_state.dart';
 import '../banner/banner_template_picker_screen.dart';
 import '../checklist/vehicle_checklist_card.dart';
 import '../sales/sale_screen.dart';
+import 'edit_vehicle_screen.dart';
 import 'market_estimate.dart';
 import 'vehicle_detail.dart';
 import 'vehicle_expenses_card.dart';
@@ -90,7 +91,28 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
   Widget build(BuildContext context) {
     final role = context.watch<AuthState>().userRole;
     return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.fichaVeiculoTitulo)),
+      appBar: AppBar(
+        title: Text(context.l10n.fichaVeiculoTitulo),
+        actions: [
+          FutureBuilder<VehicleDetail>(
+            future: _future,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return const SizedBox.shrink();
+              final vehicle = snapshot.data!;
+              return IconButton(
+                tooltip: context.l10n.editar,
+                icon: const Icon(Icons.edit_outlined),
+                onPressed: () async {
+                  final editado = await Navigator.of(context).push<bool>(
+                    MaterialPageRoute(builder: (_) => EditVehicleScreen(vehicle: vehicle)),
+                  );
+                  if (editado == true) await _refresh();
+                },
+              );
+            },
+          ),
+        ],
+      ),
       body: MaxWidthBody(
         child: FutureBuilder<VehicleDetail>(
           future: _future,

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import 'auth_state.dart';
+import 'reset_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,8 +31,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   // Sem envio de email (secção 3.2): vendedor pede ao owner para lhe repor a
-  // password em Equipa (team_screen.dart); owner (não tem ninguém acima dele
-  // dentro da app) só tem o contacto de suporte por agora.
+  // password em Equipa (team_screen.dart). Owner não tem ninguém acima dele
+  // dentro da app — contacta o suporte, que gera um código curto no painel
+  // de super-admin (secção 29) para usar no ecrã de reposição.
   Future<void> _mostrarEsqueceuPassword(BuildContext context) async {
     final l10n = context.l10n;
     await showDialog<void>(
@@ -39,7 +41,16 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (context) => AlertDialog(
         title: Text(l10n.esqueceuPasswordTitulo),
         content: Text(l10n.esqueceuPasswordTexto),
-        actions: [ElevatedButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.ok))],
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ResetPasswordScreen()));
+            },
+            child: Text(l10n.esqueceuPasswordJaTenhoCodigo),
+          ),
+          ElevatedButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.ok)),
+        ],
       ),
     );
   }

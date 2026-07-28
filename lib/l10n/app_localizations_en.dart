@@ -41,7 +41,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get esqueceuPasswordTexto =>
-      'If you\'re a salesperson, ask your stand\'s owner to reset your password in Team. If you\'re the owner, contact PS CarStand support: +351 911 038 529.';
+      'If you\'re a salesperson, ask your stand\'s owner to reset your password in Team. If you\'re the owner, contact PS CarStand support (+351 911 038 529) to get a reset code.';
+
+  @override
+  String get esqueceuPasswordJaTenhoCodigo => 'I already have a code';
+
+  @override
+  String get resetPasswordTitulo => 'Reset password';
+
+  @override
+  String get resetPasswordTexto =>
+      'Enter the reset code you received from PS CarStand support, along with your new password. The code is valid for 1 hour and can only be used once.';
+
+  @override
+  String get campoCodigoReset => 'Reset code';
+
+  @override
+  String get campoNovaPassword => 'New password';
+
+  @override
+  String get validacaoPasswordCurta =>
+      'Password must be at least 8 characters.';
+
+  @override
+  String get resetPasswordSucessoTitulo => 'Password reset';
+
+  @override
+  String get resetPasswordSucessoTexto =>
+      'Your password has been changed successfully. Use it to sign in.';
 
   @override
   String appBarStandNome(String standNome) {
@@ -432,6 +459,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get campoPrecoVendaRecomendado => 'Recommended sale price (€)';
 
   @override
+  String get campoPrimeiraMatricula => 'First registration date';
+
+  @override
+  String get campoNumLugares => 'Number of seats';
+
+  @override
+  String get campoImportado => 'Imported vehicle';
+
+  @override
   String get validacaoMatriculaInvalida => 'Invalid plate format.';
 
   @override
@@ -442,6 +478,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmarEGuardar => 'Confirm and save';
+
+  @override
+  String get editarVeiculoTitulo => 'Edit vehicle';
 
   @override
   String get duaCaptureTitulo => 'Add from registration document';

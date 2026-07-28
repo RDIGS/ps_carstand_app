@@ -41,7 +41,34 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get esqueceuPasswordTexto =>
-      'Se és vendedor, pede ao responsável do teu stand para te repor a password em Equipa. Se és owner, contacta o suporte PS CarStand: +351 911 038 529.';
+      'Se és vendedor, pede ao responsável do teu stand para te repor a password em Equipa. Se és owner, contacta o suporte PS CarStand (+351 911 038 529) para receberes um código de reposição.';
+
+  @override
+  String get esqueceuPasswordJaTenhoCodigo => 'Já tenho um código';
+
+  @override
+  String get resetPasswordTitulo => 'Repor password';
+
+  @override
+  String get resetPasswordTexto =>
+      'Introduz o código de reposição que recebeste do suporte PS CarStand, junto com a tua password nova. O código só é válido durante 1 hora e só pode ser usado uma vez.';
+
+  @override
+  String get campoCodigoReset => 'Código de reposição';
+
+  @override
+  String get campoNovaPassword => 'Password nova';
+
+  @override
+  String get validacaoPasswordCurta =>
+      'A password tem de ter pelo menos 8 caracteres.';
+
+  @override
+  String get resetPasswordSucessoTitulo => 'Password reposta';
+
+  @override
+  String get resetPasswordSucessoTexto =>
+      'A tua password foi alterada com sucesso. Usa-a para entrar.';
 
   @override
   String appBarStandNome(String standNome) {
@@ -432,6 +459,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get campoPrecoVendaRecomendado => 'Preço de venda recomendado (€)';
 
   @override
+  String get campoPrimeiraMatricula => 'Data de primeira matrícula';
+
+  @override
+  String get campoNumLugares => 'Número de lugares';
+
+  @override
+  String get campoImportado => 'Veículo importado';
+
+  @override
   String get validacaoMatriculaInvalida => 'Matrícula em formato inválido.';
 
   @override
@@ -442,6 +478,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get confirmarEGuardar => 'Confirmar e guardar';
+
+  @override
+  String get editarVeiculoTitulo => 'Editar veículo';
 
   @override
   String get duaCaptureTitulo => 'Adicionar por DUA';
