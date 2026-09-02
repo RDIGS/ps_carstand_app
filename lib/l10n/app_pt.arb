@@ -184,6 +184,8 @@
   "campoMorada": "Morada",
   "campoCodigoPostal": "Código postal",
   "campoTelefone": "Telefone",
+  "campoLocalidade": "Localidade",
+  "campoEmail": "Email",
   "campoDocumentoIdentificacao": "Documento de identificação",
   "documentoCC": "Cartão de Cidadão",
   "documentoBI": "Bilhete de Identidade",

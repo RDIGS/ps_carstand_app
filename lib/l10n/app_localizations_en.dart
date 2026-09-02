@@ -522,6 +522,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get campoTelefone => 'Phone';
 
   @override
+  String get campoLocalidade => 'Town/city';
+
+  @override
+  String get campoEmail => 'Email';
+
+  @override
   String get campoDocumentoIdentificacao => 'ID document';
 
   @override

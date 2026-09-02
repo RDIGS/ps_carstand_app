@@ -167,6 +167,8 @@
   "campoMorada": "Address",
   "campoCodigoPostal": "Postal code",
   "campoTelefone": "Phone",
+  "campoLocalidade": "Town/city",
+  "campoEmail": "Email",
   "campoDocumentoIdentificacao": "ID document",
   "documentoCC": "Citizen Card",
   "documentoBI": "ID Card",

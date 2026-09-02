@@ -31,6 +31,8 @@ class _SaleScreenState extends State<SaleScreen> {
   final _moradaController = TextEditingController();
   final _cpController = TextEditingController();
   final _telefoneController = TextEditingController();
+  final _localidadeController = TextEditingController();
+  final _emailController = TextEditingController();
   final _identificacaoNumeroController = TextEditingController();
   final _precoFinalController = TextEditingController();
   final _comissaoController = TextEditingController();
@@ -38,6 +40,8 @@ class _SaleScreenState extends State<SaleScreen> {
   final _transmitenteNifController = TextEditingController();
   final _transmitenteMoradaController = TextEditingController();
   final _transmitenteCpController = TextEditingController();
+  final _transmitenteLocalidadeController = TextEditingController();
+  final _transmitenteEmailController = TextEditingController();
   final _transmitenteIdentificacaoNumeroController = TextEditingController();
   String _identificacaoTipo = 'cc';
   String _transmitenteIdentificacaoTipo = 'cc';
@@ -65,6 +69,8 @@ class _SaleScreenState extends State<SaleScreen> {
       _moradaController,
       _cpController,
       _telefoneController,
+      _localidadeController,
+      _emailController,
       _identificacaoNumeroController,
       _precoFinalController,
       _comissaoController,
@@ -72,6 +78,8 @@ class _SaleScreenState extends State<SaleScreen> {
       _transmitenteNifController,
       _transmitenteMoradaController,
       _transmitenteCpController,
+      _transmitenteLocalidadeController,
+      _transmitenteEmailController,
       _transmitenteIdentificacaoNumeroController,
     ]) {
       c.dispose();
@@ -129,6 +137,8 @@ class _SaleScreenState extends State<SaleScreen> {
             compradorMorada: _moradaController.text.trim().isEmpty ? null : _moradaController.text.trim(),
             compradorCp: _cpController.text.trim().isEmpty ? null : _cpController.text.trim(),
             compradorTelefone: _telefoneController.text.trim().isEmpty ? null : _telefoneController.text.trim(),
+            compradorLocalidade: _localidadeController.text.trim().isEmpty ? null : _localidadeController.text.trim(),
+            compradorEmail: _emailController.text.trim().isEmpty ? null : _emailController.text.trim(),
             compradorIdentificacaoTipo: _identificacaoTipo,
             compradorIdentificacaoNumero:
                 _identificacaoNumeroController.text.trim().isEmpty ? null : _identificacaoNumeroController.text.trim(),
@@ -143,6 +153,12 @@ class _SaleScreenState extends State<SaleScreen> {
             transmitenteCp: _transmitenteEStand || _transmitenteCpController.text.trim().isEmpty
                 ? null
                 : _transmitenteCpController.text.trim(),
+            transmitenteLocalidade: _transmitenteEStand || _transmitenteLocalidadeController.text.trim().isEmpty
+                ? null
+                : _transmitenteLocalidadeController.text.trim(),
+            transmitenteEmail: _transmitenteEStand || _transmitenteEmailController.text.trim().isEmpty
+                ? null
+                : _transmitenteEmailController.text.trim(),
             transmitenteIdentificacaoTipo: _transmitenteEStand ? null : _transmitenteIdentificacaoTipo,
             transmitenteIdentificacaoNumero:
                 _transmitenteEStand || _transmitenteIdentificacaoNumeroController.text.trim().isEmpty
@@ -275,6 +291,14 @@ class _SaleScreenState extends State<SaleScreen> {
                 decoration: InputDecoration(labelText: l10n.campoTelefone),
               ),
               const SizedBox(height: 12),
+              TextFormField(controller: _localidadeController, decoration: InputDecoration(labelText: l10n.campoLocalidade)),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(labelText: l10n.campoEmail),
+              ),
+              const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 initialValue: _identificacaoTipo,
                 decoration: InputDecoration(labelText: l10n.campoDocumentoIdentificacao),
@@ -329,6 +353,17 @@ class _SaleScreenState extends State<SaleScreen> {
                     if (texto.isEmpty) return null;
                     return RegExp(r'^\d{4}-\d{3}$').hasMatch(texto) ? null : l10n.validacaoCodigoPostalInvalido;
                   },
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _transmitenteLocalidadeController,
+                  decoration: InputDecoration(labelText: l10n.campoLocalidade),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _transmitenteEmailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(labelText: l10n.campoEmail),
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(

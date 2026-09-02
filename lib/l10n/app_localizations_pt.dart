@@ -522,6 +522,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get campoTelefone => 'Telefone';
 
   @override
+  String get campoLocalidade => 'Localidade';
+
+  @override
+  String get campoEmail => 'Email';
+
+  @override
   String get campoDocumentoIdentificacao => 'Documento de identificação';
 
   @override

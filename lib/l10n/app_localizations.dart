@@ -1022,6 +1022,18 @@ abstract class AppLocalizations {
   /// **'Telefone'**
   String get campoTelefone;
 
+  /// No description provided for @campoLocalidade.
+  ///
+  /// In pt, this message translates to:
+  /// **'Localidade'**
+  String get campoLocalidade;
+
+  /// No description provided for @campoEmail.
+  ///
+  /// In pt, this message translates to:
+  /// **'Email'**
+  String get campoEmail;
+
   /// No description provided for @campoDocumentoIdentificacao.
   ///
   /// In pt, this message translates to:
