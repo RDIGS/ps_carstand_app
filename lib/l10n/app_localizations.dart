@@ -2354,6 +2354,36 @@ abstract class AppLocalizations {
   /// **'Ainda sem foto — carrega a foto real do veículo antes de gerar.'**
   String get bannerAvisoExemplo;
 
+  /// No description provided for @bannerGaleriaEscolherTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolher fotos'**
+  String get bannerGaleriaEscolherTitulo;
+
+  /// No description provided for @bannerGaleriaEscolherTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toca nas fotos da galeria do veículo para as escolher. A primeira da lista abaixo fica como foto principal.'**
+  String get bannerGaleriaEscolherTexto;
+
+  /// No description provided for @bannerGaleriaVazia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este veículo ainda não tem fotos na galeria — adiciona-as primeiro na ficha do veículo.'**
+  String get bannerGaleriaVazia;
+
+  /// No description provided for @bannerGaleriaSelecionadasTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fotos escolhidas (arrasta para reorganizar)'**
+  String get bannerGaleriaSelecionadasTitulo;
+
+  /// No description provided for @bannerGaleriaPrincipalEtiqueta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Principal'**
+  String get bannerGaleriaPrincipalEtiqueta;
+
   /// No description provided for @bannerContinuar.
   ///
   /// In pt, this message translates to:

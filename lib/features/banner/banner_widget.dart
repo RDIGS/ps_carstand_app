@@ -4,6 +4,7 @@ import 'banner_content.dart';
 import 'templates/banner_template.dart';
 import 'templates/template_escuro_classico.dart';
 import 'templates/template_etiqueta_preco.dart';
+import 'templates/template_galeria_fotos.dart';
 import 'templates/template_minimalista_claro.dart';
 
 /// Post 1:1 para redes sociais — despacha para o template escolhido
@@ -29,6 +30,7 @@ class BannerWidget extends StatelessWidget {
         BannerTemplateId.escuroClassico => TemplateEscuroClassico(content: content),
         BannerTemplateId.minimalistaClaro => TemplateMinimalistaClaro(content: content),
         BannerTemplateId.etiquetaPreco => TemplateEtiquetaPreco(content: content),
+        BannerTemplateId.galeriaFotos => TemplateGaleriaFotos(content: content),
       },
     );
   }

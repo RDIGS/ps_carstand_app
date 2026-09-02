@@ -1241,6 +1241,24 @@ class AppLocalizationsPt extends AppLocalizations {
       'Ainda sem foto — carrega a foto real do veículo antes de gerar.';
 
   @override
+  String get bannerGaleriaEscolherTitulo => 'Escolher fotos';
+
+  @override
+  String get bannerGaleriaEscolherTexto =>
+      'Toca nas fotos da galeria do veículo para as escolher. A primeira da lista abaixo fica como foto principal.';
+
+  @override
+  String get bannerGaleriaVazia =>
+      'Este veículo ainda não tem fotos na galeria — adiciona-as primeiro na ficha do veículo.';
+
+  @override
+  String get bannerGaleriaSelecionadasTitulo =>
+      'Fotos escolhidas (arrasta para reorganizar)';
+
+  @override
+  String get bannerGaleriaPrincipalEtiqueta => 'Principal';
+
+  @override
   String get bannerContinuar => 'Pré-visualizar';
 
   @override

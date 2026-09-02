@@ -1,7 +1,7 @@
 /// Identificador de cada template de banner disponível. Adicionar um
 /// template novo = 1 valor aqui + 1 caso no switch de `BannerWidget` +
 /// 1 entrada em `bannerTemplates` — nada mais precisa de mudar.
-enum BannerTemplateId { escuroClassico, minimalistaClaro, etiquetaPreco }
+enum BannerTemplateId { escuroClassico, minimalistaClaro, etiquetaPreco, galeriaFotos }
 
 /// Metadados de cada template para o ecrã de escolha — `premium` já
 /// preparado para o futuro (pedido do utilizador, 2026-07-26): quando a
@@ -20,4 +20,5 @@ const bannerTemplates = [
   BannerTemplateInfo(id: BannerTemplateId.escuroClassico, nome: 'Noturno Clássico'),
   BannerTemplateInfo(id: BannerTemplateId.minimalistaClaro, nome: 'Minimalista Claro'),
   BannerTemplateInfo(id: BannerTemplateId.etiquetaPreco, nome: 'Etiqueta de Preço'),
+  BannerTemplateInfo(id: BannerTemplateId.galeriaFotos, nome: 'Galeria de Fotos'),
 ];

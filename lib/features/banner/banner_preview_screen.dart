@@ -72,13 +72,17 @@ class _BannerPreviewScreenState extends State<BannerPreviewScreen> {
                 children: [
                   OutlinedButton.icon(
                     onPressed: _ocupado ? null : _guardar,
-                    icon: const Icon(Icons.download_outlined),
+                    icon: _ocupado
+                        ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                        : const Icon(Icons.download_outlined),
                     label: Text(l10n.guardar),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton.icon(
                     onPressed: _ocupado ? null : _partilhar,
-                    icon: const Icon(Icons.share_outlined),
+                    icon: _ocupado
+                        ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                        : const Icon(Icons.share_outlined),
                     label: Text(l10n.bannerPartilhar),
                   ),
                 ],

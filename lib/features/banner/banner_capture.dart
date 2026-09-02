@@ -24,23 +24,31 @@ Future<Uint8List> capturarBanner(GlobalKey repaintKey) async {
 
 Future<void> guardarBanner(BuildContext context, GlobalKey repaintKey) async {
   final l10n = context.l10n;
-  final messenger = ScaffoldMessenger.of(context);
   try {
     final bytes = await capturarBanner(repaintKey);
     final destino = await salvarBannerNoDisco(bytes, nomeFicheiroBanner());
-    messenger.showSnackBar(SnackBar(content: Text(l10n.bannerGuardadoSucesso(destino))));
-  } catch (_) {
-    messenger.showSnackBar(SnackBar(content: Text(l10n.bannerErroGuardar)));
+    // O ecrã pode ter sido fechado entretanto (ex.: sessão expirou a meio)
+    // — sem este check, mostrar a snackbar rebenta com "Looking up a
+    // deactivated widget's ancestor is unsafe" em vez do erro real.
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.bannerGuardadoSucesso(destino))));
+  } catch (e, st) {
+    debugPrint('Erro ao guardar banner: $e\n$st');
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.bannerErroGuardar)));
+    }
   }
 }
 
 Future<void> partilharBanner(BuildContext context, GlobalKey repaintKey) async {
   final l10n = context.l10n;
-  final messenger = ScaffoldMessenger.of(context);
   try {
     final bytes = await capturarBanner(repaintKey);
     await Share.shareXFiles([XFile.fromData(bytes, name: nomeFicheiroBanner(), mimeType: 'image/png')]);
-  } catch (_) {
-    messenger.showSnackBar(SnackBar(content: Text(l10n.bannerErroGuardar)));
+  } catch (e, st) {
+    debugPrint('Erro ao partilhar banner: $e\n$st');
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.bannerErroGuardar)));
+    }
   }
 }

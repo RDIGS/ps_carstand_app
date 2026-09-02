@@ -21,6 +21,7 @@ class BannerContent {
     required this.contacto,
     required this.corDestaque,
     required this.foto,
+    this.fotosGaleria = const [],
   });
 
   final BannerTemplateId templateId;
@@ -39,4 +40,9 @@ class BannerContent {
   /// templates mostram um placeholder desenhado na app (nunca uma foto de
   /// stock): "Gerar" continua bloqueado até haver foto real.
   final Uint8List? foto;
+
+  /// Fotos adicionais (grelha), só usadas pelo template "Galeria de Fotos" —
+  /// vêm da galeria já guardada do veículo, não de uma escolha nova
+  /// (ao contrário de `foto`). Ordem = ordem de exibição na grelha.
+  final List<Uint8List> fotosGaleria;
 }

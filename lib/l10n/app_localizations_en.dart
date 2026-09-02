@@ -1238,6 +1238,24 @@ class AppLocalizationsEn extends AppLocalizations {
       'No photo yet — upload the real vehicle photo before generating.';
 
   @override
+  String get bannerGaleriaEscolherTitulo => 'Choose photos';
+
+  @override
+  String get bannerGaleriaEscolherTexto =>
+      'Tap the vehicle\'s gallery photos to pick them. The first one in the list below becomes the main photo.';
+
+  @override
+  String get bannerGaleriaVazia =>
+      'This vehicle doesn\'t have any gallery photos yet — add some on the vehicle page first.';
+
+  @override
+  String get bannerGaleriaSelecionadasTitulo =>
+      'Chosen photos (drag to reorder)';
+
+  @override
+  String get bannerGaleriaPrincipalEtiqueta => 'Main';
+
+  @override
   String get bannerContinuar => 'Preview';
 
   @override
