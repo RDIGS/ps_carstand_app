@@ -7,25 +7,25 @@ import 'templates/template_etiqueta_preco.dart';
 import 'templates/template_galeria_fotos.dart';
 import 'templates/template_minimalista_claro.dart';
 
-/// Post 1:1 para redes sociais — despacha para o template escolhido
-/// (`content.templateId`). Design de cada template propositadamente
-/// independente da paleta da app: só o ecrã à volta deste widget segue o
-/// tema da app.
+/// Banner para redes sociais (post 1:1 ou story 9:16, conforme o template
+/// escolhido) — despacha para o template escolhido (`content.templateId`).
+/// Design de cada template propositadamente independente da paleta da app:
+/// só o ecrã à volta deste widget segue o tema da app.
 ///
-/// Tamanho de desenho fixo (1000x1000) para a exportação via RepaintBoundary
-/// dar sempre a mesma proporção 1:1 independentemente do ecrã.
+/// Tamanho de desenho fixo (ver `BannerFormato.tamanhoCanvas`) para a
+/// exportação via RepaintBoundary dar sempre a mesma proporção,
+/// independentemente do ecrã.
 class BannerWidget extends StatelessWidget {
   const BannerWidget({super.key, required this.content});
 
   final BannerContent content;
 
-  static const double tamanho = 1000;
-
   @override
   Widget build(BuildContext context) {
+    final tamanho = bannerTemplateInfo(content.templateId).formato.tamanhoCanvas;
     return SizedBox(
-      width: tamanho,
-      height: tamanho,
+      width: tamanho.width,
+      height: tamanho.height,
       child: switch (content.templateId) {
         BannerTemplateId.escuroClassico => TemplateEscuroClassico(content: content),
         BannerTemplateId.minimalistaClaro => TemplateMinimalistaClaro(content: content),

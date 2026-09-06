@@ -16,14 +16,24 @@ import 'foto_placeholder.dart';
 /// preta à parte — ajuste pedido 2026-09-02 ("infos não deviam estar
 /// diretamente no carro?"): a faixa à parte desperdiçava espaço preto que
 /// agora vai todo para a grelha de fotos.
+///
+/// Formato Story 9:16 (1080x1920 — ver `BannerFormato.story`), não Post 1:1
+/// (ajuste pedido 2026-09-06: este template imita um Instagram Story, por
+/// isso passou a ter a proporção certa em vez de ficar "espremido" num
+/// quadrado). A hero ocupa 60% da altura, tal como acontecia no quadrado
+/// original — só a grelha por baixo ganhou muito mais espaço vertical.
+///
+/// Preço + valor de crédito (`content.prestacao`) em destaque por baixo das
+/// especificações, com o valor de crédito num badge da cor de destaque —
+/// mesmo padrão do `TemplateEtiquetaPreco` (pedido do utilizador, 2026-09-06).
 class TemplateGaleriaFotos extends StatelessWidget {
   const TemplateGaleriaFotos({super.key, required this.content});
 
   final BannerContent content;
 
-  static const double _alturaHero = 600;
-  static const double _espacoGrelha = 8;
-  static const double _margemGrelha = 14;
+  static const double _alturaHero = 1150;
+  static const double _espacoGrelha = 10;
+  static const double _margemGrelha = 16;
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +59,9 @@ class TemplateGaleriaFotos extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  left: 32,
-                  right: 32,
-                  bottom: 26,
+                  left: 36,
+                  right: 36,
+                  bottom: 40,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,29 +71,55 @@ class TemplateGaleriaFotos extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.inter(
-                          fontSize: 48,
+                          fontSize: 52,
                           fontWeight: FontWeight.w900,
                           color: Colors.white,
                           letterSpacing: 0.3,
                           height: 1.05,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 12),
                       Row(
                         children: [
-                          Icon(Icons.auto_awesome, size: 20, color: Colors.white.withValues(alpha: 0.85)),
+                          Icon(Icons.auto_awesome, size: 22, color: Colors.white.withValues(alpha: 0.85)),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              [content.ano, content.combustivel, content.preco]
-                                  .where((v) => v.isNotEmpty)
-                                  .join('  •  '),
+                              [content.ano, content.combustivel].where((v) => v.isNotEmpty).join('  •  '),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style:
-                                  GoogleFonts.inter(fontSize: 26, fontWeight: FontWeight.w600, color: Colors.white),
+                              style: GoogleFonts.inter(fontSize: 28, fontWeight: FontWeight.w600, color: Colors.white),
                             ),
                           ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              content.preco,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.inter(fontSize: 42, fontWeight: FontWeight.w900, color: Colors.white),
+                            ),
+                          ),
+                          if (content.prestacao.isNotEmpty) ...[
+                            const SizedBox(width: 14),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                              decoration:
+                                  BoxDecoration(color: content.corDestaque, borderRadius: BorderRadius.circular(24)),
+                              child: Text(
+                                content.prestacao,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style:
+                                    GoogleFonts.inter(fontSize: 19, fontWeight: FontWeight.w700, color: Colors.white),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ],

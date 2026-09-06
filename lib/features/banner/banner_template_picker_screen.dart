@@ -28,6 +28,10 @@ BannerContent _conteudoDemo(BannerTemplateId id) => BannerContent(
 /// Ecrã de escolha de template — 1º passo depois de "Gerar banner de
 /// venda". Templates "premium" (nenhum por agora) ficam bloqueados, à
 /// espera de uma futura loja de templates pagos.
+///
+/// Separado em duas secções por formato — "Posts 1:1" e "Stories 9:16"
+/// (pedido do utilizador, 2026-09-06) — cada uma com a grelha ajustada à
+/// proporção dos seus templates.
 class BannerTemplatePickerScreen extends StatelessWidget {
   const BannerTemplatePickerScreen({super.key, required this.vehicle});
 
@@ -36,35 +40,80 @@ class BannerTemplatePickerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final posts = bannerTemplates.where((t) => t.formato == BannerFormato.post).toList();
+    final stories = bannerTemplates.where((t) => t.formato == BannerFormato.story).toList();
     return Scaffold(
       appBar: AppBar(title: Text(l10n.bannerEscolherTemplateTitulo)),
       body: MaxWidthBody(
-        child: GridView.builder(
+        child: ListView(
           padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            childAspectRatio: 0.82,
-          ),
-          itemCount: bannerTemplates.length,
-          itemBuilder: (context, index) {
-            final template = bannerTemplates[index];
-            return _TemplateCard(
-              nome: template.nome,
-              premium: template.premium,
-              content: _conteudoDemo(template.id),
-              onTap: template.premium
-                  ? null
-                  : () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => BannerFormScreen(vehicle: vehicle, templateId: template.id),
-                        ),
-                      ),
-            );
-          },
+          children: [
+            if (posts.isNotEmpty) ...[
+              _CategoriaTitulo(texto: l10n.bannerCategoriaPosts),
+              const SizedBox(height: 12),
+              _GrelhaTemplates(templates: posts, vehicle: vehicle, childAspectRatio: 0.82),
+              const SizedBox(height: 24),
+            ],
+            if (stories.isNotEmpty) ...[
+              _CategoriaTitulo(texto: l10n.bannerCategoriaStories),
+              const SizedBox(height: 12),
+              _GrelhaTemplates(templates: stories, vehicle: vehicle, childAspectRatio: 0.48),
+            ],
+          ],
         ),
       ),
+    );
+  }
+}
+
+class _CategoriaTitulo extends StatelessWidget {
+  const _CategoriaTitulo({required this.texto});
+
+  final String texto;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      texto,
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+    );
+  }
+}
+
+class _GrelhaTemplates extends StatelessWidget {
+  const _GrelhaTemplates({required this.templates, required this.vehicle, required this.childAspectRatio});
+
+  final List<BannerTemplateInfo> templates;
+  final VehicleDetail vehicle;
+  final double childAspectRatio;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childAspectRatio: childAspectRatio,
+      ),
+      itemCount: templates.length,
+      itemBuilder: (context, index) {
+        final template = templates[index];
+        return _TemplateCard(
+          nome: template.nome,
+          premium: template.premium,
+          content: _conteudoDemo(template.id),
+          onTap: template.premium
+              ? null
+              : () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => BannerFormScreen(vehicle: vehicle, templateId: template.id),
+                    ),
+                  ),
+        );
+      },
     );
   }
 }
@@ -96,7 +145,7 @@ class _TemplateCard extends StatelessWidget {
                     fit: StackFit.expand,
                     children: [
                       AspectRatio(
-                        aspectRatio: 1,
+                        aspectRatio: bannerTemplateInfo(content.templateId).formato.aspectRatio,
                         child: FittedBox(
                           fit: BoxFit.contain,
                           child: IgnorePointer(child: BannerWidget(content: content)),

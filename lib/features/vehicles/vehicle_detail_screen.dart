@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,6 +7,7 @@ import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
 import '../../shared/widgets/max_width_body.dart';
+import '../../shared/widgets/network_image_safe.dart';
 import '../../shared/widgets/status_badge.dart';
 import '../auth/auth_state.dart';
 import '../banner/banner_template_picker_screen.dart';
@@ -652,7 +652,7 @@ class _FonteEstimativa extends StatelessWidget {
             leading: anuncio.foto != null
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(4),
-                    child: CachedNetworkImage(
+                    child: NetworkImageSafe(
                       imageUrl: anuncio.foto!,
                       width: 48,
                       height: 36,

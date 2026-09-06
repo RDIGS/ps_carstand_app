@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +6,7 @@ import '../../core/api/api_client.dart';
 import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../shared/widgets/image_source_picker.dart';
+import '../../shared/widgets/network_image_safe.dart';
 import 'vehicle_photo.dart';
 import 'vehicles_repository.dart';
 
@@ -146,7 +146,7 @@ class _VehiclePhotoGalleryCardState extends State<VehiclePhotoGalleryCard> {
                           onLongPress: () => _removerFoto(foto),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: CachedNetworkImage(
+                            child: NetworkImageSafe(
                               imageUrl: foto.url,
                               width: 96,
                               height: 96,
@@ -201,7 +201,7 @@ class _GaleriaEcraCompleto extends StatelessWidget {
         itemCount: fotos.length,
         itemBuilder: (context, index) => Center(
           child: InteractiveViewer(
-            child: CachedNetworkImage(
+            child: NetworkImageSafe(
               imageUrl: fotos[index].url,
               placeholder: (context, _) => const CircularProgressIndicator(),
               errorWidget: (context, _, __) => const Icon(Icons.broken_image_outlined, color: Colors.white, size: 48),

@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
 import '../../features/vehicles/vehicle.dart';
+import 'network_image_safe.dart';
 import 'status_badge.dart';
 
 /// Elemento assinatura da app (secção 11): cartão "ficha técnica" — faixa
@@ -111,7 +111,7 @@ class _Thumbnail extends StatelessWidget {
     }
     return SizedBox(
       width: tamanho,
-      child: CachedNetworkImage(
+      child: NetworkImageSafe(
         imageUrl: url!,
         fit: BoxFit.cover,
         placeholder: (context, _) => Container(color: Theme.of(context).colorScheme.surfaceContainerHighest),

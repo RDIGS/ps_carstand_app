@@ -4,6 +4,7 @@ import '../../core/l10n_extension.dart';
 import 'banner_capture.dart';
 import 'banner_content.dart';
 import 'banner_widget.dart';
+import 'templates/banner_template.dart';
 
 class BannerPreviewScreen extends StatefulWidget {
   const BannerPreviewScreen({super.key, required this.content});
@@ -33,6 +34,7 @@ class _BannerPreviewScreenState extends State<BannerPreviewScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final formato = bannerTemplateInfo(widget.content.templateId).formato;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.bannerPreviewTitulo)),
       body: Center(
@@ -42,9 +44,9 @@ class _BannerPreviewScreenState extends State<BannerPreviewScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 480, maxHeight: 480),
+                constraints: formato.restricaoPreview,
                 child: AspectRatio(
-                  aspectRatio: 1,
+                  aspectRatio: formato.aspectRatio,
                   // FittedBox só escala a pré-visualização no ecrã — o
                   // RepaintBoundary fica sempre com o tamanho real
                   // (BannerWidget.tamanho), por isso a captura sai sempre

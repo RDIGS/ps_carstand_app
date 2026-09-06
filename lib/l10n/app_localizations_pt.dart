@@ -1280,6 +1280,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get bannerTemplateBrevemente => 'Brevemente';
 
   @override
+  String get bannerCategoriaPosts => 'Posts 1:1';
+
+  @override
+  String get bannerCategoriaStories => 'Stories 9:16';
+
+  @override
   String get menuSugestoes => 'Sugestões';
 
   @override

@@ -2420,6 +2420,18 @@ abstract class AppLocalizations {
   /// **'Brevemente'**
   String get bannerTemplateBrevemente;
 
+  /// No description provided for @bannerCategoriaPosts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Posts 1:1'**
+  String get bannerCategoriaPosts;
+
+  /// No description provided for @bannerCategoriaStories.
+  ///
+  /// In pt, this message translates to:
+  /// **'Stories 9:16'**
+  String get bannerCategoriaStories;
+
   /// No description provided for @menuSugestoes.
   ///
   /// In pt, this message translates to:

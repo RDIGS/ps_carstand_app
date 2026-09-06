@@ -1277,6 +1277,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bannerTemplateBrevemente => 'Coming soon';
 
   @override
+  String get bannerCategoriaPosts => 'Posts 1:1';
+
+  @override
+  String get bannerCategoriaStories => 'Stories 9:16';
+
+  @override
   String get menuSugestoes => 'Suggestions';
 
   @override

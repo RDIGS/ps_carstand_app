@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -9,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/l10n_extension.dart';
 import '../../shared/widgets/max_width_body.dart';
+import '../../shared/widgets/network_image_safe.dart';
 import '../auth/auth_state.dart';
 import '../vehicles/vehicle_detail.dart';
 import '../vehicles/vehicle_photo.dart';
@@ -260,71 +260,76 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            AspectRatio(
-              aspectRatio: 1,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                // Clicar na pré-visualização também abre o seletor de foto —
-                // por isso esta zona TEM de participar no hit-test (ao
-                // contrário do ecrã de pré-visualização final, que é só
-                // leitura). O RepaintBoundary aqui é o mesmo usado por
-                // "Guardar": captura sempre ao tamanho real (BannerWidget.
-                // tamanho), independente da escala visual do FittedBox.
-                child: MouseRegion(
-                  cursor: _isGaleriaFotos ? MouseCursor.defer : SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: _isGaleriaFotos || _carregandoFoto ? null : _escolherFoto,
-                    // No template Galeria de Fotos, tocar na pré-visualização
-                    // não faz nada (a escolha é toda feita no seletor
-                    // abaixo) — por isso esta zona pode ficar fora do
-                    // hit-test aqui também. Sem isto, o RepaintBoundary
-                    // dentro do FittedBox chegou a receber eventos de rato
-                    // diretamente e rebentou com "Cannot hit test a render
-                    // box with no size" em repetição (bug real reportado
-                    // 2026-09-02) — mesmo problema que o comentário abaixo já
-                    // descrevia, só que aqui nunca estava protegido por
-                    // IgnorePointer como está no ecrã de Pré-visualização.
-                    child: IgnorePointer(
-                      ignoring: _isGaleriaFotos,
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: AnimatedBuilder(
-                              animation: Listenable.merge(
-                                [
-                                  _titulo,
-                                  _subtitulo,
-                                  _potencia,
-                                  _ano,
-                                  _combustivel,
-                                  _preco,
-                                  _prestacao,
-                                  _social,
-                                  _contacto
-                                ],
-                              ),
-                              builder: (context, _) => RepaintBoundary(
-                                key: _repaintKey,
-                                child: BannerWidget(content: _conteudoAtual),
-                              ),
-                            ),
-                          ),
-                          if (!_isGaleriaFotos)
-                            Positioned(
-                              right: 12,
-                              bottom: 12,
-                              child: DecoratedBox(
-                                decoration:
-                                    BoxDecoration(color: Colors.black.withValues(alpha: 0.55), shape: BoxShape.circle),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 20),
+            Center(
+              child: ConstrainedBox(
+                constraints: bannerTemplateInfo(widget.templateId).formato.restricaoPreview,
+                child: AspectRatio(
+                  aspectRatio: bannerTemplateInfo(widget.templateId).formato.aspectRatio,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    // Clicar na pré-visualização também abre o seletor de foto —
+                    // por isso esta zona TEM de participar no hit-test (ao
+                    // contrário do ecrã de pré-visualização final, que é só
+                    // leitura). O RepaintBoundary aqui é o mesmo usado por
+                    // "Guardar": captura sempre ao tamanho real (BannerWidget.
+                    // tamanho), independente da escala visual do FittedBox.
+                    child: MouseRegion(
+                      cursor: _isGaleriaFotos ? MouseCursor.defer : SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: _isGaleriaFotos || _carregandoFoto ? null : _escolherFoto,
+                        // No template Galeria de Fotos, tocar na pré-visualização
+                        // não faz nada (a escolha é toda feita no seletor
+                        // abaixo) — por isso esta zona pode ficar fora do
+                        // hit-test aqui também. Sem isto, o RepaintBoundary
+                        // dentro do FittedBox chegou a receber eventos de rato
+                        // diretamente e rebentou com "Cannot hit test a render
+                        // box with no size" em repetição (bug real reportado
+                        // 2026-09-02) — mesmo problema que o comentário abaixo já
+                        // descrevia, só que aqui nunca estava protegido por
+                        // IgnorePointer como está no ecrã de Pré-visualização.
+                        child: IgnorePointer(
+                          ignoring: _isGaleriaFotos,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              FittedBox(
+                                fit: BoxFit.contain,
+                                child: AnimatedBuilder(
+                                  animation: Listenable.merge(
+                                    [
+                                      _titulo,
+                                      _subtitulo,
+                                      _potencia,
+                                      _ano,
+                                      _combustivel,
+                                      _preco,
+                                      _prestacao,
+                                      _social,
+                                      _contacto
+                                    ],
+                                  ),
+                                  builder: (context, _) => RepaintBoundary(
+                                    key: _repaintKey,
+                                    child: BannerWidget(content: _conteudoAtual),
+                                  ),
                                 ),
                               ),
-                            ),
-                        ],
+                              if (!_isGaleriaFotos)
+                                Positioned(
+                                  right: 12,
+                                  bottom: 12,
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                        color: Colors.black.withValues(alpha: 0.55), shape: BoxShape.circle),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(8),
+                                      child: Icon(Icons.add_a_photo_outlined, color: Colors.white, size: 20),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -487,7 +492,7 @@ class _SeletorGaleriaFotos extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: CachedNetworkImage(
+                        child: NetworkImageSafe(
                           imageUrl: foto.url,
                           width: 84,
                           height: 84,

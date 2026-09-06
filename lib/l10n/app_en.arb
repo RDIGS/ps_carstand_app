@@ -429,6 +429,8 @@
   "bannerErroGuardar": "Could not save the banner. Please try again.",
   "bannerEscolherTemplateTitulo": "Choose template",
   "bannerTemplateBrevemente": "Coming soon",
+  "bannerCategoriaPosts": "Posts 1:1",
+  "bannerCategoriaStories": "Stories 9:16",
 
   "menuSugestoes": "Suggestions",
   "sugestoesTitulo": "Suggestions",
