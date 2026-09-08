@@ -575,6 +575,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelar => 'Cancel';
 
   @override
+  String get sim => 'Yes';
+
+  @override
+  String get nao => 'No';
+
+  @override
+  String get fechar => 'Close';
+
+  @override
+  String get campoVeiculo => 'Vehicle';
+
+  @override
+  String get campoVendedor => 'Salesperson';
+
+  @override
+  String get campoComissao => 'Commission';
+
+  @override
+  String get campoEstado => 'Status';
+
+  @override
+  String get campoPreco => 'Price';
+
+  @override
+  String get compradorTitulo => 'Buyer';
+
+  @override
+  String get vendaEstadoConcluida => 'Completed';
+
+  @override
+  String get vendaEstadoRevertida => 'Reverted';
+
+  @override
   String get vendaRegistadaTitulo => 'Sale registered';
 
   @override
@@ -710,6 +743,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get campoDescricao => 'Description';
+
+  @override
+  String get campoData => 'Date';
 
   @override
   String get guardar => 'Save';
@@ -918,6 +954,77 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get financeSemCategoria => 'No category';
+
+  @override
+  String get financeCampoMetodoPagamento => 'Payment method';
+
+  @override
+  String get financeCampoPagoPor => 'Paid by';
+
+  @override
+  String get financePagoPorEmpresa => 'The company';
+
+  @override
+  String get financeRecorrente => 'Recurring expense (repeats every month)';
+
+  @override
+  String get financeReembolsado => 'Already reimbursed';
+
+  @override
+  String get financeComprovativoCarregar => 'Invoice photo';
+
+  @override
+  String get financeComprovativoTrocar => 'Change invoice photo';
+
+  @override
+  String get financeCampoFornecedorNome => 'Supplier';
+
+  @override
+  String get financeCampoFornecedorNif => 'Supplier VAT number';
+
+  @override
+  String get financeCampoValorIva => 'VAT amount';
+
+  @override
+  String get financeCampoTaxaIva => 'VAT rate (%)';
+
+  @override
+  String get financeFaturaNaoLida =>
+      'Could not automatically read the invoice data.';
+
+  @override
+  String get metodoPagamentoNumerario => 'Cash';
+
+  @override
+  String get metodoPagamentoTransferencia => 'Bank transfer';
+
+  @override
+  String get metodoPagamentoMultibanco => 'Debit card (Multibanco)';
+
+  @override
+  String get metodoPagamentoCartao => 'Credit card';
+
+  @override
+  String get metodoPagamentoCheque => 'Cheque';
+
+  @override
+  String get metodoPagamentoOutro => 'Other';
+
+  @override
+  String get financeExtratoTitulo => 'Monthly statement';
+
+  @override
+  String get financeExtratoGerar => 'Generate statement';
+
+  @override
+  String get financeExtratoAbrirPdf => 'Open PDF';
+
+  @override
+  String get financeExtratoAbrirCsv => 'Open CSV';
+
+  @override
+  String get financeExtratoDescricao =>
+      'Full monthly financial statement (general expenses, vehicle expenses and sales), as a detailed PDF and CSV for your accountant.';
 
   @override
   String get filtrosTitulo => 'Filters';
@@ -1206,6 +1313,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bannerCampoCombustivel => 'Fuel';
 
   @override
+  String get bannerCampoKms => 'Mileage';
+
+  @override
   String get bannerCampoPreco => 'Price';
 
   @override
@@ -1221,6 +1331,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bannerCampoContacto => 'Contact';
 
   @override
+  String get bannerLogoCarregar => 'Upload logo';
+
+  @override
+  String get bannerLogoTrocar => 'Change logo';
+
+  @override
+  String get bannerLogoIncluir => 'Include logo on banner';
+
+  @override
   String get bannerEscolherCor => 'Accent colour';
 
   @override
@@ -1228,6 +1347,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bannerTrocarFoto => 'Change photo';
+
+  @override
+  String get bannerFonteFotoVeiculo => 'From vehicle gallery';
+
+  @override
+  String get bannerFonteFotoDispositivo => 'Upload from device';
 
   @override
   String get bannerFotoObrigatoria =>

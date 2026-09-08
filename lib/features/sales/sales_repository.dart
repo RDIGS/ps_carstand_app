@@ -68,7 +68,8 @@ class SalesRepository {
           if (transmitenteLocalidade != null) 'transmitenteLocalidade': transmitenteLocalidade,
           if (transmitenteEmail != null) 'transmitenteEmail': transmitenteEmail,
           if (transmitenteIdentificacaoTipo != null) 'transmitenteIdentificacaoTipo': transmitenteIdentificacaoTipo,
-          if (transmitenteIdentificacaoNumero != null) 'transmitenteIdentificacaoNumero': transmitenteIdentificacaoNumero,
+          if (transmitenteIdentificacaoNumero != null)
+            'transmitenteIdentificacaoNumero': transmitenteIdentificacaoNumero,
         },
       },
       parse: (data) => SaleResult.fromJson(data as Map<String, dynamic>),

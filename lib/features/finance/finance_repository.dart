@@ -1,7 +1,9 @@
 import '../../core/api/api_client.dart';
 import 'finance_entry.dart';
 import 'finance_evolution.dart';
+import 'finance_statement.dart';
 import 'finance_summary.dart';
+import 'invoice_extraction_result.dart';
 import 'stock_potencial.dart';
 
 class FinanceRepository {
@@ -41,7 +43,8 @@ class FinanceRepository {
   }
 
   Future<StockPotencial> stockPotencial() {
-    return _api.request('GET', '/finance/stock-potencial', parse: (data) => StockPotencial.fromJson(data as Map<String, dynamic>));
+    return _api.request('GET', '/finance/stock-potencial',
+        parse: (data) => StockPotencial.fromJson(data as Map<String, dynamic>));
   }
 
   Future<FinanceEntriesPage> entries({
@@ -65,12 +68,21 @@ class FinanceRepository {
     );
   }
 
-  Future<void> createEntry({
+  // Devolve o lançamento criado (não só void) — o ecrã precisa do `id` para
+  // poder logo a seguir carregar a foto do comprovativo.
+  Future<FinanceEntry> createEntry({
     required String tipo,
     String? categoria,
     required double valor,
     String? descricao,
     String? data,
+    String? metodoPagamento,
+    String? pagoPor,
+    bool? recorrente,
+    String? fornecedorNome,
+    String? fornecedorNif,
+    double? valorIva,
+    double? taxaIva,
   }) {
     return _api.request(
       'POST',
@@ -81,8 +93,15 @@ class FinanceRepository {
         'valor': valor,
         if (descricao != null) 'descricao': descricao,
         if (data != null) 'data': data,
+        if (metodoPagamento != null) 'metodoPagamento': metodoPagamento,
+        if (pagoPor != null) 'pagoPor': pagoPor,
+        if (recorrente != null) 'recorrente': recorrente,
+        if (fornecedorNome != null) 'fornecedorNome': fornecedorNome,
+        if (fornecedorNif != null) 'fornecedorNif': fornecedorNif,
+        if (valorIva != null) 'valorIva': valorIva,
+        if (taxaIva != null) 'taxaIva': taxaIva,
       },
-      parse: (_) {},
+      parse: (data) => FinanceEntry.fromJson(data as Map<String, dynamic>),
     );
   }
 
@@ -93,22 +112,76 @@ class FinanceRepository {
     double? valor,
     String? descricao,
     String? data,
+    String? metodoPagamento,
+    String? pagoPor,
+    bool? recorrente,
+    bool? reembolsado,
+    String? fornecedorNome,
+    String? fornecedorNif,
+    double? valorIva,
+    double? taxaIva,
   }) {
     return _api.request(
       'PATCH',
       '/finance/entries/$id',
       data: {
         if (tipo != null) 'tipo': tipo,
-        if (categoria != null) 'categoria': categoria,
+        // categoria/metodoPagamento/pagoPor/fornecedor* vão sempre, mesmo
+        // `null` (limpos pelo utilizador no formulário) — o backend aceita
+        // `null` nestes campos (`@IsOptional` do class-validator ignora
+        // `null` como o próprio "omitido"), mas rejeitava `''` (não é um
+        // valor válido da lista fixa/tipo). Sem isto, limpar um destes
+        // campos de volta para "sem valor" ao editar dava erro 400.
+        'categoria': categoria,
         if (valor != null) 'valor': valor,
         if (descricao != null) 'descricao': descricao,
         if (data != null) 'data': data,
+        'metodoPagamento': metodoPagamento,
+        'pagoPor': pagoPor,
+        if (recorrente != null) 'recorrente': recorrente,
+        if (reembolsado != null) 'reembolsado': reembolsado,
+        'fornecedorNome': fornecedorNome,
+        'fornecedorNif': fornecedorNif,
+        'valorIva': valorIva,
+        'taxaIva': taxaIva,
       },
       parse: (_) {},
     );
   }
 
+  /// Transitório, nunca grava (mesmo padrão de extractIdentity em
+  /// SalesRepository) — lê a foto da fatura/recibo via Gemini e devolve os
+  /// campos para pré-preencher o formulário.
+  Future<InvoiceExtractionResult> extractInvoice(List<int> foto) {
+    return _api.uploadMultipart(
+      '/finance/extract-invoice',
+      files: {'foto': foto},
+      parse: (data) => InvoiceExtractionResult.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
   Future<void> removeEntry(String id) {
     return _api.request('DELETE', '/finance/entries/$id', parse: (_) {});
+  }
+
+  Future<FinanceEntry> uploadComprovativo(String id, List<int> foto) {
+    return _api.uploadMultipart(
+      '/finance/entries/$id/comprovativo',
+      files: {'foto': foto},
+      parse: (data) => FinanceEntry.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<void> removeComprovativo(String id) {
+    return _api.request('DELETE', '/finance/entries/$id/comprovativo', parse: (_) {});
+  }
+
+  Future<FinanceStatement> statement({required int ano, required int mes}) {
+    return _api.request(
+      'GET',
+      '/finance/statement',
+      queryParameters: {'ano': ano, 'mes': mes},
+      parse: (data) => FinanceStatement.fromJson(data as Map<String, dynamic>),
+    );
   }
 }

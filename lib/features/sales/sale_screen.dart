@@ -291,7 +291,8 @@ class _SaleScreenState extends State<SaleScreen> {
                 decoration: InputDecoration(labelText: l10n.campoTelefone),
               ),
               const SizedBox(height: 12),
-              TextFormField(controller: _localidadeController, decoration: InputDecoration(labelText: l10n.campoLocalidade)),
+              TextFormField(
+                  controller: _localidadeController, decoration: InputDecoration(labelText: l10n.campoLocalidade)),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _emailController,

@@ -110,17 +110,37 @@ class VehiclesRepository {
     );
   }
 
-  Future<void> addExpense({
+  // Devolve a despesa criada (não só void) — o ecrã precisa do `id` para
+  // poder logo a seguir carregar a foto do comprovativo.
+  Future<VehicleExpense> addExpense({
     required String vehicleId,
     required String categoria,
     String? descricao,
     required double valor,
+    String? data,
+    String? metodoPagamento,
+    String? pagoPor,
+    String? fornecedorNome,
+    String? fornecedorNif,
+    double? valorIva,
+    double? taxaIva,
   }) {
     return _api.request(
       'POST',
       '/vehicles/$vehicleId/expenses',
-      data: {'categoria': categoria, if (descricao != null) 'descricao': descricao, 'valor': valor},
-      parse: (_) {},
+      data: {
+        'categoria': categoria,
+        if (descricao != null) 'descricao': descricao,
+        'valor': valor,
+        if (data != null) 'data': data,
+        if (metodoPagamento != null) 'metodoPagamento': metodoPagamento,
+        if (pagoPor != null) 'pagoPor': pagoPor,
+        if (fornecedorNome != null) 'fornecedorNome': fornecedorNome,
+        if (fornecedorNif != null) 'fornecedorNif': fornecedorNif,
+        if (valorIva != null) 'valorIva': valorIva,
+        if (taxaIva != null) 'taxaIva': taxaIva,
+      },
+      parse: (data) => VehicleExpense.fromJson(data as Map<String, dynamic>),
     );
   }
 
@@ -138,6 +158,14 @@ class VehiclesRepository {
     String? categoria,
     String? descricao,
     double? valor,
+    String? data,
+    String? metodoPagamento,
+    String? pagoPor,
+    bool? reembolsado,
+    String? fornecedorNome,
+    String? fornecedorNif,
+    double? valorIva,
+    double? taxaIva,
   }) {
     return _api.request(
       'PATCH',
@@ -146,6 +174,17 @@ class VehiclesRepository {
         if (categoria != null) 'categoria': categoria,
         if (descricao != null) 'descricao': descricao,
         if (valor != null) 'valor': valor,
+        if (data != null) 'data': data,
+        // Sempre incluídos, mesmo `null` (limpos no formulário) — mesma
+        // razão do FinanceRepository.updateEntry: o backend aceita `null`
+        // nestes campos, mas rejeitava `''`.
+        'metodoPagamento': metodoPagamento,
+        'pagoPor': pagoPor,
+        if (reembolsado != null) 'reembolsado': reembolsado,
+        'fornecedorNome': fornecedorNome,
+        'fornecedorNif': fornecedorNif,
+        'valorIva': valorIva,
+        'taxaIva': taxaIva,
       },
       parse: (_) {},
     );
@@ -153,6 +192,22 @@ class VehiclesRepository {
 
   Future<void> removeExpense({required String vehicleId, required String expenseId}) {
     return _api.request('DELETE', '/vehicles/$vehicleId/expenses/$expenseId', parse: (_) {});
+  }
+
+  Future<VehicleExpense> uploadExpenseComprovativo({
+    required String vehicleId,
+    required String expenseId,
+    required List<int> foto,
+  }) {
+    return _api.uploadMultipart(
+      '/vehicles/$vehicleId/expenses/$expenseId/comprovativo',
+      files: {'foto': foto},
+      parse: (data) => VehicleExpense.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<void> removeExpenseComprovativo({required String vehicleId, required String expenseId}) {
+    return _api.request('DELETE', '/vehicles/$vehicleId/expenses/$expenseId/comprovativo', parse: (_) {});
   }
 
   /// Aviso proativo, não-bloqueante (mesmo padrão da subscrição/versão):

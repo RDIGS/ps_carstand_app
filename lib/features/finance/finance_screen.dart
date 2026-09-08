@@ -18,6 +18,7 @@ import 'finance_categoria.dart';
 import 'finance_entries_screen.dart';
 import 'finance_evolution.dart';
 import 'finance_repository.dart';
+import 'finance_statement_screen.dart';
 import 'finance_summary.dart';
 import 'stock_potencial.dart';
 
@@ -286,6 +287,13 @@ class _FinanceScreenState extends State<FinanceScreen> {
             tooltip: l10n.lancamentosVerTodos,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const FinanceEntriesScreen()),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.description_outlined),
+            tooltip: l10n.financeExtratoTitulo,
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const FinanceStatementScreen()),
             ),
           ),
         ],

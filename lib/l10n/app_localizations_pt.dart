@@ -576,6 +576,39 @@ class AppLocalizationsPt extends AppLocalizations {
   String get cancelar => 'Cancelar';
 
   @override
+  String get sim => 'Sim';
+
+  @override
+  String get nao => 'Não';
+
+  @override
+  String get fechar => 'Fechar';
+
+  @override
+  String get campoVeiculo => 'Veículo';
+
+  @override
+  String get campoVendedor => 'Vendedor';
+
+  @override
+  String get campoComissao => 'Comissão';
+
+  @override
+  String get campoEstado => 'Estado';
+
+  @override
+  String get campoPreco => 'Preço';
+
+  @override
+  String get compradorTitulo => 'Comprador';
+
+  @override
+  String get vendaEstadoConcluida => 'Concluída';
+
+  @override
+  String get vendaEstadoRevertida => 'Revertida';
+
+  @override
   String get vendaRegistadaTitulo => 'Venda registada';
 
   @override
@@ -711,6 +744,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get campoDescricao => 'Descrição';
+
+  @override
+  String get campoData => 'Data';
 
   @override
   String get guardar => 'Guardar';
@@ -920,6 +956,77 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get financeSemCategoria => 'Sem categoria';
+
+  @override
+  String get financeCampoMetodoPagamento => 'Método de pagamento';
+
+  @override
+  String get financeCampoPagoPor => 'Pago por';
+
+  @override
+  String get financePagoPorEmpresa => 'A empresa';
+
+  @override
+  String get financeRecorrente => 'Despesa recorrente (repete todos os meses)';
+
+  @override
+  String get financeReembolsado => 'Já reembolsado';
+
+  @override
+  String get financeComprovativoCarregar => 'Foto da fatura';
+
+  @override
+  String get financeComprovativoTrocar => 'Trocar foto da fatura';
+
+  @override
+  String get financeCampoFornecedorNome => 'Fornecedor';
+
+  @override
+  String get financeCampoFornecedorNif => 'NIF do fornecedor';
+
+  @override
+  String get financeCampoValorIva => 'Valor de IVA';
+
+  @override
+  String get financeCampoTaxaIva => 'Taxa de IVA (%)';
+
+  @override
+  String get financeFaturaNaoLida =>
+      'Não foi possível ler os dados da fatura automaticamente.';
+
+  @override
+  String get metodoPagamentoNumerario => 'Numerário';
+
+  @override
+  String get metodoPagamentoTransferencia => 'Transferência';
+
+  @override
+  String get metodoPagamentoMultibanco => 'Multibanco';
+
+  @override
+  String get metodoPagamentoCartao => 'Cartão';
+
+  @override
+  String get metodoPagamentoCheque => 'Cheque';
+
+  @override
+  String get metodoPagamentoOutro => 'Outro';
+
+  @override
+  String get financeExtratoTitulo => 'Extrato mensal';
+
+  @override
+  String get financeExtratoGerar => 'Gerar extrato';
+
+  @override
+  String get financeExtratoAbrirPdf => 'Abrir PDF';
+
+  @override
+  String get financeExtratoAbrirCsv => 'Abrir CSV';
+
+  @override
+  String get financeExtratoDescricao =>
+      'Extrato financeiro completo do mês escolhido (despesas gerais, despesas de veículos e vendas), em PDF pormenorizado e CSV para o contabilista.';
 
   @override
   String get filtrosTitulo => 'Filtros';
@@ -1209,6 +1316,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get bannerCampoCombustivel => 'Combustível';
 
   @override
+  String get bannerCampoKms => 'Quilómetros';
+
+  @override
   String get bannerCampoPreco => 'Preço';
 
   @override
@@ -1224,6 +1334,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get bannerCampoContacto => 'Contacto';
 
   @override
+  String get bannerLogoCarregar => 'Carregar logótipo';
+
+  @override
+  String get bannerLogoTrocar => 'Trocar logótipo';
+
+  @override
+  String get bannerLogoIncluir => 'Incluir logótipo no banner';
+
+  @override
   String get bannerEscolherCor => 'Cor de destaque';
 
   @override
@@ -1231,6 +1350,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get bannerTrocarFoto => 'Trocar foto';
+
+  @override
+  String get bannerFonteFotoVeiculo => 'Da galeria do veículo';
+
+  @override
+  String get bannerFonteFotoDispositivo => 'Carregar do dispositivo';
 
   @override
   String get bannerFotoObrigatoria =>

@@ -1124,6 +1124,72 @@ abstract class AppLocalizations {
   /// **'Cancelar'**
   String get cancelar;
 
+  /// No description provided for @sim.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sim'**
+  String get sim;
+
+  /// No description provided for @nao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não'**
+  String get nao;
+
+  /// No description provided for @fechar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fechar'**
+  String get fechar;
+
+  /// No description provided for @campoVeiculo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Veículo'**
+  String get campoVeiculo;
+
+  /// No description provided for @campoVendedor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vendedor'**
+  String get campoVendedor;
+
+  /// No description provided for @campoComissao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comissão'**
+  String get campoComissao;
+
+  /// No description provided for @campoEstado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estado'**
+  String get campoEstado;
+
+  /// No description provided for @campoPreco.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço'**
+  String get campoPreco;
+
+  /// No description provided for @compradorTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comprador'**
+  String get compradorTitulo;
+
+  /// No description provided for @vendaEstadoConcluida.
+  ///
+  /// In pt, this message translates to:
+  /// **'Concluída'**
+  String get vendaEstadoConcluida;
+
+  /// No description provided for @vendaEstadoRevertida.
+  ///
+  /// In pt, this message translates to:
+  /// **'Revertida'**
+  String get vendaEstadoRevertida;
+
   /// No description provided for @vendaRegistadaTitulo.
   ///
   /// In pt, this message translates to:
@@ -1375,6 +1441,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Descrição'**
   String get campoDescricao;
+
+  /// No description provided for @campoData.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data'**
+  String get campoData;
 
   /// No description provided for @guardar.
   ///
@@ -1759,6 +1831,144 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Sem categoria'**
   String get financeSemCategoria;
+
+  /// No description provided for @financeCampoMetodoPagamento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Método de pagamento'**
+  String get financeCampoMetodoPagamento;
+
+  /// No description provided for @financeCampoPagoPor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pago por'**
+  String get financeCampoPagoPor;
+
+  /// No description provided for @financePagoPorEmpresa.
+  ///
+  /// In pt, this message translates to:
+  /// **'A empresa'**
+  String get financePagoPorEmpresa;
+
+  /// No description provided for @financeRecorrente.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesa recorrente (repete todos os meses)'**
+  String get financeRecorrente;
+
+  /// No description provided for @financeReembolsado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já reembolsado'**
+  String get financeReembolsado;
+
+  /// No description provided for @financeComprovativoCarregar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Foto da fatura'**
+  String get financeComprovativoCarregar;
+
+  /// No description provided for @financeComprovativoTrocar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar foto da fatura'**
+  String get financeComprovativoTrocar;
+
+  /// No description provided for @financeCampoFornecedorNome.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fornecedor'**
+  String get financeCampoFornecedorNome;
+
+  /// No description provided for @financeCampoFornecedorNif.
+  ///
+  /// In pt, this message translates to:
+  /// **'NIF do fornecedor'**
+  String get financeCampoFornecedorNif;
+
+  /// No description provided for @financeCampoValorIva.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor de IVA'**
+  String get financeCampoValorIva;
+
+  /// No description provided for @financeCampoTaxaIva.
+  ///
+  /// In pt, this message translates to:
+  /// **'Taxa de IVA (%)'**
+  String get financeCampoTaxaIva;
+
+  /// No description provided for @financeFaturaNaoLida.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível ler os dados da fatura automaticamente.'**
+  String get financeFaturaNaoLida;
+
+  /// No description provided for @metodoPagamentoNumerario.
+  ///
+  /// In pt, this message translates to:
+  /// **'Numerário'**
+  String get metodoPagamentoNumerario;
+
+  /// No description provided for @metodoPagamentoTransferencia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Transferência'**
+  String get metodoPagamentoTransferencia;
+
+  /// No description provided for @metodoPagamentoMultibanco.
+  ///
+  /// In pt, this message translates to:
+  /// **'Multibanco'**
+  String get metodoPagamentoMultibanco;
+
+  /// No description provided for @metodoPagamentoCartao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cartão'**
+  String get metodoPagamentoCartao;
+
+  /// No description provided for @metodoPagamentoCheque.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cheque'**
+  String get metodoPagamentoCheque;
+
+  /// No description provided for @metodoPagamentoOutro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outro'**
+  String get metodoPagamentoOutro;
+
+  /// No description provided for @financeExtratoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Extrato mensal'**
+  String get financeExtratoTitulo;
+
+  /// No description provided for @financeExtratoGerar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar extrato'**
+  String get financeExtratoGerar;
+
+  /// No description provided for @financeExtratoAbrirPdf.
+  ///
+  /// In pt, this message translates to:
+  /// **'Abrir PDF'**
+  String get financeExtratoAbrirPdf;
+
+  /// No description provided for @financeExtratoAbrirCsv.
+  ///
+  /// In pt, this message translates to:
+  /// **'Abrir CSV'**
+  String get financeExtratoAbrirCsv;
+
+  /// No description provided for @financeExtratoDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Extrato financeiro completo do mês escolhido (despesas gerais, despesas de veículos e vendas), em PDF pormenorizado e CSV para o contabilista.'**
+  String get financeExtratoDescricao;
 
   /// No description provided for @filtrosTitulo.
   ///
@@ -2294,6 +2504,12 @@ abstract class AppLocalizations {
   /// **'Combustível'**
   String get bannerCampoCombustivel;
 
+  /// No description provided for @bannerCampoKms.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quilómetros'**
+  String get bannerCampoKms;
+
   /// No description provided for @bannerCampoPreco.
   ///
   /// In pt, this message translates to:
@@ -2324,6 +2540,24 @@ abstract class AppLocalizations {
   /// **'Contacto'**
   String get bannerCampoContacto;
 
+  /// No description provided for @bannerLogoCarregar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregar logótipo'**
+  String get bannerLogoCarregar;
+
+  /// No description provided for @bannerLogoTrocar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar logótipo'**
+  String get bannerLogoTrocar;
+
+  /// No description provided for @bannerLogoIncluir.
+  ///
+  /// In pt, this message translates to:
+  /// **'Incluir logótipo no banner'**
+  String get bannerLogoIncluir;
+
   /// No description provided for @bannerEscolherCor.
   ///
   /// In pt, this message translates to:
@@ -2341,6 +2575,18 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Trocar foto'**
   String get bannerTrocarFoto;
+
+  /// No description provided for @bannerFonteFotoVeiculo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Da galeria do veículo'**
+  String get bannerFonteFotoVeiculo;
+
+  /// No description provided for @bannerFonteFotoDispositivo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregar do dispositivo'**
+  String get bannerFonteFotoDispositivo;
 
   /// No description provided for @bannerFotoObrigatoria.
   ///
