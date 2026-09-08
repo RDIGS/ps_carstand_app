@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../banner_content.dart';
 import 'foto_placeholder.dart';
+import 'logo_badge.dart';
 
 /// Template com foto principal em destaque + grelha de fotos adicionais por
 /// baixo (até 6, vêm da galeria já guardada do veículo — ver
@@ -58,6 +59,7 @@ class TemplateGaleriaFotos extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (content.logo != null) LogoBadge(logo: content.logo!),
                 Positioned(
                   left: 36,
                   right: 36,
@@ -85,7 +87,7 @@ class TemplateGaleriaFotos extends StatelessWidget {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              [content.ano, content.combustivel].where((v) => v.isNotEmpty).join('  •  '),
+                              [content.ano, content.combustivel, content.kms].where((v) => v.isNotEmpty).join('  •  '),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.inter(fontSize: 28, fontWeight: FontWeight.w600, color: Colors.white),

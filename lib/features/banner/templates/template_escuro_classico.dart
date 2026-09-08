@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../banner_content.dart';
 import 'foto_placeholder.dart';
+import 'logo_badge.dart';
 
 /// Template original — fundo escuro, foto de fundo, faixa de dados sobre
 /// gradiente, rodapé com contacto. Replicado do protótipo HTML fornecido
@@ -76,10 +77,12 @@ class TemplateEscuroClassico extends StatelessWidget {
                                 children: [
                                   Text(
                                     content.preco,
-                                    style: GoogleFonts.inter(fontSize: 46, fontWeight: FontWeight.w900, color: Colors.white, height: 1),
+                                    style: GoogleFonts.inter(
+                                        fontSize: 46, fontWeight: FontWeight.w900, color: Colors.white, height: 1),
                                   ),
                                   const SizedBox(height: 4),
-                                  Text(content.prestacao, style: GoogleFonts.inter(fontSize: 24, color: const Color(0xFFCCCCCC))),
+                                  Text(content.prestacao,
+                                      style: GoogleFonts.inter(fontSize: 24, color: const Color(0xFFCCCCCC))),
                                 ],
                               ),
                             ),
@@ -106,6 +109,7 @@ class TemplateEscuroClassico extends StatelessWidget {
               ),
             ],
           ),
+          if (content.logo != null) LogoBadge(logo: content.logo!),
         ],
       ),
     );
@@ -124,7 +128,8 @@ class _Estatistica extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(label, style: GoogleFonts.inter(fontSize: 20, color: const Color(0xFFCCCCCC), fontWeight: FontWeight.w600)),
+          Text(label,
+              style: GoogleFonts.inter(fontSize: 20, color: const Color(0xFFCCCCCC), fontWeight: FontWeight.w600)),
           const SizedBox(height: 6),
           Text(valor, style: GoogleFonts.inter(fontSize: 28, color: Colors.white, fontWeight: FontWeight.w800)),
         ],

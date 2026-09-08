@@ -25,4 +25,20 @@ class StandProfileRepository {
       parse: (data) => StandProfile.fromJson(data as Map<String, dynamic>),
     );
   }
+
+  Future<StandProfile> uploadLogo(List<int> logo) {
+    return _api.uploadMultipart(
+      '/stands/me/logo',
+      files: {'logo': logo},
+      parse: (data) => StandProfile.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<StandProfile> removeLogo() {
+    return _api.request(
+      'DELETE',
+      '/stands/me/logo',
+      parse: (data) => StandProfile.fromJson(data as Map<String, dynamic>),
+    );
+  }
 }

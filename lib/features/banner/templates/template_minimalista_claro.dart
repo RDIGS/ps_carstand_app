@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../banner_content.dart';
 import 'foto_placeholder.dart';
+import 'logo_badge.dart';
 
 /// Template claro/minimalista — foto no topo, cartão branco em baixo com
 /// tipografia preta a negrito e "pills" para as especificações. Inspirado em
@@ -29,6 +30,7 @@ class TemplateMinimalistaClaro extends StatelessWidget {
                   Image.memory(content.foto!, fit: BoxFit.cover)
                 else
                   FotoPlaceholder(corFundo: const Color(0xFFE5E5E5), corIcone: Colors.black.withValues(alpha: 0.2)),
+                if (content.logo != null) LogoBadge(logo: content.logo!),
               ],
             ),
           ),
@@ -47,7 +49,8 @@ class TemplateMinimalistaClaro extends StatelessWidget {
                     children: [
                       Text(
                         content.titulo.toUpperCase(),
-                        style: GoogleFonts.inter(fontSize: 42, fontWeight: FontWeight.w900, color: Colors.black, height: 1.05),
+                        style: GoogleFonts.inter(
+                            fontSize: 42, fontWeight: FontWeight.w900, color: Colors.black, height: 1.05),
                       ),
                       Text(
                         content.subtitulo,
@@ -74,7 +77,8 @@ class TemplateMinimalistaClaro extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(content.social, style: GoogleFonts.inter(fontSize: 22, color: const Color(0xFF888888))),
-                          Text(content.contacto, style: GoogleFonts.inter(fontSize: 22, color: const Color(0xFF888888))),
+                          Text(content.contacto,
+                              style: GoogleFonts.inter(fontSize: 22, color: const Color(0xFF888888))),
                         ],
                       ),
                       Column(
@@ -83,9 +87,11 @@ class TemplateMinimalistaClaro extends StatelessWidget {
                         children: [
                           Text(
                             content.preco,
-                            style: GoogleFonts.inter(fontSize: 52, fontWeight: FontWeight.w900, color: content.corDestaque, height: 1),
+                            style: GoogleFonts.inter(
+                                fontSize: 52, fontWeight: FontWeight.w900, color: content.corDestaque, height: 1),
                           ),
-                          Text(content.prestacao, style: GoogleFonts.inter(fontSize: 22, color: const Color(0xFF888888))),
+                          Text(content.prestacao,
+                              style: GoogleFonts.inter(fontSize: 22, color: const Color(0xFF888888))),
                         ],
                       ),
                     ],

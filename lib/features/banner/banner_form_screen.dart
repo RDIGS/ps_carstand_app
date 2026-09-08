@@ -21,6 +21,8 @@ import 'banner_widget.dart';
 import 'stand_profile_repository.dart';
 import 'templates/banner_template.dart';
 
+enum _FonteFotoBanner { veiculo, dispositivo }
+
 /// Ecrã de confirmação do banner de venda: tudo vem pré-preenchido a partir
 /// do veículo e do perfil da loja, mas cada campo é editável — nada é
 /// gerado sem o utilizador ver e poder corrigir os valores primeiro.
@@ -44,6 +46,7 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
   late final TextEditingController _potencia;
   late final TextEditingController _ano;
   late final TextEditingController _combustivel;
+  late final TextEditingController _kms;
   late final TextEditingController _preco;
   late final TextEditingController _prestacao;
   late final TextEditingController _social;
@@ -66,6 +69,13 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
   final Map<String, Uint8List> _galeriaBytesCache = {};
   bool _baixandoFoto = false;
 
+  // Logótipo do stand (pedido do utilizador, 2026-09-07) — persiste no
+  // perfil da loja (1 só por stand, reutilizado em todos os banners
+  // futuros), mas "incluir ou não" é uma escolha por banner.
+  Uint8List? _logoBytes;
+  bool _incluirLogo = false;
+  bool _carregandoLogo = false;
+
   @override
   void initState() {
     super.initState();
@@ -83,8 +93,14 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
     _potencia = TextEditingController(text: cv != null ? '$cv CV' : '');
     _ano = TextEditingController(text: ano ?? '');
     _combustivel = TextEditingController(text: v.combustivel?.toUpperCase() ?? '');
+    _kms = TextEditingController(text: '${BannerCalculo.kms(v.kms)} km');
     _preco = TextEditingController(text: preco != null ? '${preco.toStringAsFixed(0)} €' : '');
-    _prestacao = TextEditingController(text: prestacao != null ? '${prestacao.toStringAsFixed(0)} € / MÊS' : '');
+    // "Desde" (não um valor fixo garantido): a prestação é uma simulação com
+    // pressupostos fixos (TAN 10%, 120 meses, 100% financiado — ver
+    // `BannerCalculo`), não a proposta de crédito real que cada comprador vai
+    // ter (depende do banco/perfil de crédito de cada um). Pedido do
+    // utilizador, 2026-09-07, por precaução legal em publicidade de crédito.
+    _prestacao = TextEditingController(text: prestacao != null ? 'DESDE ${prestacao.toStringAsFixed(0)} € / MÊS' : '');
     _social = TextEditingController();
     _contacto = TextEditingController();
 
@@ -101,21 +117,74 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
         _social.text = _socialInicial;
         _contacto.text = _contactoInicial;
       });
+      if (perfil.logoUrl != null) {
+        final bytes = await _baixarBytes(perfil.logoUrl!);
+        if (!mounted) return;
+        setState(() {
+          _logoBytes = bytes;
+          _incluirLogo = true;
+        });
+      }
     } catch (_) {
-      // Perfil da loja é só conveniência de pré-preenchimento — se falhar,
-      // os campos ficam em branco e o utilizador escreve à mão.
+      // Perfil da loja (e logótipo) são só conveniência de pré-preenchimento
+      // — se falhar, os campos ficam em branco e o utilizador escreve à mão.
     }
   }
 
   @override
   void dispose() {
-    for (final c in [_titulo, _subtitulo, _potencia, _ano, _combustivel, _preco, _prestacao, _social, _contacto]) {
+    for (final c in [
+      _titulo,
+      _subtitulo,
+      _potencia,
+      _ano,
+      _combustivel,
+      _kms,
+      _preco,
+      _prestacao,
+      _social,
+      _contacto
+    ]) {
       c.dispose();
     }
     super.dispose();
   }
 
+  /// Pedido do utilizador, 2026-09-07: nos templates "post" (1:1) a foto
+  /// também pode vir da galeria já guardada do veículo, em vez de ser
+  /// sempre uma escolha nova no dispositivo — como já acontecia só no
+  /// template "Galeria de Fotos" (Story).
   Future<void> _escolherFoto() async {
+    final l10n = context.l10n;
+    final fonte = await showModalBottomSheet<_FonteFotoBanner>(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.directions_car_outlined),
+              title: Text(l10n.bannerFonteFotoVeiculo),
+              onTap: () => Navigator.of(context).pop(_FonteFotoBanner.veiculo),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_outlined),
+              title: Text(l10n.bannerFonteFotoDispositivo),
+              onTap: () => Navigator.of(context).pop(_FonteFotoBanner.dispositivo),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (fonte == null) return;
+    if (fonte == _FonteFotoBanner.veiculo) {
+      await _escolherFotoDaGaleriaVeiculo();
+    } else {
+      await _escolherFotoDoDispositivo();
+    }
+  }
+
+  Future<void> _escolherFotoDoDispositivo() async {
     setState(() => _carregandoFoto = true);
     try {
       final ficheiro = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 90, maxWidth: 2000);
@@ -123,6 +192,32 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
       final bytes = await ficheiro.readAsBytes();
       if (!mounted) return;
       setState(() => _foto = bytes);
+    } finally {
+      if (mounted) setState(() => _carregandoFoto = false);
+    }
+  }
+
+  Future<void> _escolherFotoDaGaleriaVeiculo() async {
+    final l10n = context.l10n;
+    setState(() => _carregandoFoto = true);
+    try {
+      final fotos = await context.read<VehiclesRepository>().listPhotos(widget.vehicle.id);
+      if (!mounted) return;
+      if (fotos.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.bannerGaleriaVazia)));
+        return;
+      }
+      final escolhida = await showModalBottomSheet<VehiclePhoto>(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => _SeletorFotoUnicaVeiculo(fotos: fotos),
+      );
+      if (escolhida == null || !mounted) return;
+      final bytes = await _baixarBytes(escolhida.url);
+      if (!mounted) return;
+      setState(() => _foto = bytes);
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.erroGenerico)));
     } finally {
       if (mounted) setState(() => _carregandoFoto = false);
     }
@@ -188,6 +283,46 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
     if (cor != null) setState(() => _corDestaque = cor);
   }
 
+  Future<void> _escolherLogo() async {
+    final l10n = context.l10n;
+    setState(() => _carregandoLogo = true);
+    try {
+      final ficheiro = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 90, maxWidth: 1000);
+      if (ficheiro == null || !mounted) return;
+      final bytes = await ficheiro.readAsBytes();
+      if (!mounted) return;
+      final perfil = await context.read<StandProfileRepository>().uploadLogo(bytes);
+      if (!mounted) return;
+      final novosBytes = perfil.logoUrl != null ? await _baixarBytes(perfil.logoUrl!) : bytes;
+      if (!mounted) return;
+      setState(() {
+        _logoBytes = novosBytes;
+        _incluirLogo = true;
+      });
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.erroGenerico)));
+    } finally {
+      if (mounted) setState(() => _carregandoLogo = false);
+    }
+  }
+
+  Future<void> _removerLogo() async {
+    final l10n = context.l10n;
+    setState(() => _carregandoLogo = true);
+    try {
+      await context.read<StandProfileRepository>().removeLogo();
+      if (!mounted) return;
+      setState(() {
+        _logoBytes = null;
+        _incluirLogo = false;
+      });
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.erroGenerico)));
+    } finally {
+      if (mounted) setState(() => _carregandoLogo = false);
+    }
+  }
+
   BannerContent get _conteudoAtual => BannerContent(
         templateId: widget.templateId,
         titulo: _titulo.text,
@@ -195,6 +330,7 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
         potencia: _potencia.text,
         ano: _ano.text,
         combustivel: _combustivel.text,
+        kms: _kms.text,
         preco: _preco.text,
         prestacao: _prestacao.text,
         social: _social.text,
@@ -202,6 +338,7 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
         corDestaque: _corDestaque,
         foto: _isGaleriaFotos ? _fotoPrincipalGaleria : _foto,
         fotosGaleria: _isGaleriaFotos ? _fotosGaleriaRestantes : const [],
+        logo: _incluirLogo ? _logoBytes : null,
       );
 
   /// Guarda contacto/@handle no perfil da loja para os próximos banners já
@@ -302,6 +439,7 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
                                       _potencia,
                                       _ano,
                                       _combustivel,
+                                      _kms,
                                       _preco,
                                       _prestacao,
                                       _social,
@@ -386,7 +524,18 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
               ],
             ),
             const SizedBox(height: 12),
-            TextField(controller: _combustivel, decoration: InputDecoration(labelText: l10n.bannerCampoCombustivel)),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                      controller: _combustivel, decoration: InputDecoration(labelText: l10n.bannerCampoCombustivel)),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextField(controller: _kms, decoration: InputDecoration(labelText: l10n.bannerCampoKms)),
+                ),
+              ],
+            ),
             const SizedBox(height: 12),
             Row(
               children: [
@@ -406,6 +555,51 @@ class _BannerFormScreenState extends State<BannerFormScreen> {
             TextField(controller: _social, decoration: InputDecoration(labelText: l10n.bannerCampoSocial)),
             const SizedBox(height: 12),
             TextField(controller: _contacto, decoration: InputDecoration(labelText: l10n.bannerCampoContacto)),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                if (_logoBytes != null)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.memory(_logoBytes!, width: 56, height: 56, fit: BoxFit.contain),
+                  )
+                else
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(Icons.image_outlined),
+                  ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _carregandoLogo ? null : _escolherLogo,
+                    icon: _carregandoLogo
+                        ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                        : const Icon(Icons.upload_outlined),
+                    label: Text(_logoBytes == null ? l10n.bannerLogoCarregar : l10n.bannerLogoTrocar),
+                  ),
+                ),
+                if (_logoBytes != null) ...[
+                  const SizedBox(width: 8),
+                  IconButton(
+                    onPressed: _carregandoLogo ? null : _removerLogo,
+                    icon: const Icon(Icons.delete_outline),
+                    tooltip: l10n.remover,
+                  ),
+                ],
+              ],
+            ),
+            if (_logoBytes != null)
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                value: _incluirLogo,
+                onChanged: (v) => setState(() => _incluirLogo = v),
+                title: Text(l10n.bannerLogoIncluir),
+              ),
             const SizedBox(height: 32),
             Row(
               children: [
@@ -613,6 +807,63 @@ class _SeletorGaleriaFotos extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+/// Escolha de UMA foto da galeria já guardada do veículo — usado pelos
+/// templates "post" (1:1), ao contrário do seletor múltiplo+reordenável da
+/// "Galeria de Fotos" (Story), que precisa de várias.
+class _SeletorFotoUnicaVeiculo extends StatelessWidget {
+  const _SeletorFotoUnicaVeiculo({required this.fotos});
+
+  final List<VehiclePhoto> fotos;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.bannerGaleriaEscolherTitulo, style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 280,
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                ),
+                itemCount: fotos.length,
+                itemBuilder: (context, index) {
+                  final foto = fotos[index];
+                  return GestureDetector(
+                    onTap: () => Navigator.of(context).pop(foto),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: NetworkImageSafe(
+                        imageUrl: foto.url,
+                        fit: BoxFit.cover,
+                        placeholder: (context, _) =>
+                            Container(color: Theme.of(context).colorScheme.surfaceContainerHighest),
+                        errorWidget: (context, _, __) => Container(
+                          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                          child: const Icon(Icons.broken_image_outlined),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

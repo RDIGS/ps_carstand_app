@@ -15,6 +15,7 @@ class BannerContent {
     required this.potencia,
     required this.ano,
     required this.combustivel,
+    required this.kms,
     required this.preco,
     required this.prestacao,
     required this.social,
@@ -22,6 +23,7 @@ class BannerContent {
     required this.corDestaque,
     required this.foto,
     this.fotosGaleria = const [],
+    this.logo,
   });
 
   final BannerTemplateId templateId;
@@ -30,6 +32,7 @@ class BannerContent {
   final String potencia;
   final String ano;
   final String combustivel;
+  final String kms;
   final String preco;
   final String prestacao;
   final String social;
@@ -45,4 +48,9 @@ class BannerContent {
   /// vêm da galeria já guardada do veículo, não de uma escolha nova
   /// (ao contrário de `foto`). Ordem = ordem de exibição na grelha.
   final List<Uint8List> fotosGaleria;
+
+  /// Logótipo do stand — só desenhado se não for `null` E o utilizador tiver
+  /// deixado o interruptor "incluir logótipo" ligado no formulário (pedido
+  /// do utilizador, 2026-09-07).
+  final Uint8List? logo;
 }

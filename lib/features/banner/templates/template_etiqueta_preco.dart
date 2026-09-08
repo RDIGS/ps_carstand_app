@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../banner_content.dart';
 import 'foto_placeholder.dart';
+import 'logo_badge.dart';
 
 /// Template "etiqueta de preço" — foto a toda a largura, fita diagonal
 /// "DISPONÍVEL" no canto, badges de especificação em baixo e um preço em
@@ -44,7 +45,8 @@ class TemplateEtiquetaPreco extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   'DISPONÍVEL',
-                  style: GoogleFonts.inter(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 2),
+                  style: GoogleFonts.inter(
+                      fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 2),
                 ),
               ),
             ),
@@ -57,7 +59,8 @@ class TemplateEtiquetaPreco extends StatelessWidget {
               children: [
                 Text(
                   content.titulo.toUpperCase(),
-                  style: GoogleFonts.inter(fontSize: 44, fontWeight: FontWeight.w900, color: Colors.white, height: 1.05),
+                  style:
+                      GoogleFonts.inter(fontSize: 44, fontWeight: FontWeight.w900, color: Colors.white, height: 1.05),
                 ),
                 Text(
                   content.subtitulo,
@@ -100,7 +103,8 @@ class TemplateEtiquetaPreco extends StatelessWidget {
                         children: [
                           Text(
                             content.preco,
-                            style: GoogleFonts.inter(fontSize: 44, fontWeight: FontWeight.w900, color: Colors.white, height: 1),
+                            style: GoogleFonts.inter(
+                                fontSize: 44, fontWeight: FontWeight.w900, color: Colors.white, height: 1),
                           ),
                           Text(
                             content.prestacao,
@@ -114,6 +118,7 @@ class TemplateEtiquetaPreco extends StatelessWidget {
               ],
             ),
           ),
+          if (content.logo != null) LogoBadge(logo: content.logo!),
         ],
       ),
     );

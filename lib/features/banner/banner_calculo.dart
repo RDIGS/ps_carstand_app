@@ -40,4 +40,8 @@ class BannerCalculo {
     if (dataIso == null || dataIso.length < 4) return null;
     return dataIso.substring(0, 4);
   }
+
+  /// Kms formatados com espaço a cada 3 dígitos (ex.: "84 500"), mesmo
+  /// padrão do `VehicleCard` na lista de veículos.
+  static String kms(int kms) => kms.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (m) => '${m[1]} ');
 }
