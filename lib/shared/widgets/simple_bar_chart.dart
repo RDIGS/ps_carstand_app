@@ -16,7 +16,7 @@ class BarChartEntry {
 /// Flutter SDK real, por isso evita a superfície de API mais instável
 /// entre versões (títulos customizados/rotacionados).
 class SimpleBarChart extends StatelessWidget {
-  const SimpleBarChart({super.key, required this.entries, this.color = AppColors.azulMatricula, this.height = 200});
+  const SimpleBarChart({super.key, required this.entries, this.color = AppColors.teal, this.height = 200});
 
   final List<BarChartEntry> entries;
   final Color color;

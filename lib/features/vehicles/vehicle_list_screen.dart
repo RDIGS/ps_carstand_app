@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/theme_state.dart';
-import '../audit/audit_screen.dart';
 import '../auth/auth_state.dart';
-import '../suggestions/suggestions_screen.dart';
+import '../../shared/widgets/account_menu_button.dart';
 import '../../shared/widgets/vehicle_card.dart';
 import 'add_vehicle_screen.dart';
 import 'dua_capture_screen.dart';
@@ -97,22 +95,6 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
 
   Future<void> _refresh() => _load();
 
-  Future<void> _logoutCompleto() async {
-    final l10n = context.l10n;
-    final confirmou = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.trocarDeStandTitulo),
-        content: Text(l10n.trocarDeStandTexto),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancelar)),
-          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.trocarDeStandTitulo)),
-        ],
-      ),
-    );
-    if (confirmou == true && mounted) await context.read<AuthState>().logoutCompleto();
-  }
-
   Future<void> _abrirOpcoesAdicionar() async {
     final l10n = context.l10n;
     final opcao = await showModalBottomSheet<String>(
@@ -171,50 +153,9 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: PopupMenuButton<String>(
-              onSelected: (value) {
-                if (value == 'logout') auth.logout();
-                if (value == 'logout_completo') _logoutCompleto();
-                if (value == 'idioma_pt') auth.changeIdioma('pt');
-                if (value == 'idioma_en') auth.changeIdioma('en');
-                if (value == 'tema_escuro') context.read<ThemeState>().toggle();
-                if (value == 'auditoria') {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AuditScreen()));
-                }
-                if (value == 'sugestoes') {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SuggestionsScreen()));
-                }
-              },
-              itemBuilder: (context) => [
-                PopupMenuItem(enabled: false, child: Text('${auth.userNome ?? ''} · ${auth.userRole ?? ''}')),
-                const PopupMenuDivider(),
-                CheckedPopupMenuItem(
-                  value: 'idioma_pt',
-                  checked: auth.userIdioma == 'pt',
-                  child: const Text('Português'),
-                ),
-                CheckedPopupMenuItem(
-                  value: 'idioma_en',
-                  checked: auth.userIdioma == 'en',
-                  child: const Text('English'),
-                ),
-                const PopupMenuDivider(),
-                CheckedPopupMenuItem(
-                  value: 'tema_escuro',
-                  checked: context.watch<ThemeState>().mode == ThemeMode.dark,
-                  child: Text(l10n.menuModoEscuro),
-                ),
-                const PopupMenuDivider(),
-                // Só owner (secção 4/O15) — auditoria é um assunto
-                // administrativo do stand, tal como Equipa/Financeiro.
-                if (auth.userRole == 'owner')
-                  PopupMenuItem(value: 'auditoria', child: Text(l10n.menuAuditoria)),
-                PopupMenuItem(value: 'sugestoes', child: Text(l10n.menuSugestoes)),
-                PopupMenuItem(value: 'logout', child: Text(l10n.terminarSessao)),
-                PopupMenuItem(value: 'logout_completo', child: Text(l10n.trocarDeStandTitulo)),
-              ],
+            child: AccountMenuButton(
               child: CircleAvatar(
-                backgroundColor: AppColors.azulMatricula,
+                backgroundColor: AppColors.teal,
                 child: Text(
                   (auth.userNome?.isNotEmpty ?? false) ? auth.userNome![0].toUpperCase() : '?',
                   style: const TextStyle(color: Colors.white),
@@ -247,7 +188,7 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
                   itemCount: _vehicles.length + (_loadingMore ? 1 : 0),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: colunas,
-                    mainAxisExtent: 168,
+                    mainAxisExtent: 320, // cartão vertical (foto + ficha técnica) do redesign
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
                   ),
@@ -294,7 +235,7 @@ class _LoadingSkeleton extends StatelessWidget {
       itemCount: 6,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: colunas,
-        mainAxisExtent: 168,
+        mainAxisExtent: 320,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
       ),
@@ -323,7 +264,7 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.directions_car_outlined, size: 56, color: AppColors.grafiteVendido),
+            const Icon(Icons.directions_car_outlined, size: 56, color: AppColors.inkMuted),
             const SizedBox(height: 16),
             Text(l10n.vehiclesEmptyTitulo, style: Theme.of(context).textTheme.headlineMedium),
             const SizedBox(height: 8),
@@ -351,7 +292,7 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline, size: 48, color: AppColors.amberSinal),
+            const Icon(Icons.error_outline, size: 48, color: AppColors.orange),
             const SizedBox(height: 12),
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 16),

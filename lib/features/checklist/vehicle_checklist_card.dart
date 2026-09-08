@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/api/api_client.dart';
@@ -199,7 +199,7 @@ class _ChecklistCardState extends State<ChecklistCard> {
                       Text(
                         '$concluidos/${itens.length}',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: concluidos == itens.length ? AppColors.verdeDisponivel : AppColors.grafiteVendido,
+                              color: concluidos == itens.length ? AppColors.teal : AppColors.inkMuted,
                             ),
                       ),
                   ],
@@ -219,7 +219,7 @@ class _ChecklistCardState extends State<ChecklistCard> {
                       title: Text(
                         item.descricao,
                         style: item.concluido
-                            ? const TextStyle(decoration: TextDecoration.lineThrough, color: AppColors.grafiteVendido)
+                            ? const TextStyle(decoration: TextDecoration.lineThrough, color: AppColors.inkMuted)
                             : null,
                       ),
                       secondary: IconButton(

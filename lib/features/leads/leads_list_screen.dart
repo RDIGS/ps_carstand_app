@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/l10n_extension.dart';
@@ -46,13 +46,13 @@ class _LeadsListScreenState extends State<LeadsListScreen> {
   Color _corEstado(String estado) {
     switch (estado) {
       case 'convertido':
-        return AppColors.verdeDisponivel;
+        return AppColors.teal;
       case 'perdido':
-        return AppColors.grafiteVendido;
+        return AppColors.gray;
       case 'agendado':
-        return AppColors.azulMatricula;
+        return AppColors.lilac;
       default:
-        return AppColors.amberSinal;
+        return AppColors.orange;
     }
   }
 

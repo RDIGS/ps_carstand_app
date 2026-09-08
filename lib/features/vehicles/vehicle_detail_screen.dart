@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/api/api_client.dart';
@@ -259,7 +259,7 @@ class _Spec extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(label, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.grafiteVendido)),
+        Text(label, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.inkMuted)),
         Text(
           value,
           style: mono
@@ -315,7 +315,7 @@ class _PrecoColuna extends StatelessWidget {
           '${valor.toStringAsFixed(0)} €',
           style: AppTypography.numero(
             fontSize: destaque ? 22 : 18,
-            color: destaque ? AppColors.azulMatricula : Theme.of(context).colorScheme.onSurface,
+            color: destaque ? AppColors.teal : Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ],
@@ -332,12 +332,12 @@ class _ImportadoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Card(
-      color: AppColors.amberSinal.withValues(alpha: 0.1),
+      color: AppColors.orange.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            const Icon(Icons.public, color: AppColors.amberSinal),
+            const Icon(Icons.public, color: AppColors.orange),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -347,7 +347,7 @@ class _ImportadoCard extends StatelessWidget {
                   if (vehicle.matriculaAnterior != null) Text(l10n.matriculaAnteriorLabel(vehicle.matriculaAnterior!)),
                   if (vehicle.paisOrigemAnterior != null) Text(l10n.paisOrigemLabel(vehicle.paisOrigemAnterior!)),
                   if (vehicle.possivelImportado)
-                    Text(l10n.confiancaBaixaAviso, style: const TextStyle(color: AppColors.amberSinal)),
+                    Text(l10n.confiancaBaixaAviso, style: const TextStyle(color: AppColors.orange)),
                 ],
               ),
             ),
@@ -529,7 +529,7 @@ class _MarketEstimateCardState extends State<_MarketEstimateCard> {
     if (_future == null) {
       return Card(
         child: ListTile(
-          leading: const Icon(Icons.trending_up, color: AppColors.azulMatricula),
+          leading: const Icon(Icons.trending_up, color: AppColors.teal),
           title: Text(l10n.estimativaMercadoTitulo),
           subtitle: Text(l10n.estimativaMercadoSubtitulo),
           trailing: TextButton(onPressed: _consultar, child: Text(l10n.consultar)),
@@ -573,7 +573,7 @@ class _MarketEstimateCardState extends State<_MarketEstimateCard> {
                     estimate.precoMax?.toStringAsFixed(0) ?? '-',
                     estimate.precoMedio?.toStringAsFixed(0) ?? '-',
                   ),
-                  style: AppTypography.numero(fontSize: 16, color: AppColors.azulMatricula),
+                  style: AppTypography.numero(fontSize: 16, color: AppColors.teal),
                 ),
                 Text(l10n.estimativaMercadoFontes(estimate.numFontes), style: Theme.of(context).textTheme.bodyMedium),
                 const SizedBox(height: 12),
@@ -599,7 +599,7 @@ class _MarketEstimateCardState extends State<_MarketEstimateCard> {
                     padding: const EdgeInsets.only(top: 4, bottom: 4),
                     child: Text(
                       l10n.estimativaMercadoSemAmostra,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.grafiteVendido),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.inkMuted),
                     ),
                   ),
                 if (estimate.precoMedio != null) ...[
@@ -658,10 +658,10 @@ class _FonteEstimativa extends StatelessWidget {
                       height: 36,
                       fit: BoxFit.cover,
                       errorWidget: (context, _, __) =>
-                          const Icon(Icons.directions_car, color: AppColors.grafiteVendido),
+                          const Icon(Icons.directions_car, color: AppColors.inkMuted),
                     ),
                   )
-                : const Icon(Icons.directions_car, color: AppColors.grafiteVendido),
+                : const Icon(Icons.directions_car, color: AppColors.inkMuted),
             title: Text(anuncio.titulo, maxLines: 1, overflow: TextOverflow.ellipsis),
             subtitle: Text([
               if (anuncio.ano != null) '${anuncio.ano}',

@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+﻿import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
@@ -27,7 +27,7 @@ class DocumentPhotoSlot extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: bytes != null
-                ? AppColors.verdeDisponivel
+                ? AppColors.teal
                 : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
             width: 2,
           ),
@@ -44,7 +44,7 @@ class DocumentPhotoSlot extends StatelessWidget {
                     right: 8,
                     child: CircleAvatar(
                       radius: 12,
-                      backgroundColor: AppColors.verdeDisponivel,
+                      backgroundColor: AppColors.teal,
                       child: Icon(Icons.check, size: 16, color: Colors.white),
                     ),
                   ),
@@ -53,7 +53,7 @@ class DocumentPhotoSlot extends StatelessWidget {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.camera_alt_outlined, size: 40, color: AppColors.grafiteVendido),
+                  const Icon(Icons.camera_alt_outlined, size: 40, color: AppColors.inkMuted),
                   const SizedBox(height: 8),
                   Text(label),
                 ],

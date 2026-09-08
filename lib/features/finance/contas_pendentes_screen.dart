@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/api/api_client.dart';
@@ -122,7 +122,7 @@ class _ContasPendentesScreenState extends State<ContasPendentesScreen> {
                         child: _ResumoCard(
                           label: l10n.financeContasTotalAVencer7Dias,
                           valor: dados.totalAVencerEm7Dias,
-                          cor: AppColors.amberSinal,
+                          cor: AppColors.orange,
                         ),
                       ),
                     ],
@@ -193,7 +193,7 @@ class _ContaPendenteTile extends StatelessWidget {
       child: ListTile(
         leading: Icon(
           positivo ? Icons.arrow_upward : Icons.arrow_downward,
-          color: positivo ? AppColors.verdeDisponivel : AppColors.amberSinal,
+          color: positivo ? AppColors.teal : AppColors.red,
         ),
         title: Text(item.origem == 'veiculo' ? item.veiculo ?? _tituloItem(l10n, item) : _tituloItem(l10n, item)),
         subtitle: Text([

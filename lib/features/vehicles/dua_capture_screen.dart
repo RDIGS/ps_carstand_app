@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+﻿import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -143,7 +143,7 @@ class _DuaCaptureScreenState extends State<DuaCaptureScreen> {
               ),
               if (_erro != null) ...[
                 const SizedBox(height: 12),
-                Text(_erro!, style: const TextStyle(color: AppColors.amberSinal)),
+                Text(_erro!, style: const TextStyle(color: AppColors.orange)),
               ],
               const SizedBox(height: 8),
               CheckboxListTile(

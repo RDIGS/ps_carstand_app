@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -153,7 +153,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                       onTap: () => _verDetalhes(venda),
                       leading: Icon(
                         revertida ? Icons.undo : Icons.receipt_long,
-                        color: revertida ? AppColors.grafiteVendido : AppColors.verdeDisponivel,
+                        color: revertida ? AppColors.inkMuted : AppColors.teal,
                       ),
                       title: Text(venda.compradorNome),
                       subtitle: Text(
@@ -168,7 +168,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                             '${venda.precoFinal.toStringAsFixed(0)} €',
                             style: AppTypography.numero(
                               fontSize: 16,
-                              color: revertida ? AppColors.grafiteVendido : Theme.of(context).colorScheme.onSurface,
+                              color: revertida ? AppColors.inkMuted : Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                           if (temDocumento || temDuaFinal || podeReverter)

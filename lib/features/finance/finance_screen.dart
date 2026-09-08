@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -343,7 +343,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                   _DespesasCategoriaSection(
                     titulo: l10n.despesasGeraisPorCategoriaTitulo,
                     itens: resumo.despesasGeraisPorCategoria,
-                    cor: AppColors.amberSinal,
+                    cor: AppColors.orange,
                     // Despesas gerais da empresa usam as categorias de
                     // finance_entries (renda, salários, marketing, ...).
                     label: financeCategoriaLabel,
@@ -352,7 +352,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                   _DespesasCategoriaSection(
                     titulo: l10n.despesasVeiculosPorCategoriaTitulo,
                     itens: resumo.despesasVeiculosPorCategoria,
-                    cor: AppColors.grafiteVendido,
+                    cor: AppColors.inkMuted,
                     // Despesas por veículo usam um enum totalmente diferente
                     // (reparação, transporte, legalização, ...) — bug real
                     // apanhado ao testar visualmente: usar financeCategoriaLabel
@@ -367,7 +367,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                   if (resumo.margemPorMarcaModelo.isEmpty) Text(l10n.semVendasPeriodo),
                   if (resumo.margemPorMarcaModelo.isNotEmpty) ...[
                     SimpleBarChart(
-                      color: AppColors.verdeDisponivel,
+                      color: AppColors.teal,
                       entries: [
                         for (final linha in resumo.margemPorMarcaModelo.take(6))
                           BarChartEntry(
@@ -385,7 +385,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                         subtitle: Text(l10n.numVendas(parseCount(linha['num_vendas']))),
                         trailing: Text(
                           '${(parseFinanceDecimal(linha['margem_media']) ?? 0).toStringAsFixed(0)} €',
-                          style: AppTypography.numero(fontSize: 15, color: AppColors.verdeDisponivel),
+                          style: AppTypography.numero(fontSize: 15, color: AppColors.teal),
                         ),
                       ),
                     ),
@@ -408,7 +408,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                   for (final linha in resumo.rankingVendedores)
                     Card(
                       child: ListTile(
-                        leading: const Icon(Icons.person, color: AppColors.azulMatricula),
+                        leading: const Icon(Icons.person, color: AppColors.teal),
                         title: Text((linha['vendedor_nome'] as String?) ?? '?'),
                         subtitle: Text(
                           '${l10n.numVendas(parseCount(linha['num_vendas']))} · '
@@ -431,7 +431,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                         subtitle: Text(l10n.diasEmStock((linha['dias_em_stock'] as num).toInt())),
                         trailing: Text(
                           '${(parseFinanceDecimal(linha['margem_real']) ?? 0).toStringAsFixed(0)} €',
-                          style: AppTypography.numero(fontSize: 15, color: AppColors.verdeDisponivel),
+                          style: AppTypography.numero(fontSize: 15, color: AppColors.teal),
                         ),
                       ),
                     ),
@@ -477,7 +477,7 @@ class _CashflowCard extends StatelessWidget {
               '${resumo.cashflowDoMes.toStringAsFixed(0)} €',
               style: AppTypography.numero(
                 fontSize: 32,
-                color: positivo ? AppColors.verdeDisponivel : AppColors.amberSinal,
+                color: positivo ? AppColors.teal : AppColors.red,
               ),
             ),
             if (resumo.desvioPrecoRecomendadoMedio != null || resumo.comparacaoMercadoMedia != null) ...[
@@ -543,7 +543,7 @@ class _EvolucaoSection extends StatelessWidget {
             Text(l10n.evolucaoTitulo, style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 8),
             SimpleLineChart(
-              color: AppColors.azulMatricula,
+              color: AppColors.teal,
               entries: [
                 for (final p in pontos) LineChartEntry(label: p.periodo.substring(5), value: p.cashflow),
               ],
@@ -620,7 +620,7 @@ class _StockPotencialSection extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 '${l10n.margemPotencialTotal}: ${stock.totalMargemPotencial.toStringAsFixed(0)} €',
-                style: AppTypography.numero(fontSize: 14, color: AppColors.verdeDisponivel),
+                style: AppTypography.numero(fontSize: 14, color: AppColors.teal),
               ),
             ],
             const SizedBox(height: 8),
@@ -634,7 +634,7 @@ class _StockPotencialSection extends StatelessWidget {
                     subtitle: Text(l10n.diasEmStock(v.diasEmStock)),
                     trailing: Text(
                       '${v.margemPotencial.toStringAsFixed(0)} €',
-                      style: AppTypography.numero(fontSize: 15, color: AppColors.verdeDisponivel),
+                      style: AppTypography.numero(fontSize: 15, color: AppColors.teal),
                     ),
                   ),
                 ),

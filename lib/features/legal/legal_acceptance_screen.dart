@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/api/api_client.dart';
@@ -79,7 +79,7 @@ class _LegalAcceptanceScreenState extends State<LegalAcceptanceScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Text(
                     l10n.legalProgresso(pendentes.length),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.grafiteVendido),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.inkMuted),
                   ),
                 ),
               Expanded(
@@ -95,7 +95,7 @@ class _LegalAcceptanceScreenState extends State<LegalAcceptanceScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     if (_erro != null) ...[
-                      Text(_erro!, style: const TextStyle(color: AppColors.amberSinal)),
+                      Text(_erro!, style: const TextStyle(color: AppColors.orange)),
                       const SizedBox(height: 8),
                     ],
                     CheckboxListTile(

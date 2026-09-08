@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+﻿import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -628,7 +628,7 @@ class _EntryTile extends StatelessWidget {
         onTap: () => onTap(entry),
         leading: Icon(
           positivo ? Icons.arrow_upward : Icons.arrow_downward,
-          color: positivo ? AppColors.verdeDisponivel : AppColors.amberSinal,
+          color: positivo ? AppColors.teal : AppColors.red,
         ),
         title: Row(
           mainAxisSize: MainAxisSize.min,
@@ -636,7 +636,7 @@ class _EntryTile extends StatelessWidget {
             Text(financeCategoriaLabel(l10n, entry.categoria)),
             if (entry.pagoPor != null && !entry.reembolsado) ...[
               const SizedBox(width: 8),
-              const Icon(Icons.hourglass_bottom, size: 14, color: AppColors.amberSinal),
+              const Icon(Icons.hourglass_bottom, size: 14, color: AppColors.orange),
             ],
             if (entry.recorrente) ...[
               const SizedBox(width: 6),
@@ -652,7 +652,7 @@ class _EntryTile extends StatelessWidget {
               '${positivo ? '+' : '-'}${entry.valor.toStringAsFixed(0)} €',
               style: AppTypography.numero(
                 fontSize: 15,
-                color: positivo ? AppColors.verdeDisponivel : AppColors.amberSinal,
+                color: positivo ? AppColors.teal : AppColors.red,
               ),
             ),
             PopupMenuButton<String>(

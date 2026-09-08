@@ -14,7 +14,7 @@ class LineChartEntry {
 /// minimalista do SimpleBarChart: sem dependências exóticas da API do
 /// fl_chart, rótulos curtos, tooltip ao toque.
 class SimpleLineChart extends StatelessWidget {
-  const SimpleLineChart({super.key, required this.entries, this.color = AppColors.azulMatricula, this.height = 200});
+  const SimpleLineChart({super.key, required this.entries, this.color = AppColors.teal, this.height = 200});
 
   final List<LineChartEntry> entries;
   final Color color;

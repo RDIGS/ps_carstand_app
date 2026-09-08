@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -192,14 +192,14 @@ class _AuditTile extends StatelessWidget {
 
     final titulo = Row(
       children: [
-        Icon(_iconePorEntidade(entrada.entidade), size: 20, color: AppColors.azulMatricula),
+        Icon(_iconePorEntidade(entrada.entidade), size: 20, color: AppColors.teal),
         const SizedBox(width: 10),
         Text(_labelEntidade(entrada.entidade, l10n)),
         const SizedBox(width: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           decoration: BoxDecoration(
-              color: AppColors.grafiteVendido.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(999)),
+              color: AppColors.inkMuted.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(999)),
           child: Text(_labelAcao(entrada.acao, l10n), style: Theme.of(context).textTheme.bodySmall),
         ),
       ],
@@ -256,7 +256,7 @@ class _JsonBox extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.only(top: 4),
-      decoration: BoxDecoration(color: AppColors.cinzaChapa, borderRadius: BorderRadius.circular(6)),
+      decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(6)),
       child: SelectableText(texto, style: const TextStyle(fontFamily: 'monospace', fontSize: 12)),
     );
   }

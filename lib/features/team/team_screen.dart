@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
@@ -243,7 +243,7 @@ class _TeamScreenState extends State<TeamScreen> {
                   return Card(
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: membro.ativo ? AppColors.azulMatricula : AppColors.grafiteVendido,
+                        backgroundColor: membro.ativo ? AppColors.teal : AppColors.inkMuted,
                         child: Text(membro.nome.isNotEmpty ? membro.nome[0].toUpperCase() : '?'),
                       ),
                       title: Text(membro.nome),

@@ -198,12 +198,12 @@ class _SaleScreenState extends State<SaleScreen> {
               if (resultado.docRegistoCompraUrl != null) ...[
                 const SizedBox(height: 12),
                 Text(l10n.registoCompraLabel),
-                SelectableText(resultado.docRegistoCompraUrl!, style: const TextStyle(color: AppColors.azulMatricula)),
+                SelectableText(resultado.docRegistoCompraUrl!, style: const TextStyle(color: AppColors.teal)),
               ],
               if (resultado.docDuaFinalUrl != null) ...[
                 const SizedBox(height: 12),
                 Text(l10n.duaFinalLabel),
-                SelectableText(resultado.docDuaFinalUrl!, style: const TextStyle(color: AppColors.azulMatricula)),
+                SelectableText(resultado.docDuaFinalUrl!, style: const TextStyle(color: AppColors.teal)),
               ],
             ],
           ),

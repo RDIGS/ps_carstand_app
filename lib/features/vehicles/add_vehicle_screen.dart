@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../core/api/api_client.dart';
@@ -187,7 +187,7 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
               if (i?.possivelImportado ?? false) _AvisoBanner(text: l10n.possivelImportadoAviso),
               if (i?.importado ?? false)
                 _AvisoBanner(
-                  cor: AppColors.azulMatricula,
+                  cor: AppColors.lilac,
                   text: i?.paisOrigemAnterior != null
                       ? l10n.importadoComPais(i!.paisOrigemAnterior!, i.matriculaAnterior ?? '-')
                       : l10n.importadoSemPais(i?.matriculaAnterior ?? '-'),
@@ -317,7 +317,7 @@ class _SectionTitle extends StatelessWidget {
 }
 
 class _AvisoBanner extends StatelessWidget {
-  const _AvisoBanner({required this.text, this.cor = AppColors.amberSinal});
+  const _AvisoBanner({required this.text, this.cor = AppColors.orange});
 
   final String text;
   final Color cor;
