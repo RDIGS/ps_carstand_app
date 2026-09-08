@@ -44,6 +44,10 @@ dependencies:
   # que já existia no protótipo HTML fornecido pelo utilizador).
   flutter_colorpicker: ^1.1.0
 
+  # Escolher um ficheiro .ics do disco para importar no calendário (secção
+  # calendário, importação/exportação, 2026-09-08).
+  file_picker: ^8.1.4
+
   # Fotos de veículos/anúncios (URLs assinadas do Supabase Storage): cache em
   # disco entre sessões + placeholder/erro tratados, em vez de Image.network
   # simples (sem isto, cada scroll refaz o download e uma foto que falhe

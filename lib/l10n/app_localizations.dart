@@ -2564,6 +2564,42 @@ abstract class AppLocalizations {
   /// **'Não foste convidado para este evento.'**
   String get erroNaoConvidado;
 
+  /// No description provided for @calendarioExportarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Exportar calendário'**
+  String get calendarioExportarTitulo;
+
+  /// No description provided for @calendarioExportarTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cola um destes links no Google Calendar, iOS ou Outlook (\"adicionar calendário por URL\") — atualiza-se sozinho, não precisas de repetir isto.'**
+  String get calendarioExportarTexto;
+
+  /// No description provided for @calendarioExportarMeu.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só os meus eventos'**
+  String get calendarioExportarMeu;
+
+  /// No description provided for @calendarioExportarStand.
+  ///
+  /// In pt, this message translates to:
+  /// **'Stand inteiro'**
+  String get calendarioExportarStand;
+
+  /// No description provided for @calendarioImportarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Importar calendário'**
+  String get calendarioImportarTitulo;
+
+  /// No description provided for @calendarioImportarSucesso.
+  ///
+  /// In pt, this message translates to:
+  /// **'{n} de {total} eventos importados.'**
+  String calendarioImportarSucesso(int n, int total);
+
   /// No description provided for @avisoStockParado.
   ///
   /// In pt, this message translates to:

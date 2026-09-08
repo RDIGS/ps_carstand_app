@@ -1350,6 +1350,27 @@ class AppLocalizationsPt extends AppLocalizations {
   String get erroNaoConvidado => 'Não foste convidado para este evento.';
 
   @override
+  String get calendarioExportarTitulo => 'Exportar calendário';
+
+  @override
+  String get calendarioExportarTexto =>
+      'Cola um destes links no Google Calendar, iOS ou Outlook (\"adicionar calendário por URL\") — atualiza-se sozinho, não precisas de repetir isto.';
+
+  @override
+  String get calendarioExportarMeu => 'Só os meus eventos';
+
+  @override
+  String get calendarioExportarStand => 'Stand inteiro';
+
+  @override
+  String get calendarioImportarTitulo => 'Importar calendário';
+
+  @override
+  String calendarioImportarSucesso(int n, int total) {
+    return '$n de $total eventos importados.';
+  }
+
+  @override
   String avisoStockParado(int n, int dias) {
     return '$n veículo(s) em stock há mais de $dias dias — talvez valha a pena rever o preço.';
   }

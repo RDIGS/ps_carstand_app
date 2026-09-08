@@ -1,4 +1,6 @@
+﻿import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/api/api_client.dart';
@@ -359,6 +361,79 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
+  // Link .ics subscritível — sem sincronização bidirecional a sério
+  // (CalDAV/Google Calendar API), só um link que Google/iOS/Outlook sabem
+  // subscrever sozinhos (ver memória do calendário).
+  Future<void> _exportar() async {
+    final l10n = context.l10n;
+    try {
+      final links = await context.read<CalendarRepository>().getFeedLinks();
+      if (!mounted) return;
+      await showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(l10n.calendarioExportarTitulo),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.calendarioExportarTexto, style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 16),
+                Text(l10n.calendarioExportarMeu, style: Theme.of(context).textTheme.labelLarge),
+                SelectableText(links.meuUrl, style: Theme.of(context).textTheme.bodySmall),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Clipboard.setData(ClipboardData(text: links.meuUrl)),
+                    child: Text(l10n.copiarLink),
+                  ),
+                ),
+                const Divider(),
+                Text(l10n.calendarioExportarStand, style: Theme.of(context).textTheme.labelLarge),
+                SelectableText(links.standUrl, style: Theme.of(context).textTheme.bodySmall),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Clipboard.setData(ClipboardData(text: links.standUrl)),
+                    child: Text(l10n.copiarLink),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.fechar))],
+        ),
+      );
+    } on ApiException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.localizado(context))));
+    }
+  }
+
+  // Upload manual e pontual de um ficheiro .ics — sem duplicar eventos já
+  // importados antes (dedup por UID feito no backend).
+  Future<void> _importar() async {
+    final l10n = context.l10n;
+    final resultado = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['ics'],
+      withData: true,
+    );
+    final arquivo = (resultado != null && resultado.files.isNotEmpty) ? resultado.files.first : null;
+    final bytes = arquivo?.bytes;
+    if (arquivo == null || bytes == null || !mounted) return;
+
+    try {
+      final r = await context.read<CalendarRepository>().importIcs(bytes, arquivo.name);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l10n.calendarioImportarSucesso(r.importados, r.total))));
+      await _refresh();
+    } on ApiException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.localizado(context))));
+    }
+  }
+
   String _estadoLabel(dynamic l10n, String estado) {
     switch (estado) {
       case 'aceite':
@@ -377,6 +452,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.navCalendario),
+        actions: [
+          IconButton(icon: const Icon(Icons.ios_share), tooltip: l10n.calendarioExportarTitulo, onPressed: _exportar),
+          IconButton(icon: const Icon(Icons.upload_file), tooltip: l10n.calendarioImportarTitulo, onPressed: _importar),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(56),
           child: Padding(
@@ -432,7 +511,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           onTap: () => _abrirDetalhe(evento),
                           leading: Icon(
                             evento.participantes.isEmpty ? Icons.task_alt : Icons.event,
-                            color: evento.concluido ? AppColors.verdeDisponivel : null,
+                            color: evento.concluido ? AppColors.teal : null,
                           ),
                           title: Text(
                             evento.titulo,

@@ -486,6 +486,13 @@
   "calendarioApagarConfirmacao": "De certeza que queres apagar este evento?",
   "erroParticipanteInvalido": "Um dos convidados já não faz parte da equipa.",
   "erroNaoConvidado": "Não foste convidado para este evento.",
+  "calendarioExportarTitulo": "Exportar calendário",
+  "calendarioExportarTexto": "Cola um destes links no Google Calendar, iOS ou Outlook (\"adicionar calendário por URL\") — atualiza-se sozinho, não precisas de repetir isto.",
+  "calendarioExportarMeu": "Só os meus eventos",
+  "calendarioExportarStand": "Stand inteiro",
+  "calendarioImportarTitulo": "Importar calendário",
+  "calendarioImportarSucesso": "{n} de {total} eventos importados.",
+  "@calendarioImportarSucesso": { "placeholders": { "n": { "type": "int" }, "total": { "type": "int" } } },
 
   "avisoStockParado": "{n} veículo(s) em stock há mais de {dias} dias — talvez valha a pena rever o preço.",
   "@avisoStockParado": {

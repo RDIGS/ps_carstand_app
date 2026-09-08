@@ -450,6 +450,13 @@
   "calendarioApagarConfirmacao": "Are you sure you want to delete this event?",
   "erroParticipanteInvalido": "One of the invitees is no longer part of the team.",
   "erroNaoConvidado": "You weren't invited to this event.",
+  "calendarioExportarTitulo": "Export calendar",
+  "calendarioExportarTexto": "Paste one of these links into Google Calendar, iOS or Outlook (\"add calendar by URL\") — it updates itself, no need to repeat this.",
+  "calendarioExportarMeu": "Only my events",
+  "calendarioExportarStand": "Whole dealership",
+  "calendarioImportarTitulo": "Import calendar",
+  "calendarioImportarSucesso": "{n} of {total} events imported.",
+  "@calendarioImportarSucesso": { "placeholders": { "n": { "type": "int" }, "total": { "type": "int" } } },
 
   "avisoStockParado": "{n} vehicle(s) in stock for over {dias} days — might be worth reviewing the price.",
   "@avisoStockParado": {

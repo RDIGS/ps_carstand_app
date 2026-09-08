@@ -1,5 +1,20 @@
+import 'package:dio/dio.dart';
 import '../../core/api/api_client.dart';
 import 'calendar_event.dart';
+
+class CalendarFeedLinks {
+  const CalendarFeedLinks({required this.meuUrl, required this.standUrl});
+
+  final String meuUrl;
+  final String standUrl;
+}
+
+class CalendarImportResult {
+  const CalendarImportResult({required this.importados, required this.total});
+
+  final int importados;
+  final int total;
+}
 
 class CalendarRepository {
   CalendarRepository(this._api);
@@ -90,5 +105,32 @@ class CalendarRepository {
 
   Future<void> remove(String id) {
     return _api.request('DELETE', '/calendar/events/$id', parse: (_) {});
+  }
+
+  // Link .ics subscritível (Google Calendar/iOS/Outlook fazem polling
+  // sozinhos) — gerado sob pedido no backend, nunca ao criar a conta.
+  Future<CalendarFeedLinks> getFeedLinks() {
+    return _api.request(
+      'GET',
+      '/calendar/feed-links',
+      parse: (data) => CalendarFeedLinks(meuUrl: data['meuUrl'] as String, standUrl: data['standUrl'] as String),
+    );
+  }
+
+  // Upload manual e pontual de um ficheiro .ics — usa `_api.raw` porque
+  // `uploadMultipart` assume sempre extensão .jpg (fotos), não serve aqui.
+  Future<CalendarImportResult> importIcs(List<int> bytes, String nomeFicheiro) async {
+    try {
+      final formData = FormData.fromMap({
+        'file': MultipartFile.fromBytes(bytes, filename: nomeFicheiro),
+      });
+      final response = await _api.raw.post<dynamic>('/calendar/import', data: formData);
+      return CalendarImportResult(
+        importados: response.data['importados'] as int,
+        total: response.data['total'] as int,
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
   }
 }
