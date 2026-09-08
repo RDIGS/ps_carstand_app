@@ -46,6 +46,7 @@ class SecureStorage {
 
   Future<String?> readJwt() => _storage.read(key: _kJwt);
   Future<String?> readRefreshToken() => _storage.read(key: _kRefreshToken);
+  Future<String?> readUserId() => _storage.read(key: _kUserId);
   Future<String?> readUserNome() => _storage.read(key: _kUserNome);
   Future<String?> readUserRole() => _storage.read(key: _kUserRole);
   Future<String?> readUserIdioma() => _storage.read(key: _kUserIdioma);

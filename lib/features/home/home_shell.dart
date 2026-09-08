@@ -8,6 +8,7 @@ import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../auth/auth_repository.dart';
 import '../auth/auth_state.dart';
+import '../calendar/calendar_screen.dart';
 import '../finance/finance_screen.dart';
 import '../leads/leads_list_screen.dart';
 import '../sales/sales_list_screen.dart';
@@ -53,6 +54,7 @@ class _HomeShellState extends State<HomeShell> {
       _Destino(icon: Icons.directions_car, label: l10n.navVeiculos, screen: const VehicleListScreen()),
       _Destino(icon: Icons.receipt_long, label: l10n.navVendas, screen: const SalesListScreen()),
       _Destino(icon: Icons.person_search, label: l10n.navLeads, screen: const LeadsListScreen()),
+      _Destino(icon: Icons.calendar_month, label: l10n.navCalendario, screen: const CalendarScreen()),
       if (isOwner) _Destino(icon: Icons.groups, label: l10n.navEquipa, screen: const TeamScreen()),
       if (isOwner) _Destino(icon: Icons.bar_chart, label: l10n.navFinanceiro, screen: const FinanceScreen()),
     ];

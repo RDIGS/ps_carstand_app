@@ -27,6 +27,7 @@ class AuthState extends ChangeNotifier {
   AuthStatus status = AuthStatus.loading;
   String? standId;
   String? standNome;
+  String? userId;
   String? userNome;
   String? userRole;
   // Preferência guardada em people.idioma (secção 18), não no dispositivo —
@@ -73,6 +74,7 @@ class AuthState extends ChangeNotifier {
       return;
     }
 
+    userId = await _storage.readUserId();
     userNome = await _storage.readUserNome();
     userRole = await _storage.readUserRole();
     userIdioma = await _storage.readUserIdioma() ?? 'pt';
@@ -190,6 +192,7 @@ class AuthState extends ChangeNotifier {
         userRole: result.userRole,
         userIdioma: result.userIdioma,
       );
+      userId = result.userId;
       userNome = result.userNome;
       userRole = result.userRole;
       userIdioma = result.userIdioma;
@@ -247,6 +250,7 @@ class AuthState extends ChangeNotifier {
     await _storage.clearAll();
     standId = null;
     standNome = null;
+    userId = null;
     userNome = null;
     userRole = null;
     userIdioma = 'pt';

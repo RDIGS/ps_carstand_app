@@ -55,6 +55,10 @@ extension ApiExceptionL10n on ApiException {
         return l10n.erroComissaoInvalida;
       case 'campos_em_falta':
         return l10n.erroCamposEmFalta;
+      case 'participante_invalido':
+        return l10n.erroParticipanteInvalido;
+      case 'nao_convidado':
+        return l10n.erroNaoConvidado;
       case 'erro_rede':
         return l10n.erroRede;
       case 'erro_interno':

@@ -1258,6 +1258,98 @@ class AppLocalizationsPt extends AppLocalizations {
   String get navFinanceiro => 'Financeiro';
 
   @override
+  String get navCalendario => 'Calendário';
+
+  @override
+  String get calendarioEscopoMeu => 'Meu';
+
+  @override
+  String get calendarioEscopoStand => 'Stand';
+
+  @override
+  String get calendarioNovoEvento => 'Novo evento';
+
+  @override
+  String get calendarioEditarEvento => 'Editar evento';
+
+  @override
+  String get calendarioCampoTitulo => 'Título';
+
+  @override
+  String get calendarioCampoInicio => 'Início';
+
+  @override
+  String get calendarioCampoFim => 'Fim (opcional)';
+
+  @override
+  String get calendarioCampoVeiculo => 'Veículo (opcional)';
+
+  @override
+  String get calendarioCampoLead => 'Lead (opcional)';
+
+  @override
+  String get calendarioSemVeiculo => 'Sem veículo';
+
+  @override
+  String get calendarioSemLead => 'Sem lead';
+
+  @override
+  String get calendarioCampoConvidados => 'Convidar colegas';
+
+  @override
+  String get calendarioSemConvidados =>
+      'Sem convidados — fica como tarefa do stand, visível a todos';
+
+  @override
+  String get calendarioConcluido => 'Concluído';
+
+  @override
+  String get calendarioMarcarConcluido => 'Marcar como concluído';
+
+  @override
+  String get calendarioDesmarcarConcluido => 'Desmarcar como concluído';
+
+  @override
+  String get calendarioAceitar => 'Aceitar';
+
+  @override
+  String get calendarioRecusar => 'Recusar';
+
+  @override
+  String get calendarioConviteEstadoPendente => 'Pendente';
+
+  @override
+  String get calendarioConviteEstadoAceite => 'Aceite';
+
+  @override
+  String get calendarioConviteEstadoRecusado => 'Recusado';
+
+  @override
+  String calendarioOrganizadoPor(String nome) {
+    return 'Organizado por $nome';
+  }
+
+  @override
+  String get calendarioConvidados => 'Convidados';
+
+  @override
+  String get calendarioVazio => 'Sem eventos neste período.';
+
+  @override
+  String get calendarioApagarTitulo => 'Apagar evento';
+
+  @override
+  String get calendarioApagarConfirmacao =>
+      'De certeza que queres apagar este evento?';
+
+  @override
+  String get erroParticipanteInvalido =>
+      'Um dos convidados já não faz parte da equipa.';
+
+  @override
+  String get erroNaoConvidado => 'Não foste convidado para este evento.';
+
+  @override
   String avisoStockParado(int n, int dias) {
     return '$n veículo(s) em stock há mais de $dias dias — talvez valha a pena rever o preço.';
   }

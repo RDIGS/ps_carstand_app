@@ -1254,6 +1254,98 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navFinanceiro => 'Finance';
 
   @override
+  String get navCalendario => 'Calendar';
+
+  @override
+  String get calendarioEscopoMeu => 'Mine';
+
+  @override
+  String get calendarioEscopoStand => 'Team';
+
+  @override
+  String get calendarioNovoEvento => 'New event';
+
+  @override
+  String get calendarioEditarEvento => 'Edit event';
+
+  @override
+  String get calendarioCampoTitulo => 'Title';
+
+  @override
+  String get calendarioCampoInicio => 'Start';
+
+  @override
+  String get calendarioCampoFim => 'End (optional)';
+
+  @override
+  String get calendarioCampoVeiculo => 'Vehicle (optional)';
+
+  @override
+  String get calendarioCampoLead => 'Lead (optional)';
+
+  @override
+  String get calendarioSemVeiculo => 'No vehicle';
+
+  @override
+  String get calendarioSemLead => 'No lead';
+
+  @override
+  String get calendarioCampoConvidados => 'Invite colleagues';
+
+  @override
+  String get calendarioSemConvidados =>
+      'No invitees — becomes a team task, visible to everyone';
+
+  @override
+  String get calendarioConcluido => 'Done';
+
+  @override
+  String get calendarioMarcarConcluido => 'Mark as done';
+
+  @override
+  String get calendarioDesmarcarConcluido => 'Mark as not done';
+
+  @override
+  String get calendarioAceitar => 'Accept';
+
+  @override
+  String get calendarioRecusar => 'Decline';
+
+  @override
+  String get calendarioConviteEstadoPendente => 'Pending';
+
+  @override
+  String get calendarioConviteEstadoAceite => 'Accepted';
+
+  @override
+  String get calendarioConviteEstadoRecusado => 'Declined';
+
+  @override
+  String calendarioOrganizadoPor(String nome) {
+    return 'Organized by $nome';
+  }
+
+  @override
+  String get calendarioConvidados => 'Invitees';
+
+  @override
+  String get calendarioVazio => 'No events in this period.';
+
+  @override
+  String get calendarioApagarTitulo => 'Delete event';
+
+  @override
+  String get calendarioApagarConfirmacao =>
+      'Are you sure you want to delete this event?';
+
+  @override
+  String get erroParticipanteInvalido =>
+      'One of the invitees is no longer part of the team.';
+
+  @override
+  String get erroNaoConvidado => 'You weren\'t invited to this event.';
+
+  @override
   String avisoStockParado(int n, int dias) {
     return '$n vehicle(s) in stock for over $dias days — might be worth reviewing the price.';
   }

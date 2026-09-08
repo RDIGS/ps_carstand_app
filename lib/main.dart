@@ -10,6 +10,7 @@ import 'features/app_version/app_version_repository.dart';
 import 'features/app_version/update_required_screen.dart';
 import 'features/audit/audit_repository.dart';
 import 'features/banner/stand_profile_repository.dart';
+import 'features/calendar/calendar_repository.dart';
 import 'features/checklist/checklist_repository.dart';
 import 'features/auth/auth_repository.dart';
 import 'features/auth/auth_state.dart';
@@ -59,6 +60,7 @@ class PsCarStandApp extends StatelessWidget {
         ProxyProvider<ApiClient, LegalRepository>(update: (_, api, __) => LegalRepository(api)),
         ProxyProvider<ApiClient, StandProfileRepository>(update: (_, api, __) => StandProfileRepository(api)),
         ProxyProvider<ApiClient, SuggestionsRepository>(update: (_, api, __) => SuggestionsRepository(api)),
+        ProxyProvider<ApiClient, CalendarRepository>(update: (_, api, __) => CalendarRepository(api)),
         ChangeNotifierProxyProvider4<AuthRepository, SecureStorage, AppVersionRepository, LegalRepository, AuthState>(
           create: (context) => AuthState(
             context.read<AuthRepository>(),

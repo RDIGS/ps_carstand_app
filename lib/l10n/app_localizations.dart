@@ -2390,6 +2390,180 @@ abstract class AppLocalizations {
   /// **'Financeiro'**
   String get navFinanceiro;
 
+  /// No description provided for @navCalendario.
+  ///
+  /// In pt, this message translates to:
+  /// **'Calendário'**
+  String get navCalendario;
+
+  /// No description provided for @calendarioEscopoMeu.
+  ///
+  /// In pt, this message translates to:
+  /// **'Meu'**
+  String get calendarioEscopoMeu;
+
+  /// No description provided for @calendarioEscopoStand.
+  ///
+  /// In pt, this message translates to:
+  /// **'Stand'**
+  String get calendarioEscopoStand;
+
+  /// No description provided for @calendarioNovoEvento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo evento'**
+  String get calendarioNovoEvento;
+
+  /// No description provided for @calendarioEditarEvento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar evento'**
+  String get calendarioEditarEvento;
+
+  /// No description provided for @calendarioCampoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Título'**
+  String get calendarioCampoTitulo;
+
+  /// No description provided for @calendarioCampoInicio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Início'**
+  String get calendarioCampoInicio;
+
+  /// No description provided for @calendarioCampoFim.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fim (opcional)'**
+  String get calendarioCampoFim;
+
+  /// No description provided for @calendarioCampoVeiculo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Veículo (opcional)'**
+  String get calendarioCampoVeiculo;
+
+  /// No description provided for @calendarioCampoLead.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lead (opcional)'**
+  String get calendarioCampoLead;
+
+  /// No description provided for @calendarioSemVeiculo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem veículo'**
+  String get calendarioSemVeiculo;
+
+  /// No description provided for @calendarioSemLead.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem lead'**
+  String get calendarioSemLead;
+
+  /// No description provided for @calendarioCampoConvidados.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convidar colegas'**
+  String get calendarioCampoConvidados;
+
+  /// No description provided for @calendarioSemConvidados.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem convidados — fica como tarefa do stand, visível a todos'**
+  String get calendarioSemConvidados;
+
+  /// No description provided for @calendarioConcluido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Concluído'**
+  String get calendarioConcluido;
+
+  /// No description provided for @calendarioMarcarConcluido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcar como concluído'**
+  String get calendarioMarcarConcluido;
+
+  /// No description provided for @calendarioDesmarcarConcluido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desmarcar como concluído'**
+  String get calendarioDesmarcarConcluido;
+
+  /// No description provided for @calendarioAceitar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aceitar'**
+  String get calendarioAceitar;
+
+  /// No description provided for @calendarioRecusar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Recusar'**
+  String get calendarioRecusar;
+
+  /// No description provided for @calendarioConviteEstadoPendente.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pendente'**
+  String get calendarioConviteEstadoPendente;
+
+  /// No description provided for @calendarioConviteEstadoAceite.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aceite'**
+  String get calendarioConviteEstadoAceite;
+
+  /// No description provided for @calendarioConviteEstadoRecusado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Recusado'**
+  String get calendarioConviteEstadoRecusado;
+
+  /// No description provided for @calendarioOrganizadoPor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Organizado por {nome}'**
+  String calendarioOrganizadoPor(String nome);
+
+  /// No description provided for @calendarioConvidados.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convidados'**
+  String get calendarioConvidados;
+
+  /// No description provided for @calendarioVazio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem eventos neste período.'**
+  String get calendarioVazio;
+
+  /// No description provided for @calendarioApagarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar evento'**
+  String get calendarioApagarTitulo;
+
+  /// No description provided for @calendarioApagarConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'De certeza que queres apagar este evento?'**
+  String get calendarioApagarConfirmacao;
+
+  /// No description provided for @erroParticipanteInvalido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Um dos convidados já não faz parte da equipa.'**
+  String get erroParticipanteInvalido;
+
+  /// No description provided for @erroNaoConvidado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foste convidado para este evento.'**
+  String get erroNaoConvidado;
+
   /// No description provided for @avisoStockParado.
   ///
   /// In pt, this message translates to:
