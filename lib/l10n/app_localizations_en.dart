@@ -1027,6 +1027,48 @@ class AppLocalizationsEn extends AppLocalizations {
       'Full monthly financial statement (general expenses, vehicle expenses and sales), as a detailed PDF and CSV for your accountant.';
 
   @override
+  String get financeCampoJaPago => 'Already paid';
+
+  @override
+  String get financeCampoDataVencimento => 'Due date';
+
+  @override
+  String get validacaoDataVencimentoObrigatoria => 'Choose the due date';
+
+  @override
+  String get financeContasPendentesTitulo => 'Accounts payable/receivable';
+
+  @override
+  String get financeContasPendentesDescricao =>
+      'Expenses and revenues not yet paid/received, with a due date.';
+
+  @override
+  String get financeContasPendentesVazio => 'No pending accounts.';
+
+  @override
+  String get financeContasEmAtraso => 'Overdue';
+
+  @override
+  String get financeContasAVencer => 'Upcoming';
+
+  @override
+  String get financeContasTotalPendente => 'Total pending';
+
+  @override
+  String get financeContasTotalAtraso => 'Overdue';
+
+  @override
+  String get financeContasTotalAVencer7Dias => 'Due within 7 days';
+
+  @override
+  String get financeMarcarComoPago => 'Mark as paid';
+
+  @override
+  String financeVenceEm(String data) {
+    return 'Due $data';
+  }
+
+  @override
   String get filtrosTitulo => 'Filters';
 
   @override

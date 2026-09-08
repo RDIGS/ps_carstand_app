@@ -14,6 +14,7 @@ import '../../shared/widgets/simple_line_chart.dart';
 import '../team/team_member.dart';
 import '../team/team_repository.dart';
 import '../vehicles/vehicle_expenses_card.dart';
+import 'contas_pendentes_screen.dart';
 import 'finance_categoria.dart';
 import 'finance_entries_screen.dart';
 import 'finance_evolution.dart';
@@ -294,6 +295,13 @@ class _FinanceScreenState extends State<FinanceScreen> {
             tooltip: l10n.financeExtratoTitulo,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const FinanceStatementScreen()),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.event_busy_outlined),
+            tooltip: l10n.financeContasPendentesTitulo,
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const ContasPendentesScreen()),
             ),
           ),
         ],

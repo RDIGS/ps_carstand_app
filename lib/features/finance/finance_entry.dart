@@ -26,6 +26,8 @@ class FinanceEntry {
     this.fornecedorNif,
     this.valorIva,
     this.taxaIva,
+    this.pago = true,
+    this.dataVencimento,
   });
 
   factory FinanceEntry.fromJson(Map<String, dynamic> json) => FinanceEntry(
@@ -45,6 +47,9 @@ class FinanceEntry {
         fornecedorNif: json['fornecedor_nif'] as String?,
         valorIva: parseDecimal(json['valor_iva']),
         taxaIva: parseDecimal(json['taxa_iva']),
+        pago: json['pago'] as bool? ?? true,
+        dataVencimento:
+            json['data_vencimento'] != null ? formatFinanceDate(json['data_vencimento'] as String) : null,
       );
 
   final String id;
@@ -77,6 +82,13 @@ class FinanceEntry {
   final String? fornecedorNif;
   final double? valorIva;
   final double? taxaIva;
+
+  /// Contas a pagar/receber: `false` = ainda não foi pago/recebido (não
+  /// entra no cashflow/extrato do mês até ser marcado como pago).
+  final bool pago;
+
+  /// Só relevante quando `pago` é `false`.
+  final String? dataVencimento;
 }
 
 class FinanceEntriesPage {

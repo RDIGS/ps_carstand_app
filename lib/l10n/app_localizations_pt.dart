@@ -1029,6 +1029,49 @@ class AppLocalizationsPt extends AppLocalizations {
       'Extrato financeiro completo do mês escolhido (despesas gerais, despesas de veículos e vendas), em PDF pormenorizado e CSV para o contabilista.';
 
   @override
+  String get financeCampoJaPago => 'Já pago';
+
+  @override
+  String get financeCampoDataVencimento => 'Data de vencimento';
+
+  @override
+  String get validacaoDataVencimentoObrigatoria =>
+      'Escolhe a data de vencimento';
+
+  @override
+  String get financeContasPendentesTitulo => 'Contas a pagar/receber';
+
+  @override
+  String get financeContasPendentesDescricao =>
+      'Despesas e receitas ainda por pagar/receber, com data de vencimento.';
+
+  @override
+  String get financeContasPendentesVazio => 'Sem contas pendentes.';
+
+  @override
+  String get financeContasEmAtraso => 'Em atraso';
+
+  @override
+  String get financeContasAVencer => 'A vencer';
+
+  @override
+  String get financeContasTotalPendente => 'Total pendente';
+
+  @override
+  String get financeContasTotalAtraso => 'Em atraso';
+
+  @override
+  String get financeContasTotalAVencer7Dias => 'A vencer em 7 dias';
+
+  @override
+  String get financeMarcarComoPago => 'Marcar como pago';
+
+  @override
+  String financeVenceEm(String data) {
+    return 'Vence em $data';
+  }
+
+  @override
   String get filtrosTitulo => 'Filtros';
 
   @override

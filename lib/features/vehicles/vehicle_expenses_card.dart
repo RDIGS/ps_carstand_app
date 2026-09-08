@@ -49,6 +49,8 @@ class _DespesaFormResultado {
     this.fornecedorNif,
     this.valorIva,
     this.taxaIva,
+    this.pago = true,
+    this.dataVencimento,
   });
 
   final String categoria;
@@ -63,6 +65,8 @@ class _DespesaFormResultado {
   final String? fornecedorNif;
   final double? valorIva;
   final double? taxaIva;
+  final bool pago;
+  final String? dataVencimento;
 }
 
 /// Despesas por veículo (usadas no cálculo de margem real do Financeiro,
@@ -110,6 +114,8 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
     String? fornecedorNifInicial,
     double? valorIvaInicial,
     double? taxaIvaInicial,
+    bool pagoInicial = true,
+    String? dataVencimentoInicial,
   }) async {
     final l10n = context.l10n;
     final formKey = GlobalKey<FormState>();
@@ -120,10 +126,12 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
     final fornecedorNifController = TextEditingController(text: fornecedorNifInicial);
     final valorIvaController = TextEditingController(text: valorIvaInicial?.toStringAsFixed(2));
     final taxaIvaController = TextEditingController(text: taxaIvaInicial?.toStringAsFixed(0));
+    final dataVencimentoController = TextEditingController(text: dataVencimentoInicial);
     String categoria = categoriaInicial ?? vehicleExpenseCategorias.first;
     String? metodoPagamento = metodoPagamentoInicial;
     String? pagoPor = pagoPorInicial;
     bool reembolsado = reembolsadoInicial;
+    bool pago = pagoInicial;
     String? comprovativoUrlAtual = comprovativoUrlInicial;
     Uint8List? novaFotoBytes;
     bool carregandoFoto = false;
@@ -288,6 +296,34 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
                         onChanged: (v) => setDialogState(() => reembolsado = v),
                         title: Text(l10n.financeReembolsado),
                       ),
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      value: pago,
+                      onChanged: (v) => setDialogState(() => pago = v),
+                      title: Text(l10n.financeCampoJaPago),
+                    ),
+                    if (!pago)
+                      TextFormField(
+                        controller: dataVencimentoController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: l10n.financeCampoDataVencimento,
+                          suffixIcon: const Icon(Icons.event),
+                        ),
+                        validator: (v) => (v ?? '').trim().isEmpty ? l10n.validacaoDataVencimentoObrigatoria : null,
+                        onTap: () async {
+                          final atual = DateTime.tryParse(dataVencimentoController.text) ?? DateTime.now();
+                          final escolhida = await showDatePicker(
+                            context: context,
+                            initialDate: atual,
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime.now().add(const Duration(days: 3650)),
+                          );
+                          if (escolhida != null) {
+                            dataVencimentoController.text = escolhida.toIso8601String().substring(0, 10);
+                          }
+                        },
+                      ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
@@ -357,6 +393,10 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
       taxaIva: taxaIvaController.text.trim().isEmpty
           ? null
           : double.tryParse(taxaIvaController.text.replaceAll(',', '.')),
+      pago: pago,
+      dataVencimento: pago || dataVencimentoController.text.trim().isEmpty
+          ? null
+          : dataVencimentoController.text.trim(),
     );
   }
 
@@ -380,6 +420,8 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
         fornecedorNif: resultado.fornecedorNif,
         valorIva: resultado.valorIva,
         taxaIva: resultado.taxaIva,
+        pago: resultado.pago,
+        dataVencimento: resultado.dataVencimento,
       );
       if (resultado.novaFotoBytes != null) {
         await repo.uploadExpenseComprovativo(
@@ -409,6 +451,8 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
       fornecedorNifInicial: despesa.fornecedorNif,
       valorIvaInicial: despesa.valorIva,
       taxaIvaInicial: despesa.taxaIva,
+      pagoInicial: despesa.pago,
+      dataVencimentoInicial: despesa.dataVencimento,
     );
     if (resultado == null || !mounted) return;
     try {
@@ -427,6 +471,9 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
         fornecedorNif: resultado.fornecedorNif,
         valorIva: resultado.valorIva,
         taxaIva: resultado.taxaIva,
+        pago: resultado.pago,
+        dataVencimento: resultado.dataVencimento,
+        limparDataVencimento: resultado.pago,
       );
       if (resultado.novaFotoBytes != null) {
         await repo.uploadExpenseComprovativo(

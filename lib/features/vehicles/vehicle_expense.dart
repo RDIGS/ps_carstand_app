@@ -16,6 +16,8 @@ class VehicleExpense {
     this.fornecedorNif,
     this.valorIva,
     this.taxaIva,
+    this.pago = true,
+    this.dataVencimento,
   });
 
   factory VehicleExpense.fromJson(Map<String, dynamic> json) => VehicleExpense(
@@ -32,6 +34,9 @@ class VehicleExpense {
         fornecedorNif: json['fornecedor_nif'] as String?,
         valorIva: parseDecimal(json['valor_iva']),
         taxaIva: parseDecimal(json['taxa_iva']),
+        pago: json['pago'] as bool? ?? true,
+        dataVencimento:
+            json['data_vencimento'] != null ? formatFinanceDate(json['data_vencimento'] as String) : null,
       );
 
   final String id;
@@ -47,6 +52,11 @@ class VehicleExpense {
   final String? fornecedorNif;
   final double? valorIva;
   final double? taxaIva;
+
+  /// Contas a pagar: `false` = despesa ainda não paga (não entra no
+  /// cashflow/extrato do mês até ser marcada como paga).
+  final bool pago;
+  final String? dataVencimento;
 }
 
 const vehicleExpenseCategorias = ['reparacao', 'transporte', 'legalizacao', 'limpeza_detalhe', 'outro'];

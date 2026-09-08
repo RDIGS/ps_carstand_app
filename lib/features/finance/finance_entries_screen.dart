@@ -79,6 +79,8 @@ class _FinanceEntriesScreenState extends State<FinanceEntriesScreen> {
     String? pagoPor = existente?.pagoPor;
     bool recorrente = existente?.recorrente ?? false;
     bool reembolsado = existente?.reembolsado ?? false;
+    bool pago = existente?.pago ?? true;
+    final dataVencimentoController = TextEditingController(text: existente?.dataVencimento);
     String? comprovativoUrlAtual = existente?.comprovativoUrl;
     Uint8List? novaFotoBytes;
     bool carregandoFoto = false;
@@ -235,6 +237,34 @@ class _FinanceEntriesScreenState extends State<FinanceEntriesScreen> {
                     ),
                     SwitchListTile(
                       contentPadding: EdgeInsets.zero,
+                      value: pago,
+                      onChanged: (v) => setDialogState(() => pago = v),
+                      title: Text(l10n.financeCampoJaPago),
+                    ),
+                    if (!pago)
+                      TextFormField(
+                        controller: dataVencimentoController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: l10n.financeCampoDataVencimento,
+                          suffixIcon: const Icon(Icons.event),
+                        ),
+                        validator: (v) => (v ?? '').trim().isEmpty ? l10n.validacaoDataVencimentoObrigatoria : null,
+                        onTap: () async {
+                          final atual = DateTime.tryParse(dataVencimentoController.text) ?? DateTime.now();
+                          final escolhida = await showDatePicker(
+                            context: context,
+                            initialDate: atual,
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime.now().add(const Duration(days: 3650)),
+                          );
+                          if (escolhida != null) {
+                            dataVencimentoController.text = escolhida.toIso8601String().substring(0, 10);
+                          }
+                        },
+                      ),
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
                       value: recorrente,
                       onChanged: (v) => setDialogState(() => recorrente = v),
                       title: Text(l10n.financeRecorrente),
@@ -310,6 +340,9 @@ class _FinanceEntriesScreenState extends State<FinanceEntriesScreen> {
       final taxaIva = taxaIvaController.text.trim().isEmpty
           ? null
           : double.tryParse(taxaIvaController.text.replaceAll(',', '.'));
+      final dataVencimento = pago || dataVencimentoController.text.trim().isEmpty
+          ? null
+          : dataVencimentoController.text.trim();
       String entryId;
       if (existente == null) {
         final criado = await repo.createEntry(
@@ -324,6 +357,8 @@ class _FinanceEntriesScreenState extends State<FinanceEntriesScreen> {
           fornecedorNif: fornecedorNif,
           valorIva: valorIva,
           taxaIva: taxaIva,
+          pago: pago,
+          dataVencimento: dataVencimento,
         );
         entryId = criado.id;
       } else {
@@ -342,6 +377,9 @@ class _FinanceEntriesScreenState extends State<FinanceEntriesScreen> {
           fornecedorNif: fornecedorNif,
           valorIva: valorIva,
           taxaIva: taxaIva,
+          pago: pago,
+          dataVencimento: dataVencimento,
+          limparDataVencimento: pago,
         );
       }
       if (novaFotoBytes != null) {
@@ -411,6 +449,11 @@ class _FinanceEntriesScreenState extends State<FinanceEntriesScreen> {
                   valor: entry.reembolsado ? l10n.sim : l10n.nao,
                 ),
               if (entry.recorrente) DetalheLinha(label: l10n.financeRecorrente, valor: l10n.sim),
+              if (!entry.pago)
+                DetalheLinha(
+                  label: l10n.financeCampoJaPago,
+                  valor: l10n.financeVenceEm(entry.dataVencimento ?? '?'),
+                ),
             ],
           ),
         ),

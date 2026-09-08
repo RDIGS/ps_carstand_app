@@ -1970,6 +1970,84 @@ abstract class AppLocalizations {
   /// **'Extrato financeiro completo do mês escolhido (despesas gerais, despesas de veículos e vendas), em PDF pormenorizado e CSV para o contabilista.'**
   String get financeExtratoDescricao;
 
+  /// No description provided for @financeCampoJaPago.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já pago'**
+  String get financeCampoJaPago;
+
+  /// No description provided for @financeCampoDataVencimento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data de vencimento'**
+  String get financeCampoDataVencimento;
+
+  /// No description provided for @validacaoDataVencimentoObrigatoria.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolhe a data de vencimento'**
+  String get validacaoDataVencimentoObrigatoria;
+
+  /// No description provided for @financeContasPendentesTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Contas a pagar/receber'**
+  String get financeContasPendentesTitulo;
+
+  /// No description provided for @financeContasPendentesDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesas e receitas ainda por pagar/receber, com data de vencimento.'**
+  String get financeContasPendentesDescricao;
+
+  /// No description provided for @financeContasPendentesVazio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem contas pendentes.'**
+  String get financeContasPendentesVazio;
+
+  /// No description provided for @financeContasEmAtraso.
+  ///
+  /// In pt, this message translates to:
+  /// **'Em atraso'**
+  String get financeContasEmAtraso;
+
+  /// No description provided for @financeContasAVencer.
+  ///
+  /// In pt, this message translates to:
+  /// **'A vencer'**
+  String get financeContasAVencer;
+
+  /// No description provided for @financeContasTotalPendente.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total pendente'**
+  String get financeContasTotalPendente;
+
+  /// No description provided for @financeContasTotalAtraso.
+  ///
+  /// In pt, this message translates to:
+  /// **'Em atraso'**
+  String get financeContasTotalAtraso;
+
+  /// No description provided for @financeContasTotalAVencer7Dias.
+  ///
+  /// In pt, this message translates to:
+  /// **'A vencer em 7 dias'**
+  String get financeContasTotalAVencer7Dias;
+
+  /// No description provided for @financeMarcarComoPago.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcar como pago'**
+  String get financeMarcarComoPago;
+
+  /// No description provided for @financeVenceEm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vence em {data}'**
+  String financeVenceEm(String data);
+
   /// No description provided for @filtrosTitulo.
   ///
   /// In pt, this message translates to:

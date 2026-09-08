@@ -124,6 +124,8 @@ class VehiclesRepository {
     String? fornecedorNif,
     double? valorIva,
     double? taxaIva,
+    bool? pago,
+    String? dataVencimento,
   }) {
     return _api.request(
       'POST',
@@ -139,6 +141,8 @@ class VehiclesRepository {
         if (fornecedorNif != null) 'fornecedorNif': fornecedorNif,
         if (valorIva != null) 'valorIva': valorIva,
         if (taxaIva != null) 'taxaIva': taxaIva,
+        if (pago != null) 'pago': pago,
+        if (dataVencimento != null) 'dataVencimento': dataVencimento,
       },
       parse: (data) => VehicleExpense.fromJson(data as Map<String, dynamic>),
     );
@@ -166,6 +170,9 @@ class VehiclesRepository {
     String? fornecedorNif,
     double? valorIva,
     double? taxaIva,
+    bool? pago,
+    String? dataVencimento,
+    bool limparDataVencimento = false,
   }) {
     return _api.request(
       'PATCH',
@@ -185,6 +192,8 @@ class VehiclesRepository {
         'fornecedorNif': fornecedorNif,
         'valorIva': valorIva,
         'taxaIva': taxaIva,
+        if (pago != null) 'pago': pago,
+        if (dataVencimento != null || limparDataVencimento) 'dataVencimento': dataVencimento,
       },
       parse: (_) {},
     );

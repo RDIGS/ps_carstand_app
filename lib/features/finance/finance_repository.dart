@@ -1,4 +1,5 @@
 import '../../core/api/api_client.dart';
+import 'conta_pendente.dart';
 import 'finance_entry.dart';
 import 'finance_evolution.dart';
 import 'finance_statement.dart';
@@ -83,6 +84,8 @@ class FinanceRepository {
     String? fornecedorNif,
     double? valorIva,
     double? taxaIva,
+    bool? pago,
+    String? dataVencimento,
   }) {
     return _api.request(
       'POST',
@@ -100,6 +103,8 @@ class FinanceRepository {
         if (fornecedorNif != null) 'fornecedorNif': fornecedorNif,
         if (valorIva != null) 'valorIva': valorIva,
         if (taxaIva != null) 'taxaIva': taxaIva,
+        if (pago != null) 'pago': pago,
+        if (dataVencimento != null) 'dataVencimento': dataVencimento,
       },
       parse: (data) => FinanceEntry.fromJson(data as Map<String, dynamic>),
     );
@@ -120,6 +125,9 @@ class FinanceRepository {
     String? fornecedorNif,
     double? valorIva,
     double? taxaIva,
+    bool? pago,
+    String? dataVencimento,
+    bool limparDataVencimento = false,
   }) {
     return _api.request(
       'PATCH',
@@ -144,8 +152,19 @@ class FinanceRepository {
         'fornecedorNif': fornecedorNif,
         'valorIva': valorIva,
         'taxaIva': taxaIva,
+        if (pago != null) 'pago': pago,
+        if (dataVencimento != null || limparDataVencimento) 'dataVencimento': dataVencimento,
       },
       parse: (_) {},
+    );
+  }
+
+  /// Contas a pagar/receber — tudo o que ainda não foi pago/recebido.
+  Future<ContasPendentesResumo> contasPendentes() {
+    return _api.request(
+      'GET',
+      '/finance/contas-pendentes',
+      parse: (data) => ContasPendentesResumo.fromJson(data as Map<String, dynamic>),
     );
   }
 
