@@ -1904,6 +1904,36 @@ abstract class AppLocalizations {
   /// **'Não foi possível ler os dados da fatura automaticamente.'**
   String get financeFaturaNaoLida;
 
+  /// No description provided for @despesaOrigemFoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Foto da fatura'**
+  String get despesaOrigemFoto;
+
+  /// No description provided for @despesaOrigemManual.
+  ///
+  /// In pt, this message translates to:
+  /// **'Inserção manual'**
+  String get despesaOrigemManual;
+
+  /// No description provided for @despesaConfirmaValorLido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirma este valor — a leitura da fatura não teve confiança total.'**
+  String get despesaConfirmaValorLido;
+
+  /// No description provided for @despesaNifInvalido.
+  ///
+  /// In pt, this message translates to:
+  /// **'O NIF não parece válido — confirma o número.'**
+  String get despesaNifInvalido;
+
+  /// No description provided for @despesaAvisoIvaMisto.
+  ///
+  /// In pt, this message translates to:
+  /// **'O documento tem várias taxas de IVA — confirma o valor total do IVA.'**
+  String get despesaAvisoIvaMisto;
+
   /// No description provided for @metodoPagamentoNumerario.
   ///
   /// In pt, this message translates to:

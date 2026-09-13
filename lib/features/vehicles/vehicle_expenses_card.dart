@@ -1,7 +1,6 @@
 ﻿import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/api/api_client.dart';
@@ -10,9 +9,9 @@ import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
 import '../../l10n/app_localizations.dart';
-import '../../shared/widgets/image_source_picker.dart';
 import '../../shared/widgets/network_image_safe.dart';
 import '../finance/finance_repository.dart';
+import '../finance/invoice_capture.dart';
 import '../finance/invoice_extraction_result.dart';
 import '../finance/metodo_pagamento.dart';
 import '../team/team_member.dart';
@@ -116,16 +115,22 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
     double? taxaIvaInicial,
     bool pagoInicial = true,
     String? dataVencimentoInicial,
+    Uint8List? fotoInicial,
+    InvoiceExtractionResult? extracaoInicial,
   }) async {
     final l10n = context.l10n;
     final formKey = GlobalKey<FormState>();
-    final valorController = TextEditingController(text: valorInicial?.toStringAsFixed(2));
-    final descricaoController = TextEditingController(text: descricaoInicial);
-    final dataController = TextEditingController(text: dataInicial);
-    final fornecedorNomeController = TextEditingController(text: fornecedorNomeInicial);
-    final fornecedorNifController = TextEditingController(text: fornecedorNifInicial);
-    final valorIvaController = TextEditingController(text: valorIvaInicial?.toStringAsFixed(2));
-    final taxaIvaController = TextEditingController(text: taxaIvaInicial?.toStringAsFixed(0));
+    final valorController =
+        TextEditingController(text: valorInicial?.toStringAsFixed(2) ?? extracaoInicial?.valorTotal?.toStringAsFixed(2));
+    final descricaoController = TextEditingController(text: descricaoInicial ?? extracaoInicial?.descricao);
+    final dataController = TextEditingController(text: dataInicial ?? extracaoInicial?.data);
+    final fornecedorNomeController =
+        TextEditingController(text: fornecedorNomeInicial ?? extracaoInicial?.fornecedorNome);
+    final fornecedorNifController = TextEditingController(text: fornecedorNifInicial ?? extracaoInicial?.fornecedorNif);
+    final valorIvaController =
+        TextEditingController(text: valorIvaInicial?.toStringAsFixed(2) ?? extracaoInicial?.valorIva?.toStringAsFixed(2));
+    final taxaIvaController =
+        TextEditingController(text: taxaIvaInicial?.toStringAsFixed(0) ?? extracaoInicial?.taxaIva?.toStringAsFixed(0));
     final dataVencimentoController = TextEditingController(text: dataVencimentoInicial);
     String categoria = categoriaInicial ?? vehicleExpenseCategorias.first;
     String? metodoPagamento = metodoPagamentoInicial;
@@ -133,7 +138,8 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
     bool reembolsado = reembolsadoInicial;
     bool pago = pagoInicial;
     String? comprovativoUrlAtual = comprovativoUrlInicial;
-    Uint8List? novaFotoBytes;
+    Uint8List? novaFotoBytes = fotoInicial;
+    InvoiceExtractionResult? extracaoAtual = extracaoInicial;
     bool carregandoFoto = false;
 
     List<TeamMember> equipa = [];
@@ -149,50 +155,40 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) {
+          // Trocar a foto depois de já estar no formulário — mesma extração
+          // partilhada de finance_entries_screen.dart.
           Future<void> escolherFoto() async {
-            final fonte = await escolherFonteImagem(context);
-            if (fonte == null) return;
             setDialogState(() => carregandoFoto = true);
             try {
-              final ficheiro = await ImagePicker().pickImage(source: fonte, imageQuality: 90, maxWidth: 2000);
-              if (ficheiro != null) {
-                final bytes = await ficheiro.readAsBytes();
-                setDialogState(() {
-                  novaFotoBytes = bytes;
-                  comprovativoUrlAtual = null;
-                });
-                // Lê a fatura via Gemini e pré-preenche só os campos ainda
-                // vazios — mesmo padrão de finance_entries_screen.dart.
-                if (!context.mounted) return;
-                final financeRepo = context.read<FinanceRepository>();
-                try {
-                  final InvoiceExtractionResult resultado = await financeRepo.extractInvoice(bytes);
-                  setDialogState(() {
-                    if (valorController.text.trim().isEmpty && resultado.valorTotal != null) {
-                      valorController.text = resultado.valorTotal!.toStringAsFixed(2);
-                    }
-                    if (descricaoController.text.trim().isEmpty && resultado.descricao != null) {
-                      descricaoController.text = resultado.descricao!;
-                    }
-                    if (fornecedorNomeController.text.trim().isEmpty && resultado.fornecedorNome != null) {
-                      fornecedorNomeController.text = resultado.fornecedorNome!;
-                    }
-                    if (fornecedorNifController.text.trim().isEmpty && resultado.fornecedorNif != null) {
-                      fornecedorNifController.text = resultado.fornecedorNif!;
-                    }
-                    if (valorIvaController.text.trim().isEmpty && resultado.valorIva != null) {
-                      valorIvaController.text = resultado.valorIva!.toStringAsFixed(2);
-                    }
-                    if (taxaIvaController.text.trim().isEmpty && resultado.taxaIva != null) {
-                      taxaIvaController.text = resultado.taxaIva!.toStringAsFixed(0);
-                    }
-                  });
-                } on ApiException {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(context.l10n.financeFaturaNaoLida)));
-                  }
+              final captura = await capturarEExtrairFatura(context, context.read<FinanceRepository>());
+              if (captura == null) return;
+              setDialogState(() {
+                novaFotoBytes = captura.bytes;
+                comprovativoUrlAtual = null;
+                extracaoAtual = captura.resultado;
+                final resultado = captura.resultado;
+                if (resultado == null) return;
+                if (valorController.text.trim().isEmpty && resultado.valorTotal != null) {
+                  valorController.text = resultado.valorTotal!.toStringAsFixed(2);
                 }
+                if (descricaoController.text.trim().isEmpty && resultado.descricao != null) {
+                  descricaoController.text = resultado.descricao!;
+                }
+                if (fornecedorNomeController.text.trim().isEmpty && resultado.fornecedorNome != null) {
+                  fornecedorNomeController.text = resultado.fornecedorNome!;
+                }
+                if (fornecedorNifController.text.trim().isEmpty && resultado.fornecedorNif != null) {
+                  fornecedorNifController.text = resultado.fornecedorNif!;
+                }
+                if (valorIvaController.text.trim().isEmpty && resultado.valorIva != null) {
+                  valorIvaController.text = resultado.valorIva!.toStringAsFixed(2);
+                }
+                if (taxaIvaController.text.trim().isEmpty && resultado.taxaIva != null) {
+                  taxaIvaController.text = resultado.taxaIva!.toStringAsFixed(0);
+                }
+              });
+              if (captura.resultado == null && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.financeFaturaNaoLida)));
               }
             } finally {
               setDialogState(() => carregandoFoto = false);
@@ -207,6 +203,11 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    AvisosExtracaoFatura(
+                      avisos: extracaoAtual?.avisos ?? const [],
+                      nifInvalido:
+                          fornecedorNifController.text.trim().isNotEmpty && !nifValido(fornecedorNifController.text),
+                    ),
                     DropdownButtonFormField<String>(
                       initialValue: categoria,
                       decoration: InputDecoration(labelText: l10n.campoCategoria),
@@ -219,7 +220,10 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
                     TextFormField(
                       controller: valorController,
                       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(labelText: l10n.campoValor),
+                      decoration: InputDecoration(
+                        labelText: l10n.campoValor,
+                        helperText: avisoConfiancaBaixa(context, extracaoAtual, 'valor_total'),
+                      ),
                       validator: (v) =>
                           double.tryParse((v ?? '').replaceAll(',', '.')) == null ? l10n.validacaoValorInvalido : null,
                     ),
@@ -227,11 +231,18 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
                         controller: descricaoController, decoration: InputDecoration(labelText: l10n.campoDescricao)),
                     TextFormField(
                       controller: fornecedorNomeController,
-                      decoration: InputDecoration(labelText: l10n.financeCampoFornecedorNome),
+                      decoration: InputDecoration(
+                        labelText: l10n.financeCampoFornecedorNome,
+                        helperText: avisoConfiancaBaixa(context, extracaoAtual, 'fornecedor_nome'),
+                      ),
                     ),
                     TextFormField(
                       controller: fornecedorNifController,
-                      decoration: InputDecoration(labelText: l10n.financeCampoFornecedorNif),
+                      onChanged: (_) => setDialogState(() {}),
+                      decoration: InputDecoration(
+                        labelText: l10n.financeCampoFornecedorNif,
+                        helperText: avisoConfiancaBaixa(context, extracaoAtual, 'fornecedor_nif'),
+                      ),
                     ),
                     Row(
                       children: [
@@ -239,7 +250,10 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
                           child: TextFormField(
                             controller: valorIvaController,
                             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                            decoration: InputDecoration(labelText: l10n.financeCampoValorIva),
+                            decoration: InputDecoration(
+                              labelText: l10n.financeCampoValorIva,
+                              helperText: avisoConfiancaBaixa(context, extracaoAtual, 'valor_iva'),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -247,7 +261,10 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
                           child: TextFormField(
                             controller: taxaIvaController,
                             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                            decoration: InputDecoration(labelText: l10n.financeCampoTaxaIva),
+                            decoration: InputDecoration(
+                              labelText: l10n.financeCampoTaxaIva,
+                              helperText: avisoConfiancaBaixa(context, extracaoAtual, 'taxa_iva'),
+                            ),
                           ),
                         ),
                       ],
@@ -401,9 +418,27 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
   }
 
   Future<void> _adicionarDespesa() async {
+    final hoje = DateTime.now().toIso8601String().substring(0, 10);
+    final origem = await escolherOrigemDespesa(context);
+    if (origem == null || !mounted) return;
+
+    Uint8List? fotoInicial;
+    InvoiceExtractionResult? extracaoInicial;
+    if (origem == OrigemDespesa.foto) {
+      final captura = await capturarEExtrairFatura(context, context.read<FinanceRepository>());
+      if (captura == null || !mounted) return;
+      fotoInicial = captura.bytes;
+      extracaoInicial = captura.resultado;
+      if (extracaoInicial == null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.financeFaturaNaoLida)));
+      }
+    }
+
     final resultado = await _formularioDespesa(
       tituloDialogo: context.l10n.despesasNovaTitulo,
-      dataInicial: DateTime.now().toIso8601String().substring(0, 10),
+      dataInicial: extracaoInicial?.data ?? hoje,
+      fotoInicial: fotoInicial,
+      extracaoInicial: extracaoInicial,
     );
     if (resultado == null || !mounted) return;
     try {

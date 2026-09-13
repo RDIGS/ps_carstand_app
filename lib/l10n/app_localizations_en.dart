@@ -993,6 +993,24 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not automatically read the invoice data.';
 
   @override
+  String get despesaOrigemFoto => 'Photo of the invoice';
+
+  @override
+  String get despesaOrigemManual => 'Manual entry';
+
+  @override
+  String get despesaConfirmaValorLido =>
+      'Confirm this value — the invoice reading wasn\'t fully confident.';
+
+  @override
+  String get despesaNifInvalido =>
+      'This tax ID doesn\'t look valid — please confirm the number.';
+
+  @override
+  String get despesaAvisoIvaMisto =>
+      'The document has more than one VAT rate — confirm the total VAT amount.';
+
+  @override
   String get metodoPagamentoNumerario => 'Cash';
 
   @override

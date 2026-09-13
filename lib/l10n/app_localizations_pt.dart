@@ -995,6 +995,24 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não foi possível ler os dados da fatura automaticamente.';
 
   @override
+  String get despesaOrigemFoto => 'Foto da fatura';
+
+  @override
+  String get despesaOrigemManual => 'Inserção manual';
+
+  @override
+  String get despesaConfirmaValorLido =>
+      'Confirma este valor — a leitura da fatura não teve confiança total.';
+
+  @override
+  String get despesaNifInvalido =>
+      'O NIF não parece válido — confirma o número.';
+
+  @override
+  String get despesaAvisoIvaMisto =>
+      'O documento tem várias taxas de IVA — confirma o valor total do IVA.';
+
+  @override
   String get metodoPagamentoNumerario => 'Numerário';
 
   @override
