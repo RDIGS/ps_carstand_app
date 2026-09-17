@@ -453,7 +453,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get campoChassis => 'Chassis';
 
   @override
-  String get campoPrecoCompra => 'Purchase price (€)';
+  String get campoPrecoCompra => 'Purchase price';
 
   @override
   String get campoPrecoVendaRecomendado => 'Recommended sale price (€)';
@@ -597,6 +597,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get campoPreco => 'Price';
+
+  @override
+  String get campoLucroLiquido => 'Net profit';
 
   @override
   String get compradorTitulo => 'Buyer';

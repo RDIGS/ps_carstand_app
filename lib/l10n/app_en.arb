@@ -192,6 +192,8 @@
   "campoComissao": "Commission",
   "campoEstado": "Status",
   "campoPreco": "Price",
+  "campoPrecoCompra": "Purchase price",
+  "campoLucroLiquido": "Net profit",
   "compradorTitulo": "Buyer",
   "vendaEstadoConcluida": "Completed",
   "vendaEstadoRevertida": "Reverted",

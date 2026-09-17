@@ -24,6 +24,8 @@ class SaleRow {
     this.compradorTelefone,
     this.compradorLocalidade,
     this.compradorEmail,
+    this.precoCompra,
+    this.margemReal,
   });
 
   factory SaleRow.fromJson(Map<String, dynamic> json) => SaleRow(
@@ -46,6 +48,8 @@ class SaleRow {
         compradorTelefone: json['comprador_telefone'] as String?,
         compradorLocalidade: json['comprador_localidade'] as String?,
         compradorEmail: json['comprador_email'] as String?,
+        precoCompra: parseDecimal(json['preco_compra']),
+        margemReal: parseDecimal(json['margem_real']),
       );
 
   final String id;
@@ -69,4 +73,9 @@ class SaleRow {
   final String? compradorTelefone;
   final String? compradorLocalidade;
   final String? compradorEmail;
+
+  // Só vêm preenchidos quando quem pediu é owner (backend restringe a query
+  // por role) — preço de compra/lucro líquido não são para o vendedor ver.
+  final double? precoCompra;
+  final double? margemReal;
 }

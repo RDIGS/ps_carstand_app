@@ -893,7 +893,7 @@ abstract class AppLocalizations {
   /// No description provided for @campoPrecoCompra.
   ///
   /// In pt, this message translates to:
-  /// **'Preço de compra (€)'**
+  /// **'Preço de compra'**
   String get campoPrecoCompra;
 
   /// No description provided for @campoPrecoVendaRecomendado.
@@ -1171,6 +1171,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Preço'**
   String get campoPreco;
+
+  /// No description provided for @campoLucroLiquido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lucro líquido'**
+  String get campoLucroLiquido;
 
   /// No description provided for @compradorTitulo.
   ///

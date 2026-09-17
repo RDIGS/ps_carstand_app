@@ -68,6 +68,10 @@ class _SalesListScreenState extends State<SalesListScreen> {
               DetalheLinha(label: l10n.campoPreco, valor: '${venda.precoFinal.toStringAsFixed(2)} €'),
               if (venda.comissaoVendedor != null)
                 DetalheLinha(label: l10n.campoComissao, valor: '${venda.comissaoVendedor!.toStringAsFixed(2)} €'),
+              if (venda.precoCompra != null)
+                DetalheLinha(label: l10n.campoPrecoCompra, valor: '${venda.precoCompra!.toStringAsFixed(2)} €'),
+              if (venda.margemReal != null)
+                DetalheLinha(label: l10n.campoLucroLiquido, valor: '${venda.margemReal!.toStringAsFixed(2)} €'),
               if (venda.vendedorNome != null) DetalheLinha(label: l10n.campoVendedor, valor: venda.vendedorNome!),
               DetalheLinha(
                 label: l10n.campoEstado,
@@ -156,10 +160,24 @@ class _SalesListScreenState extends State<SalesListScreen> {
                         color: revertida ? AppColors.inkMuted : AppColors.teal,
                       ),
                       title: Text(venda.compradorNome),
-                      subtitle: Text(
-                        venda.matricula != null
-                            ? '${venda.dataVenda.split('T').first} · ${venda.matricula}'
-                            : venda.dataVenda.split('T').first,
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            venda.matricula != null
+                                ? '${venda.dataVenda.split('T').first} · ${venda.matricula}'
+                                : venda.dataVenda.split('T').first,
+                          ),
+                          if (venda.margemReal != null)
+                            Text(
+                              '${l10n.campoLucroLiquido}: ${venda.margemReal!.toStringAsFixed(0)} €',
+                              style: TextStyle(
+                                color: venda.margemReal! < 0 ? Theme.of(context).colorScheme.error : AppColors.teal,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                        ],
                       ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,

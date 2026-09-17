@@ -216,6 +216,8 @@
   "campoComissao": "Comissão",
   "campoEstado": "Estado",
   "campoPreco": "Preço",
+  "campoPrecoCompra": "Preço de compra",
+  "campoLucroLiquido": "Lucro líquido",
   "compradorTitulo": "Comprador",
   "vendaEstadoConcluida": "Concluída",
   "vendaEstadoRevertida": "Revertida",
