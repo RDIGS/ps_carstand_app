@@ -4,6 +4,7 @@ import 'finance_entry.dart';
 import 'finance_evolution.dart';
 import 'finance_statement.dart';
 import 'finance_summary.dart';
+import 'invoice.dart';
 import 'invoice_extraction_result.dart';
 import 'stock_potencial.dart';
 
@@ -86,6 +87,7 @@ class FinanceRepository {
     double? taxaIva,
     bool? pago,
     String? dataVencimento,
+    String? invoiceId,
   }) {
     return _api.request(
       'POST',
@@ -105,6 +107,7 @@ class FinanceRepository {
         if (taxaIva != null) 'taxaIva': taxaIva,
         if (pago != null) 'pago': pago,
         if (dataVencimento != null) 'dataVencimento': dataVencimento,
+        if (invoiceId != null) 'invoiceId': invoiceId,
       },
       parse: (data) => FinanceEntry.fromJson(data as Map<String, dynamic>),
     );
@@ -176,6 +179,39 @@ class FinanceRepository {
       '/finance/extract-invoice',
       files: {'foto': foto},
       parse: (data) => InvoiceExtractionResult.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  /// Fatura partilhável entre várias despesas — secção nova, 2026-09-17.
+  /// Mesmo padrão create-depois-upload-foto de createEntry/uploadComprovativo.
+  Future<Invoice> createInvoice({
+    String? fornecedorNome,
+    String? fornecedorNif,
+    String? data,
+    required double valorTotal,
+    double? valorIva,
+    double? taxaIva,
+  }) {
+    return _api.request(
+      'POST',
+      '/finance/invoices',
+      data: {
+        if (fornecedorNome != null) 'fornecedorNome': fornecedorNome,
+        if (fornecedorNif != null) 'fornecedorNif': fornecedorNif,
+        if (data != null) 'data': data,
+        'valorTotal': valorTotal,
+        if (valorIva != null) 'valorIva': valorIva,
+        if (taxaIva != null) 'taxaIva': taxaIva,
+      },
+      parse: (data) => Invoice.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<Invoice> uploadInvoiceComprovativo(String id, List<int> foto) {
+    return _api.uploadMultipart(
+      '/finance/invoices/$id/comprovativo',
+      files: {'foto': foto},
+      parse: (data) => Invoice.fromJson(data as Map<String, dynamic>),
     );
   }
 

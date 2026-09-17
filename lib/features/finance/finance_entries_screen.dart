@@ -18,6 +18,7 @@ import 'finance_entry.dart';
 import 'finance_repository.dart';
 import 'invoice_capture.dart';
 import 'invoice_extraction_result.dart';
+import 'invoice_split_screen.dart';
 import 'metodo_pagamento.dart';
 
 /// Lista de lançamentos financeiros gerais (receitas/despesas da empresa,
@@ -76,6 +77,19 @@ class _FinanceEntriesScreenState extends State<FinanceEntriesScreen> {
     if (captura == null || !mounted) return;
     if (captura.resultado == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.financeFaturaNaoLida)));
+      await _abrirFormulario(fotoInicial: captura.bytes, extracaoInicial: captura.resultado);
+      return;
+    }
+    // Fatura com 2+ linhas identificadas (secção nova, 2026-09-17) — divide
+    // em várias despesas em vez do diálogo único de sempre.
+    if (captura.resultado!.itens.length > 1) {
+      final guardou = await Navigator.of(context).push<bool>(
+        MaterialPageRoute(
+          builder: (_) => InvoiceSplitScreen(fotoBytes: captura.bytes, extracao: captura.resultado!),
+        ),
+      );
+      if (guardou == true && mounted) setState(_load);
+      return;
     }
     await _abrirFormulario(fotoInicial: captura.bytes, extracaoInicial: captura.resultado);
   }

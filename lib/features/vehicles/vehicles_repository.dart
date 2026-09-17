@@ -135,6 +135,7 @@ class VehiclesRepository {
     double? taxaIva,
     bool? pago,
     String? dataVencimento,
+    String? invoiceId,
   }) {
     return _api.request(
       'POST',
@@ -152,6 +153,7 @@ class VehiclesRepository {
         if (taxaIva != null) 'taxaIva': taxaIva,
         if (pago != null) 'pago': pago,
         if (dataVencimento != null) 'dataVencimento': dataVencimento,
+        if (invoiceId != null) 'invoiceId': invoiceId,
       },
       parse: (data) => VehicleExpense.fromJson(data as Map<String, dynamic>),
     );

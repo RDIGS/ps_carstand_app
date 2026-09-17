@@ -372,6 +372,24 @@
   "despesaConfirmaValorLido": "Confirma este valor — a leitura da fatura não teve confiança total.",
   "despesaNifInvalido": "O NIF não parece válido — confirma o número.",
   "despesaAvisoIvaMisto": "O documento tem várias taxas de IVA — confirma o valor total do IVA.",
+  "faturaDividirTitulo": "Dividir fatura",
+  "faturaCabecalhoTitulo": "Dados da fatura",
+  "faturaDestinoGeral": "Despesa geral",
+  "faturaDestinoVeiculo": "Despesa de veículo",
+  "faturaLinhaTitulo": "Linha {numero}",
+  "@faturaLinhaTitulo": {
+    "placeholders": {
+      "numero": { "type": "int" }
+    }
+  },
+  "faturaAdicionarLinha": "Adicionar linha",
+  "faturaRemoverLinha": "Remover linha",
+  "faturaTotalLinhas": "Soma das linhas",
+  "faturaSomaNaoBate": "A soma das linhas não corresponde ao valor total da fatura.",
+  "faturaVeiculoObrigatorio": "Escolhe o veículo desta linha.",
+  "faturaCamposObrigatorios": "Preenche descrição e valor em todas as linhas antes de guardar.",
+  "faturaGuardarDespesas": "Guardar despesas",
+  "faturaGuardadaComSucesso": "Despesas guardadas com sucesso.",
   "metodoPagamentoNumerario": "Numerário",
   "metodoPagamentoTransferencia": "Transferência",
   "metodoPagamentoMultibanco": "Multibanco",

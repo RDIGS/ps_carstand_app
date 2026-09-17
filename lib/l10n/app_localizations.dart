@@ -1982,6 +1982,84 @@ abstract class AppLocalizations {
   /// **'O documento tem várias taxas de IVA — confirma o valor total do IVA.'**
   String get despesaAvisoIvaMisto;
 
+  /// No description provided for @faturaDividirTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dividir fatura'**
+  String get faturaDividirTitulo;
+
+  /// No description provided for @faturaCabecalhoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dados da fatura'**
+  String get faturaCabecalhoTitulo;
+
+  /// No description provided for @faturaDestinoGeral.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesa geral'**
+  String get faturaDestinoGeral;
+
+  /// No description provided for @faturaDestinoVeiculo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesa de veículo'**
+  String get faturaDestinoVeiculo;
+
+  /// No description provided for @faturaLinhaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Linha {numero}'**
+  String faturaLinhaTitulo(int numero);
+
+  /// No description provided for @faturaAdicionarLinha.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar linha'**
+  String get faturaAdicionarLinha;
+
+  /// No description provided for @faturaRemoverLinha.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover linha'**
+  String get faturaRemoverLinha;
+
+  /// No description provided for @faturaTotalLinhas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Soma das linhas'**
+  String get faturaTotalLinhas;
+
+  /// No description provided for @faturaSomaNaoBate.
+  ///
+  /// In pt, this message translates to:
+  /// **'A soma das linhas não corresponde ao valor total da fatura.'**
+  String get faturaSomaNaoBate;
+
+  /// No description provided for @faturaVeiculoObrigatorio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolhe o veículo desta linha.'**
+  String get faturaVeiculoObrigatorio;
+
+  /// No description provided for @faturaCamposObrigatorios.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preenche descrição e valor em todas as linhas antes de guardar.'**
+  String get faturaCamposObrigatorios;
+
+  /// No description provided for @faturaGuardarDespesas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Guardar despesas'**
+  String get faturaGuardarDespesas;
+
+  /// No description provided for @faturaGuardadaComSucesso.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesas guardadas com sucesso.'**
+  String get faturaGuardadaComSucesso;
+
   /// No description provided for @metodoPagamentoNumerario.
   ///
   /// In pt, this message translates to:

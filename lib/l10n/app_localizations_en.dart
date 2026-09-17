@@ -1036,6 +1036,49 @@ class AppLocalizationsEn extends AppLocalizations {
       'The document has more than one VAT rate — confirm the total VAT amount.';
 
   @override
+  String get faturaDividirTitulo => 'Split invoice';
+
+  @override
+  String get faturaCabecalhoTitulo => 'Invoice details';
+
+  @override
+  String get faturaDestinoGeral => 'General expense';
+
+  @override
+  String get faturaDestinoVeiculo => 'Vehicle expense';
+
+  @override
+  String faturaLinhaTitulo(int numero) {
+    return 'Line $numero';
+  }
+
+  @override
+  String get faturaAdicionarLinha => 'Add line';
+
+  @override
+  String get faturaRemoverLinha => 'Remove line';
+
+  @override
+  String get faturaTotalLinhas => 'Lines total';
+
+  @override
+  String get faturaSomaNaoBate =>
+      'The lines total doesn\'t match the invoice total.';
+
+  @override
+  String get faturaVeiculoObrigatorio => 'Choose the vehicle for this line.';
+
+  @override
+  String get faturaCamposObrigatorios =>
+      'Fill in description and amount for every line before saving.';
+
+  @override
+  String get faturaGuardarDespesas => 'Save expenses';
+
+  @override
+  String get faturaGuardadaComSucesso => 'Expenses saved successfully.';
+
+  @override
   String get metodoPagamentoNumerario => 'Cash';
 
   @override

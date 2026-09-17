@@ -1038,6 +1038,49 @@ class AppLocalizationsPt extends AppLocalizations {
       'O documento tem várias taxas de IVA — confirma o valor total do IVA.';
 
   @override
+  String get faturaDividirTitulo => 'Dividir fatura';
+
+  @override
+  String get faturaCabecalhoTitulo => 'Dados da fatura';
+
+  @override
+  String get faturaDestinoGeral => 'Despesa geral';
+
+  @override
+  String get faturaDestinoVeiculo => 'Despesa de veículo';
+
+  @override
+  String faturaLinhaTitulo(int numero) {
+    return 'Linha $numero';
+  }
+
+  @override
+  String get faturaAdicionarLinha => 'Adicionar linha';
+
+  @override
+  String get faturaRemoverLinha => 'Remover linha';
+
+  @override
+  String get faturaTotalLinhas => 'Soma das linhas';
+
+  @override
+  String get faturaSomaNaoBate =>
+      'A soma das linhas não corresponde ao valor total da fatura.';
+
+  @override
+  String get faturaVeiculoObrigatorio => 'Escolhe o veículo desta linha.';
+
+  @override
+  String get faturaCamposObrigatorios =>
+      'Preenche descrição e valor em todas as linhas antes de guardar.';
+
+  @override
+  String get faturaGuardarDespesas => 'Guardar despesas';
+
+  @override
+  String get faturaGuardadaComSucesso => 'Despesas guardadas com sucesso.';
+
+  @override
   String get metodoPagamentoNumerario => 'Numerário';
 
   @override

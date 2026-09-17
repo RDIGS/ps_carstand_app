@@ -337,6 +337,24 @@
   "despesaConfirmaValorLido": "Confirm this value — the invoice reading wasn't fully confident.",
   "despesaNifInvalido": "This tax ID doesn't look valid — please confirm the number.",
   "despesaAvisoIvaMisto": "The document has more than one VAT rate — confirm the total VAT amount.",
+  "faturaDividirTitulo": "Split invoice",
+  "faturaCabecalhoTitulo": "Invoice details",
+  "faturaDestinoGeral": "General expense",
+  "faturaDestinoVeiculo": "Vehicle expense",
+  "faturaLinhaTitulo": "Line {numero}",
+  "@faturaLinhaTitulo": {
+    "placeholders": {
+      "numero": { "type": "int" }
+    }
+  },
+  "faturaAdicionarLinha": "Add line",
+  "faturaRemoverLinha": "Remove line",
+  "faturaTotalLinhas": "Lines total",
+  "faturaSomaNaoBate": "The lines total doesn't match the invoice total.",
+  "faturaVeiculoObrigatorio": "Choose the vehicle for this line.",
+  "faturaCamposObrigatorios": "Fill in description and amount for every line before saving.",
+  "faturaGuardarDespesas": "Save expenses",
+  "faturaGuardadaComSucesso": "Expenses saved successfully.",
   "metodoPagamentoNumerario": "Cash",
   "metodoPagamentoTransferencia": "Bank transfer",
   "metodoPagamentoMultibanco": "Debit card (Multibanco)",

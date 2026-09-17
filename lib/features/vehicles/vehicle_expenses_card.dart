@@ -13,9 +13,11 @@ import '../../shared/widgets/network_image_safe.dart';
 import '../finance/finance_repository.dart';
 import '../finance/invoice_capture.dart';
 import '../finance/invoice_extraction_result.dart';
+import '../finance/invoice_split_screen.dart';
 import '../finance/metodo_pagamento.dart';
 import '../team/team_member.dart';
 import '../team/team_repository.dart';
+import 'vehicle.dart';
 import 'vehicle_expense.dart';
 import 'vehicles_repository.dart';
 
@@ -431,6 +433,28 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
       extracaoInicial = captura.resultado;
       if (extracaoInicial == null) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.financeFaturaNaoLida)));
+      } else if (extracaoInicial.itens.length > 1) {
+        // Fatura com 2+ linhas identificadas (secção nova, 2026-09-17) —
+        // divide em várias despesas em vez do diálogo único de sempre. Este
+        // veículo entra pré-selecionado em todas as linhas (conveniência, o
+        // utilizador continua livre para mudar cada uma).
+        final detalhe = await context.read<VehiclesRepository>().getById(widget.vehicleId);
+        if (!mounted) return;
+        final veiculo = Vehicle(
+          id: detalhe.id,
+          matricula: detalhe.matricula,
+          marca: detalhe.marca,
+          modelo: detalhe.modelo,
+          kms: detalhe.kms,
+          estado: detalhe.estado,
+        );
+        final guardou = await Navigator.of(context).push<bool>(
+          MaterialPageRoute(
+            builder: (_) => InvoiceSplitScreen(fotoBytes: captura.bytes, extracao: extracaoInicial!, veiculoInicial: veiculo),
+          ),
+        );
+        if (guardou == true && mounted) await _refresh();
+        return;
       }
     }
 
