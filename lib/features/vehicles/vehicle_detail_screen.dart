@@ -16,6 +16,7 @@ import '../sales/sale_screen.dart';
 import 'edit_vehicle_screen.dart';
 import 'market_estimate.dart';
 import 'vehicle_detail.dart';
+import 'vehicle_documents_card.dart';
 import 'vehicle_expenses_card.dart';
 import 'vehicle_photo_gallery_card.dart';
 import 'vehicles_repository.dart';
@@ -132,6 +133,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                   _FichaTecnicaCard(vehicle: vehicle),
                   const SizedBox(height: 16),
                   VehiclePhotoGalleryCard(vehicleId: vehicle.id),
+                  const SizedBox(height: 16),
+                  VehicleDocumentsCard(vehicleId: vehicle.id),
                   const SizedBox(height: 16),
                   _PrecosCard(vehicle: vehicle),
                   const SizedBox(height: 16),

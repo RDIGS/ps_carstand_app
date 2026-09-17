@@ -1610,6 +1610,42 @@ abstract class AppLocalizations {
   /// **'Tens a certeza que queres remover esta foto?'**
   String get galeriaRemoverFotoConfirmacao;
 
+  /// No description provided for @documentosTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Documentos do veículo'**
+  String get documentosTitulo;
+
+  /// No description provided for @documentosOpcionalAviso.
+  ///
+  /// In pt, this message translates to:
+  /// **'Opcional — podes deixar para depois e anexar mais tarde na ficha do veículo.'**
+  String get documentosOpcionalAviso;
+
+  /// No description provided for @documentoTipoSeguro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seguro'**
+  String get documentoTipoSeguro;
+
+  /// No description provided for @documentoTipoInspecao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Inspeção'**
+  String get documentoTipoInspecao;
+
+  /// No description provided for @documentoSemFotos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem fotos ainda.'**
+  String get documentoSemFotos;
+
+  /// No description provided for @documentoAdicionarFoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar foto'**
+  String get documentoAdicionarFoto;
+
   /// No description provided for @checklistAplicarModelo.
   ///
   /// In pt, this message translates to:

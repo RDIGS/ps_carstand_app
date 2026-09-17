@@ -1,4 +1,7 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../core/api/api_client.dart';
@@ -6,6 +9,8 @@ import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/matricula_validator.dart';
+import '../../shared/widgets/document_photo_slot.dart';
+import '../../shared/widgets/image_source_picker.dart';
 import '../../shared/widgets/max_width_body.dart';
 import 'create_vehicle_data.dart';
 import 'vehicles_repository.dart';
@@ -58,6 +63,12 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
   late final TextEditingController _numLugares;
   DateTime? _dataPrimeiraMatricula;
   late bool _importado;
+
+  // Documentos opcionais anexáveis já no ato da compra (secção nova,
+  // 2026-09-16) — se ficarem por preencher aqui, dá sempre para os
+  // adicionar depois no ecrã de detalhe do veículo (VehicleDocumentsCard).
+  Uint8List? _seguroFoto;
+  Uint8List? _inspecaoFoto;
 
   bool _submitting = false;
 
@@ -141,12 +152,14 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
 
     final repo = context.read<VehiclesRepository>();
     try {
+      String vehicleId;
       if (_isDuaFlow) {
-        await repo.confirm(widget.confirmId!, data);
+        vehicleId = widget.confirmId!;
+        await repo.confirm(vehicleId, data);
         if (widget.duaFrenteBytes != null && widget.duaVersoBytes != null) {
           try {
             await repo.uploadDuaPhotos(
-              widget.confirmId!,
+              vehicleId,
               fotoFrente: widget.duaFrenteBytes!,
               fotoVerso: widget.duaVersoBytes!,
             );
@@ -156,7 +169,19 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
           }
         }
       } else {
-        await repo.create(data);
+        vehicleId = await repo.create(data);
+      }
+      // Documentos opcionais (seguro/inspeção) — mesmo espírito best-effort
+      // das fotos do DUA: o veículo já está gravado, não vale a pena falhar
+      // o fluxo todo por causa disto.
+      for (final entry in {'seguro': _seguroFoto, 'inspecao': _inspecaoFoto}.entries) {
+        final bytes = entry.value;
+        if (bytes == null) continue;
+        try {
+          await repo.addDocument(vehicleId, entry.key, bytes);
+        } on ApiException {
+          // Ignorado de propósito — dá para anexar depois em VehicleDocumentsCard.
+        }
       }
       if (mounted) Navigator.of(context).pop(true);
     } on ApiException catch (e) {
@@ -165,6 +190,21 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.localizado(context))));
       }
     }
+  }
+
+  Future<void> _capturarDocumento(bool isSeguro) async {
+    final fonte = await escolherFonteImagem(context);
+    if (fonte == null || !mounted) return;
+    final ficheiro = await ImagePicker().pickImage(source: fonte, imageQuality: 85, maxWidth: 2000);
+    if (ficheiro == null) return;
+    final bytes = await ficheiro.readAsBytes();
+    setState(() {
+      if (isSeguro) {
+        _seguroFoto = bytes;
+      } else {
+        _inspecaoFoto = bytes;
+      }
+    });
   }
 
   @override
@@ -286,6 +326,32 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                 controller: _precoVendaRecomendado,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(labelText: l10n.campoPrecoVendaRecomendado),
+              ),
+              const SizedBox(height: 24),
+              _SectionTitle(l10n.documentosTitulo),
+              Text(l10n.documentosOpcionalAviso, style: Theme.of(context).textTheme.bodySmall),
+              const SizedBox(height: 12),
+              SizedBox(
+                height: 130,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: DocumentPhotoSlot(
+                        label: l10n.documentoTipoSeguro,
+                        bytes: _seguroFoto,
+                        onTap: () => _capturarDocumento(true),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: DocumentPhotoSlot(
+                        label: l10n.documentoTipoInspecao,
+                        bytes: _inspecaoFoto,
+                        onTap: () => _capturarDocumento(false),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 32),
               ElevatedButton(

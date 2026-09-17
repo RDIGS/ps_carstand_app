@@ -843,6 +843,25 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to remove this photo?';
 
   @override
+  String get documentosTitulo => 'Vehicle documents';
+
+  @override
+  String get documentosOpcionalAviso =>
+      'Optional — you can skip this and attach it later on the vehicle\'s page.';
+
+  @override
+  String get documentoTipoSeguro => 'Insurance';
+
+  @override
+  String get documentoTipoInspecao => 'Inspection';
+
+  @override
+  String get documentoSemFotos => 'No photos yet.';
+
+  @override
+  String get documentoAdicionarFoto => 'Add photo';
+
+  @override
   String get checklistAplicarModelo => 'Apply template';
 
   @override

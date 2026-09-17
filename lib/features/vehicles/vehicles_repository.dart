@@ -2,6 +2,7 @@ import '../../core/api/api_client.dart';
 import 'vehicle.dart';
 import 'vehicle_detail.dart';
 import 'vehicle_expense.dart';
+import 'vehicle_documents.dart';
 import 'vehicle_photo.dart';
 import 'stock_alerts.dart';
 import 'market_estimate.dart';
@@ -22,8 +23,16 @@ class VehiclesRepository {
     );
   }
 
-  Future<void> create(CreateVehicleData data) {
-    return _api.request('POST', '/vehicles', data: data.toJson(), parse: (_) {});
+  /// Devolve o id do veículo criado — usado para anexar documentos (secção
+  /// nova, 2026-09-16) logo no ato da compra, sem esperar por um segundo
+  /// ecrã.
+  Future<String> create(CreateVehicleData data) {
+    return _api.request(
+      'POST',
+      '/vehicles',
+      data: data.toJson(),
+      parse: (data) => data['id'] as String,
+    );
   }
 
   /// :id é gerado no cliente — torna o ecrã de confirmação pós-DUA
@@ -243,6 +252,28 @@ class VehiclesRepository {
 
   Future<void> removePhoto(String vehicleId, String photoId) {
     return _api.request('DELETE', '/vehicles/$vehicleId/photos/$photoId', parse: (_) {});
+  }
+
+  /// Documentos do veículo (seguro/inspeção) — distinto da galeria geral e do
+  /// DUA, cada tipo é a sua própria mini-galeria (secção nova, 2026-09-16).
+  Future<VehicleDocuments> listDocuments(String vehicleId) {
+    return _api.request(
+      'GET',
+      '/vehicles/$vehicleId/documents',
+      parse: (data) => VehicleDocuments.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<VehiclePhoto> addDocument(String vehicleId, String tipo, List<int> foto) {
+    return _api.uploadMultipart(
+      '/vehicles/$vehicleId/documents/$tipo',
+      files: {'foto': foto},
+      parse: (data) => VehiclePhoto.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<void> removeDocument(String vehicleId, String photoId) {
+    return _api.request('DELETE', '/vehicles/$vehicleId/documents/$photoId', parse: (_) {});
   }
 
   Future<MarketEstimate> marketEstimate(
