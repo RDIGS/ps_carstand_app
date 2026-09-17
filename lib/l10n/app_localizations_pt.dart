@@ -857,6 +857,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get documentoTipoInspecao => 'Inspeção';
 
   @override
+  String get documentoTipoDua => 'DUA';
+
+  @override
   String get documentoSemFotos => 'Sem fotos ainda.';
 
   @override

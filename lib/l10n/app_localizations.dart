@@ -1634,6 +1634,12 @@ abstract class AppLocalizations {
   /// **'Inspeção'**
   String get documentoTipoInspecao;
 
+  /// No description provided for @documentoTipoDua.
+  ///
+  /// In pt, this message translates to:
+  /// **'DUA'**
+  String get documentoTipoDua;
+
   /// No description provided for @documentoSemFotos.
   ///
   /// In pt, this message translates to:

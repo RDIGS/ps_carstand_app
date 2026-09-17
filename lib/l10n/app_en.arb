@@ -275,6 +275,7 @@
   "documentosOpcionalAviso": "Optional — you can skip this and attach it later on the vehicle's page.",
   "documentoTipoSeguro": "Insurance",
   "documentoTipoInspecao": "Inspection",
+  "documentoTipoDua": "Registration (DUA)",
   "documentoSemFotos": "No photos yet.",
   "documentoAdicionarFoto": "Add photo",
   "checklistAplicarModelo": "Apply template",

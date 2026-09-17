@@ -108,6 +108,13 @@ class _VehicleDocumentsCardState extends State<VehicleDocumentsCard> {
               return Text('${snapshot.error}');
             }
             final docs = snapshot.data!;
+            // DUA junta frente+verso na mesma secção — o utilizador não quer
+            // a distinção visual entre os dois lados, só que ambas as fotos
+            // fiquem lá (2026-09-17). Continuam a ser tipos distintos por
+            // baixo (o fluxo de criação via OCR já os grava separados);
+            // fotos adicionadas aqui ficam sempre como "dua_frente", já que
+            // a distinção deixou de importar para quem usa a app.
+            final duaFotos = [...docs.duaFrente, ...docs.duaVerso];
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -129,6 +136,16 @@ class _VehicleDocumentsCardState extends State<VehicleDocumentsCard> {
                   carregando: _carregando.contains('inspecao'),
                   onAdicionar: () => _adicionar('inspecao'),
                   onTapFoto: (i) => _verEmEcraCompleto(docs.inspecao, i),
+                  onRemoverFoto: _remover,
+                  l10n: l10n,
+                ),
+                const SizedBox(height: 16),
+                _SecaoDocumento(
+                  titulo: l10n.documentoTipoDua,
+                  fotos: duaFotos,
+                  carregando: _carregando.contains('dua_frente') || _carregando.contains('dua_verso'),
+                  onAdicionar: () => _adicionar('dua_frente'),
+                  onTapFoto: (i) => _verEmEcraCompleto(duaFotos, i),
                   onRemoverFoto: _remover,
                   l10n: l10n,
                 ),

@@ -856,6 +856,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get documentoTipoInspecao => 'Inspection';
 
   @override
+  String get documentoTipoDua => 'Registration (DUA)';
+
+  @override
   String get documentoSemFotos => 'No photos yet.';
 
   @override
