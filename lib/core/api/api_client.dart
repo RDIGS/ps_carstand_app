@@ -60,11 +60,27 @@ class ApiClient {
           handler.next(options);
         },
         onError: (error, handler) async {
-          if (error.response?.statusCode == 401 && !_isAuthEndpoint(error.requestOptions.path)) {
-            final retried = await _retryAfterRefresh(error.requestOptions);
-            if (retried != null) return handler.resolve(retried);
-            await _storage.clearSession();
-            onSessionExpired?.call();
+          final pedido = error.requestOptions;
+          if (error.response?.statusCode == 401 &&
+              !_isAuthEndpoint(pedido.path) &&
+              pedido.extra[_kJaRepetido] != true) {
+            // Se outro pedido já renovou a sessão entretanto (este saiu com o
+            // JWT antigo), basta repetir com o novo — não renova outra vez.
+            final jwtAtual = await _storage.readJwt();
+            // Sem sessão guardada = outro pedido já concluiu que ela acabou
+            // (e já avisou a app) — não tenta renovar nem avisa outra vez.
+            if (jwtAtual == null) return handler.next(error);
+            final jwtUsado = (pedido.headers['Authorization'] as String?)?.replaceFirst('Bearer ', '');
+            final jwt = jwtAtual != jwtUsado ? jwtAtual : await _renovarJwt();
+            if (jwt != null) {
+              pedido.headers['Authorization'] = 'Bearer $jwt';
+              pedido.extra[_kJaRepetido] = true;
+              try {
+                return handler.resolve(await _dio.fetch(pedido));
+              } on DioException catch (e) {
+                return handler.next(e);
+              }
+            }
           }
           handler.next(error);
         },
@@ -76,11 +92,27 @@ class ApiClient {
   final SecureStorage _storage;
   final void Function()? onSessionExpired;
 
+  // Marca um pedido já repetido depois de renovar — evita ciclo infinito se
+  // o backend continuar a responder 401 mesmo com o JWT novo.
+  static const _kJaRepetido = 'ps_ja_repetido_apos_refresh';
+
+  // Pedidos em paralelo com o JWT expirado recebem 401 todos ao mesmo tempo.
+  // Antes cada um fazia o seu próprio refresh — e como o backend roda o
+  // refresh token a cada uso, só o primeiro resultava: os outros falhavam e
+  // faziam logout a quem tinha a sessão válida (e, no Windows, as escritas
+  // simultâneas estragavam o ficheiro da sessão). Agora partilham todos a
+  // mesma renovação em curso.
+  Future<String?>? _renovacaoEmCurso;
+
   bool _isAuthEndpoint(String path) => path.contains('/auth/login') || path.contains('/auth/refresh');
 
-  Future<Response<dynamic>?> _retryAfterRefresh(RequestOptions failedRequest) async {
+  Future<String?> _renovarJwt() =>
+      _renovacaoEmCurso ??= _executarRenovacao().whenComplete(() => _renovacaoEmCurso = null);
+
+  /// Devolve o JWT novo, ou `null` se não foi possível renovar.
+  Future<String?> _executarRenovacao() async {
     final refreshToken = await _storage.readRefreshToken();
-    if (refreshToken == null) return null;
+    if (refreshToken == null) return _sessaoPerdida();
 
     try {
       final response = await _dio.post('/auth/refresh', data: {'refreshToken': refreshToken});
@@ -96,12 +128,20 @@ class ApiClient {
         userRole: user['role'] as String,
         userIdioma: (user['idioma'] as String?) ?? await _storage.readUserIdioma() ?? 'pt',
       );
-
-      failedRequest.headers['Authorization'] = 'Bearer $jwt';
-      return _dio.fetch(failedRequest);
-    } on DioException {
-      return null;
+      return jwt;
+    } on DioException catch (e) {
+      // Sem resposta = falha de rede: não deita fora uma sessão que pode
+      // estar válida, só este pedido falha. Com resposta (refresh recusado),
+      // a sessão acabou mesmo.
+      if (e.response == null) return null;
+      return _sessaoPerdida();
     }
+  }
+
+  Future<String?> _sessaoPerdida() async {
+    await _storage.clearSession();
+    onSessionExpired?.call();
+    return null;
   }
 
   Future<T> request<T>(
