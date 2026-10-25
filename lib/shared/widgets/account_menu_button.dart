@@ -19,6 +19,10 @@ class AccountMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthState>();
+    // Lido aqui (durante o build) e não dentro do itemBuilder: o itemBuilder
+    // só corre ao clicar, fora do build, e um `context.watch` aí rebenta a
+    // asserção do provider — o menu não abria em modo debug.
+    final modoEscuro = context.watch<ThemeState>().mode == ThemeMode.dark;
     final l10n = context.l10n;
 
     return PopupMenuButton<String>(
@@ -31,7 +35,7 @@ class AccountMenuButton extends StatelessWidget {
         const PopupMenuDivider(),
         CheckedPopupMenuItem(
           value: 'tema_escuro',
-          checked: context.watch<ThemeState>().mode == ThemeMode.dark,
+          checked: modoEscuro,
           child: Text(l10n.menuModoEscuro),
         ),
         const PopupMenuDivider(),
