@@ -9,10 +9,13 @@ import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/max_width_body.dart';
 import '../auth/auth_state.dart';
+import '../banner/stand_profile_repository.dart';
 import '../leads/leads_repository.dart';
 import '../team/team_member.dart';
 import '../team/team_repository.dart';
 import '../vehicles/vehicles_repository.dart';
+import '../visits/visit_requests_view.dart';
+import '../visits/visits_repository.dart';
 import 'calendar_event.dart';
 import 'calendar_repository.dart';
 
@@ -35,10 +38,35 @@ class _CalendarScreenState extends State<CalendarScreen> {
   String _escopo = 'stand';
   late Future<List<CalendarEvent>> _future;
 
+  // Pedidos de visita do site público: só para quem os pode aprovar (owner,
+  // ou colaborador se o stand o permitir — o backend volta a verificar).
+  String _vista = 'agenda';
+  bool _podeVerPedidos = false;
+  int _pedidosPendentes = 0;
+
   @override
   void initState() {
     super.initState();
     _load();
+    _verificarPedidos();
+  }
+
+  Future<void> _verificarPedidos() async {
+    final auth = context.read<AuthState>();
+    final visits = context.read<VisitsRepository>();
+    final perfis = context.read<StandProfileRepository>();
+    try {
+      final pode = auth.userRole == 'owner' || (await perfis.getProfile()).vendedorPodeAprovarVisitas;
+      if (!pode) return;
+      final pendentes = await visits.list(estado: 'pendente');
+      if (!mounted) return;
+      setState(() {
+        _podeVerPedidos = true;
+        _pedidosPendentes = pendentes.length;
+      });
+    } on ApiException {
+      // Sem permissão ou sem ligação: simplesmente não mostra o separador.
+    }
   }
 
   void _load() {
@@ -453,29 +481,63 @@ class _CalendarScreenState extends State<CalendarScreen> {
       appBar: AppBar(
         title: Text(l10n.navCalendario),
         actions: [
-          IconButton(icon: const Icon(Icons.ios_share), tooltip: l10n.calendarioExportarTitulo, onPressed: _exportar),
-          IconButton(icon: const Icon(Icons.upload_file), tooltip: l10n.calendarioImportarTitulo, onPressed: _importar),
+          if (_vista == 'agenda') ...[
+            IconButton(icon: const Icon(Icons.ios_share), tooltip: l10n.calendarioExportarTitulo, onPressed: _exportar),
+            IconButton(icon: const Icon(Icons.upload_file), tooltip: l10n.calendarioImportarTitulo, onPressed: _importar),
+          ],
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(56),
+          preferredSize: Size.fromHeight(((_podeVerPedidos ? 1 : 0) + (_vista == 'agenda' ? 1 : 0)) * 52.0 + 4),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: SegmentedButton<String>(
-              segments: [
-                ButtonSegment(value: 'stand', label: Text(l10n.calendarioEscopoStand)),
-                ButtonSegment(value: 'meu', label: Text(l10n.calendarioEscopoMeu)),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: Column(
+              children: [
+                if (_podeVerPedidos)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: SegmentedButton<String>(
+                      segments: [
+                        ButtonSegment(value: 'agenda', label: Text(l10n.agendaTab)),
+                        ButtonSegment(
+                          value: 'pedidos',
+                          label: Badge(
+                            isLabelVisible: _pedidosPendentes > 0,
+                            label: Text('$_pedidosPendentes'),
+                            offset: const Offset(14, -6),
+                            child: Text(l10n.pedidosTab),
+                          ),
+                        ),
+                      ],
+                      selected: {_vista},
+                      onSelectionChanged: (v) => setState(() => _vista = v.first),
+                    ),
+                  ),
+                if (_vista == 'agenda')
+                  SegmentedButton<String>(
+                    segments: [
+                      ButtonSegment(value: 'stand', label: Text(l10n.calendarioEscopoStand)),
+                      ButtonSegment(value: 'meu', label: Text(l10n.calendarioEscopoMeu)),
+                    ],
+                    selected: {_escopo},
+                    onSelectionChanged: (v) => setState(() {
+                      _escopo = v.first;
+                      _load();
+                    }),
+                  ),
               ],
-              selected: {_escopo},
-              onSelectionChanged: (v) => setState(() {
-                _escopo = v.first;
-                _load();
-              }),
             ),
           ),
         ),
       ),
       body: MaxWidthBody(
-        child: RefreshIndicator(
+        child: _vista == 'pedidos'
+            ? VisitRequestsView(
+                onAlterado: () {
+                  setState(_load);
+                  _verificarPedidos();
+                },
+              )
+            : RefreshIndicator(
           onRefresh: _refresh,
           child: FutureBuilder<List<CalendarEvent>>(
             future: _future,
@@ -536,12 +598,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'calendar-fab',
-        onPressed: () => _abrirFormulario(),
-        icon: const Icon(Icons.add),
-        label: Text(l10n.calendarioNovoEvento),
-      ),
+      floatingActionButton: _vista == 'pedidos'
+          ? null
+          : FloatingActionButton.extended(
+              heroTag: 'calendar-fab',
+              onPressed: () => _abrirFormulario(),
+              icon: const Icon(Icons.add),
+              label: Text(l10n.calendarioNovoEvento),
+            ),
     );
   }
 }

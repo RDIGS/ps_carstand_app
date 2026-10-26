@@ -1666,4 +1666,152 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sugestaoEnviada => 'Suggestion sent. Thank you!';
+
+  @override
+  String get menuDefinicoes => 'Stand settings';
+
+  @override
+  String get definicoesSecaoPerfil => 'Stand profile';
+
+  @override
+  String get definicoesCampoContacto => 'Contact (phone)';
+
+  @override
+  String get definicoesCampoMorada => 'Address';
+
+  @override
+  String get definicoesCampoRedes => 'Social media';
+
+  @override
+  String get definicoesLogo => 'Logo';
+
+  @override
+  String get definicoesLogoAlterar => 'Change logo';
+
+  @override
+  String get definicoesLogoRemover => 'Remove logo';
+
+  @override
+  String get definicoesSecaoSite => 'Public website';
+
+  @override
+  String get definicoesSiteAtivo => 'Website enabled';
+
+  @override
+  String get definicoesSiteAtivoDesc =>
+      'Shows available and reserved vehicles and lets visitors request a visit.';
+
+  @override
+  String get definicoesSiteEndereco => 'Website address';
+
+  @override
+  String get definicoesSiteEnderecoAjuda =>
+      'Lowercase letters, numbers and hyphens (3 to 40).';
+
+  @override
+  String get definicoesSiteEnderecoInvalido =>
+      'Use only lowercase letters, numbers and hyphens (3 to 40, no hyphen at the start or end).';
+
+  @override
+  String get definicoesSiteSemEndereco =>
+      'Choose an address to enable the website.';
+
+  @override
+  String get definicoesSiteAbrir => 'Open website';
+
+  @override
+  String get definicoesSiteCopiar => 'Copy link';
+
+  @override
+  String get definicoesSiteCopiado => 'Link copied.';
+
+  @override
+  String get definicoesSecaoPermissoes => 'Permissions';
+
+  @override
+  String get definicoesColabAprovam =>
+      'Collaborators can approve visit requests';
+
+  @override
+  String get definicoesColabAprovamDesc =>
+      'If off, only the owner approves or rejects.';
+
+  @override
+  String get definicoesGuardar => 'Save';
+
+  @override
+  String get definicoesGuardado => 'Settings saved.';
+
+  @override
+  String get agendaTab => 'Agenda';
+
+  @override
+  String get pedidosTab => 'Requests';
+
+  @override
+  String get pedidosVazio => 'No pending visit requests.';
+
+  @override
+  String get pedidosRespondidos => 'Answered';
+
+  @override
+  String get pedidoAprovar => 'Approve';
+
+  @override
+  String get pedidoRejeitar => 'Reject';
+
+  @override
+  String get pedidoLigar => 'Call';
+
+  @override
+  String get pedidoWhatsapp => 'WhatsApp';
+
+  @override
+  String get pedidoEmail => 'Email';
+
+  @override
+  String get pedidoAprovarTitulo => 'Approve visit?';
+
+  @override
+  String pedidoAprovarTexto(String data) {
+    return 'Creates a lead and a calendar event for $data. Confirm the visit with the visitor.';
+  }
+
+  @override
+  String get pedidoRejeitarTitulo => 'Reject request?';
+
+  @override
+  String get pedidoRejeitarTexto =>
+      'The request will be rejected. To suggest another time, contact the visitor.';
+
+  @override
+  String get pedidoAprovado => 'Visit approved and added to the calendar.';
+
+  @override
+  String get pedidoRejeitado => 'Request rejected.';
+
+  @override
+  String pedidoFeitoEm(String data) {
+    return 'Requested on $data';
+  }
+
+  @override
+  String get pedidoEstadoAprovado => 'Approved';
+
+  @override
+  String get pedidoEstadoRejeitado => 'Rejected';
+
+  @override
+  String get leadOrigemSite => 'Website';
+
+  @override
+  String get erroSlugReservado =>
+      'That address is reserved. Choose another one.';
+
+  @override
+  String get erroSlugEmUso => 'That address is already used by another stand.';
+
+  @override
+  String get erroJaRespondido =>
+      'This request was already answered by someone else.';
 }

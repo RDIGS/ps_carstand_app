@@ -1670,4 +1670,153 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get sugestaoEnviada => 'Sugestão enviada. Obrigado!';
+
+  @override
+  String get menuDefinicoes => 'Definições do stand';
+
+  @override
+  String get definicoesSecaoPerfil => 'Perfil do stand';
+
+  @override
+  String get definicoesCampoContacto => 'Contacto (telefone)';
+
+  @override
+  String get definicoesCampoMorada => 'Morada';
+
+  @override
+  String get definicoesCampoRedes => 'Redes sociais';
+
+  @override
+  String get definicoesLogo => 'Logótipo';
+
+  @override
+  String get definicoesLogoAlterar => 'Alterar logótipo';
+
+  @override
+  String get definicoesLogoRemover => 'Remover logótipo';
+
+  @override
+  String get definicoesSecaoSite => 'Site público';
+
+  @override
+  String get definicoesSiteAtivo => 'Site ativo';
+
+  @override
+  String get definicoesSiteAtivoDesc =>
+      'Mostra as viaturas disponíveis e reservadas e deixa os visitantes pedirem uma visita.';
+
+  @override
+  String get definicoesSiteEndereco => 'Endereço do site';
+
+  @override
+  String get definicoesSiteEnderecoAjuda =>
+      'Letras minúsculas, números e hífens (3 a 40).';
+
+  @override
+  String get definicoesSiteEnderecoInvalido =>
+      'Usa só letras minúsculas, números e hífens (3 a 40, sem hífen no início ou no fim).';
+
+  @override
+  String get definicoesSiteSemEndereco =>
+      'Escolhe um endereço para poder ativar o site.';
+
+  @override
+  String get definicoesSiteAbrir => 'Abrir site';
+
+  @override
+  String get definicoesSiteCopiar => 'Copiar link';
+
+  @override
+  String get definicoesSiteCopiado => 'Link copiado.';
+
+  @override
+  String get definicoesSecaoPermissoes => 'Permissões';
+
+  @override
+  String get definicoesColabAprovam =>
+      'Colaboradores podem aprovar pedidos de visita';
+
+  @override
+  String get definicoesColabAprovamDesc =>
+      'Se estiver desligado, só o owner aprova ou rejeita.';
+
+  @override
+  String get definicoesGuardar => 'Guardar';
+
+  @override
+  String get definicoesGuardado => 'Definições guardadas.';
+
+  @override
+  String get agendaTab => 'Agenda';
+
+  @override
+  String get pedidosTab => 'Pedidos';
+
+  @override
+  String get pedidosVazio => 'Não há pedidos de visita pendentes.';
+
+  @override
+  String get pedidosRespondidos => 'Respondidos';
+
+  @override
+  String get pedidoAprovar => 'Aprovar';
+
+  @override
+  String get pedidoRejeitar => 'Rejeitar';
+
+  @override
+  String get pedidoLigar => 'Ligar';
+
+  @override
+  String get pedidoWhatsapp => 'WhatsApp';
+
+  @override
+  String get pedidoEmail => 'Email';
+
+  @override
+  String get pedidoAprovarTitulo => 'Aprovar visita?';
+
+  @override
+  String pedidoAprovarTexto(String data) {
+    return 'Cria uma lead e um evento na agenda para $data. Confirma a visita com o visitante.';
+  }
+
+  @override
+  String get pedidoRejeitarTitulo => 'Rejeitar pedido?';
+
+  @override
+  String get pedidoRejeitarTexto =>
+      'O pedido fica rejeitado. Se quiseres propor outra hora, contacta o visitante.';
+
+  @override
+  String get pedidoAprovado => 'Visita aprovada e adicionada à agenda.';
+
+  @override
+  String get pedidoRejeitado => 'Pedido rejeitado.';
+
+  @override
+  String pedidoFeitoEm(String data) {
+    return 'Pedido feito em $data';
+  }
+
+  @override
+  String get pedidoEstadoAprovado => 'Aprovado';
+
+  @override
+  String get pedidoEstadoRejeitado => 'Rejeitado';
+
+  @override
+  String get leadOrigemSite => 'Site';
+
+  @override
+  String get erroSlugReservado =>
+      'Esse endereço está reservado. Escolhe outro.';
+
+  @override
+  String get erroSlugEmUso =>
+      'Esse endereço já está a ser usado por outro stand.';
+
+  @override
+  String get erroJaRespondido =>
+      'Este pedido já foi respondido por outra pessoa.';
 }

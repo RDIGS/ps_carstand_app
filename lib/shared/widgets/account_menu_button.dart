@@ -4,6 +4,7 @@ import '../../core/l10n_extension.dart';
 import '../../core/theme/theme_state.dart';
 import '../../features/audit/audit_screen.dart';
 import '../../features/auth/auth_state.dart';
+import '../../features/settings/stand_settings_screen.dart';
 import '../../features/suggestions/suggestions_screen.dart';
 
 /// Menu de conta (idioma, tema, auditoria, sugestões, sessão) — extraído do
@@ -41,6 +42,7 @@ class AccountMenuButton extends StatelessWidget {
         const PopupMenuDivider(),
         // Só owner (secção 4/O15) — auditoria é um assunto administrativo
         // do stand, tal como Equipa/Financeiro.
+        if (auth.userRole == 'owner') PopupMenuItem(value: 'definicoes', child: Text(l10n.menuDefinicoes)),
         if (auth.userRole == 'owner') PopupMenuItem(value: 'auditoria', child: Text(l10n.menuAuditoria)),
         PopupMenuItem(value: 'sugestoes', child: Text(l10n.menuSugestoes)),
         PopupMenuItem(value: 'logout', child: Text(l10n.terminarSessao)),
@@ -63,6 +65,8 @@ class AccountMenuButton extends StatelessWidget {
         auth.changeIdioma('en');
       case 'tema_escuro':
         context.read<ThemeState>().toggle();
+      case 'definicoes':
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => const StandSettingsScreen()));
       case 'auditoria':
         Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AuditScreen()));
       case 'sugestoes':

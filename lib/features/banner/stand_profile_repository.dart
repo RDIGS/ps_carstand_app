@@ -26,6 +26,31 @@ class StandProfileRepository {
     );
   }
 
+  /// Gravação completa a partir do ecrã de Definições do stand — campos de
+  /// texto vazios vão como `null` (apagam o valor), nunca como ''.
+  Future<StandProfile> saveSettings({
+    required String? contacto,
+    required String? redesSociais,
+    required String? morada,
+    required String? slug,
+    required bool siteAtivo,
+    required bool vendedorPodeAprovarVisitas,
+  }) {
+    return _api.request(
+      'PATCH',
+      '/stands/me',
+      data: {
+        'contacto': contacto,
+        'redesSociais': redesSociais,
+        'morada': morada,
+        'slug': slug,
+        'siteAtivo': siteAtivo,
+        'vendedorPodeAprovarVisitas': vendedorPodeAprovarVisitas,
+      },
+      parse: (data) => StandProfile.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
   Future<StandProfile> uploadLogo(List<int> logo) {
     return _api.uploadMultipart(
       '/stands/me/logo',

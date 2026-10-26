@@ -1,5 +1,15 @@
 class StandProfile {
-  StandProfile({required this.id, required this.nome, this.contacto, this.redesSociais, this.logoUrl});
+  StandProfile({
+    required this.id,
+    required this.nome,
+    this.contacto,
+    this.redesSociais,
+    this.logoUrl,
+    this.morada,
+    this.slug,
+    this.siteAtivo = false,
+    this.vendedorPodeAprovarVisitas = false,
+  });
 
   factory StandProfile.fromJson(Map<String, dynamic> json) => StandProfile(
         id: json['id'] as String,
@@ -7,6 +17,10 @@ class StandProfile {
         contacto: json['contacto'] as String?,
         redesSociais: json['redesSociais'] as String?,
         logoUrl: json['logoUrl'] as String?,
+        morada: json['morada'] as String?,
+        slug: json['slug'] as String?,
+        siteAtivo: (json['siteAtivo'] as bool?) ?? false,
+        vendedorPodeAprovarVisitas: (json['vendedorPodeAprovarVisitas'] as bool?) ?? false,
       );
 
   final String id;
@@ -17,4 +31,12 @@ class StandProfile {
   /// Logótipo do stand para o gerador de banner de venda — `null` se ainda
   /// não foi carregado nenhum.
   final String? logoUrl;
+  final String? morada;
+
+  /// Endereço do site público (`ps-carstand-app.onrender.com/<slug>`).
+  final String? slug;
+  final bool siteAtivo;
+
+  /// Se os colaboradores (não só o owner) podem aprovar pedidos de visita.
+  final bool vendedorPodeAprovarVisitas;
 }

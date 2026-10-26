@@ -26,6 +26,8 @@ String leadOrigemLabel(BuildContext context, String? origem) {
       return l10n.leadOrigemOlx;
     case 'custojusto':
       return l10n.leadOrigemCustojusto;
+    case 'site':
+      return l10n.leadOrigemSite;
     default:
       return l10n.leadOrigemOutro;
   }

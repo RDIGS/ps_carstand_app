@@ -3157,6 +3157,276 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Sugestão enviada. Obrigado!'**
   String get sugestaoEnviada;
+
+  /// No description provided for @menuDefinicoes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Definições do stand'**
+  String get menuDefinicoes;
+
+  /// No description provided for @definicoesSecaoPerfil.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perfil do stand'**
+  String get definicoesSecaoPerfil;
+
+  /// No description provided for @definicoesCampoContacto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Contacto (telefone)'**
+  String get definicoesCampoContacto;
+
+  /// No description provided for @definicoesCampoMorada.
+  ///
+  /// In pt, this message translates to:
+  /// **'Morada'**
+  String get definicoesCampoMorada;
+
+  /// No description provided for @definicoesCampoRedes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Redes sociais'**
+  String get definicoesCampoRedes;
+
+  /// No description provided for @definicoesLogo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Logótipo'**
+  String get definicoesLogo;
+
+  /// No description provided for @definicoesLogoAlterar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterar logótipo'**
+  String get definicoesLogoAlterar;
+
+  /// No description provided for @definicoesLogoRemover.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover logótipo'**
+  String get definicoesLogoRemover;
+
+  /// No description provided for @definicoesSecaoSite.
+  ///
+  /// In pt, this message translates to:
+  /// **'Site público'**
+  String get definicoesSecaoSite;
+
+  /// No description provided for @definicoesSiteAtivo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Site ativo'**
+  String get definicoesSiteAtivo;
+
+  /// No description provided for @definicoesSiteAtivoDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mostra as viaturas disponíveis e reservadas e deixa os visitantes pedirem uma visita.'**
+  String get definicoesSiteAtivoDesc;
+
+  /// No description provided for @definicoesSiteEndereco.
+  ///
+  /// In pt, this message translates to:
+  /// **'Endereço do site'**
+  String get definicoesSiteEndereco;
+
+  /// No description provided for @definicoesSiteEnderecoAjuda.
+  ///
+  /// In pt, this message translates to:
+  /// **'Letras minúsculas, números e hífens (3 a 40).'**
+  String get definicoesSiteEnderecoAjuda;
+
+  /// No description provided for @definicoesSiteEnderecoInvalido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usa só letras minúsculas, números e hífens (3 a 40, sem hífen no início ou no fim).'**
+  String get definicoesSiteEnderecoInvalido;
+
+  /// No description provided for @definicoesSiteSemEndereco.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolhe um endereço para poder ativar o site.'**
+  String get definicoesSiteSemEndereco;
+
+  /// No description provided for @definicoesSiteAbrir.
+  ///
+  /// In pt, this message translates to:
+  /// **'Abrir site'**
+  String get definicoesSiteAbrir;
+
+  /// No description provided for @definicoesSiteCopiar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copiar link'**
+  String get definicoesSiteCopiar;
+
+  /// No description provided for @definicoesSiteCopiado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Link copiado.'**
+  String get definicoesSiteCopiado;
+
+  /// No description provided for @definicoesSecaoPermissoes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Permissões'**
+  String get definicoesSecaoPermissoes;
+
+  /// No description provided for @definicoesColabAprovam.
+  ///
+  /// In pt, this message translates to:
+  /// **'Colaboradores podem aprovar pedidos de visita'**
+  String get definicoesColabAprovam;
+
+  /// No description provided for @definicoesColabAprovamDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Se estiver desligado, só o owner aprova ou rejeita.'**
+  String get definicoesColabAprovamDesc;
+
+  /// No description provided for @definicoesGuardar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Guardar'**
+  String get definicoesGuardar;
+
+  /// No description provided for @definicoesGuardado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Definições guardadas.'**
+  String get definicoesGuardado;
+
+  /// No description provided for @agendaTab.
+  ///
+  /// In pt, this message translates to:
+  /// **'Agenda'**
+  String get agendaTab;
+
+  /// No description provided for @pedidosTab.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedidos'**
+  String get pedidosTab;
+
+  /// No description provided for @pedidosVazio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não há pedidos de visita pendentes.'**
+  String get pedidosVazio;
+
+  /// No description provided for @pedidosRespondidos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Respondidos'**
+  String get pedidosRespondidos;
+
+  /// No description provided for @pedidoAprovar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aprovar'**
+  String get pedidoAprovar;
+
+  /// No description provided for @pedidoRejeitar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rejeitar'**
+  String get pedidoRejeitar;
+
+  /// No description provided for @pedidoLigar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ligar'**
+  String get pedidoLigar;
+
+  /// No description provided for @pedidoWhatsapp.
+  ///
+  /// In pt, this message translates to:
+  /// **'WhatsApp'**
+  String get pedidoWhatsapp;
+
+  /// No description provided for @pedidoEmail.
+  ///
+  /// In pt, this message translates to:
+  /// **'Email'**
+  String get pedidoEmail;
+
+  /// No description provided for @pedidoAprovarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aprovar visita?'**
+  String get pedidoAprovarTitulo;
+
+  /// No description provided for @pedidoAprovarTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cria uma lead e um evento na agenda para {data}. Confirma a visita com o visitante.'**
+  String pedidoAprovarTexto(String data);
+
+  /// No description provided for @pedidoRejeitarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rejeitar pedido?'**
+  String get pedidoRejeitarTitulo;
+
+  /// No description provided for @pedidoRejeitarTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'O pedido fica rejeitado. Se quiseres propor outra hora, contacta o visitante.'**
+  String get pedidoRejeitarTexto;
+
+  /// No description provided for @pedidoAprovado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Visita aprovada e adicionada à agenda.'**
+  String get pedidoAprovado;
+
+  /// No description provided for @pedidoRejeitado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedido rejeitado.'**
+  String get pedidoRejeitado;
+
+  /// No description provided for @pedidoFeitoEm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedido feito em {data}'**
+  String pedidoFeitoEm(String data);
+
+  /// No description provided for @pedidoEstadoAprovado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aprovado'**
+  String get pedidoEstadoAprovado;
+
+  /// No description provided for @pedidoEstadoRejeitado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rejeitado'**
+  String get pedidoEstadoRejeitado;
+
+  /// No description provided for @leadOrigemSite.
+  ///
+  /// In pt, this message translates to:
+  /// **'Site'**
+  String get leadOrigemSite;
+
+  /// No description provided for @erroSlugReservado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse endereço está reservado. Escolhe outro.'**
+  String get erroSlugReservado;
+
+  /// No description provided for @erroSlugEmUso.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse endereço já está a ser usado por outro stand.'**
+  String get erroSlugEmUso;
+
+  /// No description provided for @erroJaRespondido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este pedido já foi respondido por outra pessoa.'**
+  String get erroJaRespondido;
 }
 
 class _AppLocalizationsDelegate

@@ -37,7 +37,7 @@ class Lead {
   final String? proximoContacto;
 }
 
-const leadOrigens = ['telefone', 'whatsapp', 'presencial', 'standvirtual', 'olx', 'custojusto', 'outro'];
+const leadOrigens = ['telefone', 'whatsapp', 'presencial', 'standvirtual', 'olx', 'custojusto', 'site', 'outro'];
 const leadEstados = ['novo', 'contactado', 'agendado', 'convertido', 'perdido'];
 
 class LeadListPage {

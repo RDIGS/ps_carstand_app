@@ -59,6 +59,12 @@ extension ApiExceptionL10n on ApiException {
         return l10n.erroParticipanteInvalido;
       case 'nao_convidado':
         return l10n.erroNaoConvidado;
+      case 'slug_reservado':
+        return l10n.erroSlugReservado;
+      case 'slug_em_uso':
+        return l10n.erroSlugEmUso;
+      case 'ja_respondido':
+        return l10n.erroJaRespondido;
       case 'erro_rede':
         return l10n.erroRede;
       case 'erro_interno':
