@@ -139,8 +139,13 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                   const SizedBox(height: 16),
                   VehicleDeclaracoesCard(vehicleId: vehicle.id),
                   const SizedBox(height: 16),
-                  _PrecosCard(vehicle: vehicle),
-                  const SizedBox(height: 16),
+                  // Sem nenhum preço visível o cartão ficava vazio.
+                  if ((role == 'owner' && vehicle.precoCompra != null) ||
+                      vehicle.precoVendaRecomendado != null ||
+                      vehicle.precoVendaFinal != null) ...[
+                    _PrecosCard(vehicle: vehicle),
+                    const SizedBox(height: 16),
+                  ],
                   if (vehicle.importado) _ImportadoCard(vehicle: vehicle),
                   if (vehicle.importado) const SizedBox(height: 16),
                   _ActionsCard(
