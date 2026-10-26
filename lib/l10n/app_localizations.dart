@@ -1211,7 +1211,7 @@ abstract class AppLocalizations {
   /// No description provided for @registoCompraLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Registo de Compra:'**
+  /// **'Declaração de venda:'**
   String get registoCompraLabel;
 
   /// No description provided for @copiarLink.
@@ -2471,7 +2471,7 @@ abstract class AppLocalizations {
   /// No description provided for @verRegistoCompra.
   ///
   /// In pt, this message translates to:
-  /// **'Ver Registo de Compra'**
+  /// **'Ver declaração de venda'**
   String get verRegistoCompra;
 
   /// No description provided for @reverterVendaTitulo.
@@ -3427,6 +3427,150 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Este pedido já foi respondido por outra pessoa.'**
   String get erroJaRespondido;
+
+  /// No description provided for @declaracoesTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Declarações'**
+  String get declaracoesTitulo;
+
+  /// No description provided for @declaracoesVazio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não foram emitidas declarações para este veículo.'**
+  String get declaracoesVazio;
+
+  /// No description provided for @declaracaoCompra.
+  ///
+  /// In pt, this message translates to:
+  /// **'Declaração de compra'**
+  String get declaracaoCompra;
+
+  /// No description provided for @declaracaoVenda.
+  ///
+  /// In pt, this message translates to:
+  /// **'Declaração de venda'**
+  String get declaracaoVenda;
+
+  /// No description provided for @declaracaoCirculacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Declaração de circulação'**
+  String get declaracaoCirculacao;
+
+  /// No description provided for @declaracaoCaracteristicas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Declaração de características'**
+  String get declaracaoCaracteristicas;
+
+  /// No description provided for @dadosClienteTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dados do cliente'**
+  String get dadosClienteTitulo;
+
+  /// No description provided for @dadosVendedorTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dados de quem vende o veículo'**
+  String get dadosVendedorTitulo;
+
+  /// No description provided for @lerCartaoCidadao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ler Cartão de Cidadão'**
+  String get lerCartaoCidadao;
+
+  /// No description provided for @lerCartaoCidadaoAjuda.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tira foto à frente e ao verso e os dados são preenchidos automaticamente. Também podes escrevê-los à mão.'**
+  String get lerCartaoCidadaoAjuda;
+
+  /// No description provided for @campoNifOpcional.
+  ///
+  /// In pt, this message translates to:
+  /// **'NIF'**
+  String get campoNifOpcional;
+
+  /// No description provided for @campoPneusDianteiros.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pneus dianteiros (ex. 205/55 R16)'**
+  String get campoPneusDianteiros;
+
+  /// No description provided for @campoPneusTraseiros.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pneus traseiros'**
+  String get campoPneusTraseiros;
+
+  /// No description provided for @declaracaoEmitir.
+  ///
+  /// In pt, this message translates to:
+  /// **'Emitir declaração'**
+  String get declaracaoEmitir;
+
+  /// No description provided for @declaracaoEmitida.
+  ///
+  /// In pt, this message translates to:
+  /// **'Declaração emitida.'**
+  String get declaracaoEmitida;
+
+  /// No description provided for @declaracaoCompraPergunta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar a declaração de compra?'**
+  String get declaracaoCompraPergunta;
+
+  /// No description provided for @declaracaoCompraPerguntaTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gera a Declaração de Compra e Venda com o stand como comprador. Precisas dos dados de quem vendeu o veículo (Cartão de Cidadão ou escritos à mão).'**
+  String get declaracaoCompraPerguntaTexto;
+
+  /// No description provided for @agoraNao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Agora não'**
+  String get agoraNao;
+
+  /// No description provided for @definicoesCampoNif.
+  ///
+  /// In pt, this message translates to:
+  /// **'NIF da empresa'**
+  String get definicoesCampoNif;
+
+  /// No description provided for @definicoesNifInvalido.
+  ///
+  /// In pt, this message translates to:
+  /// **'O NIF tem de ter 9 dígitos.'**
+  String get definicoesNifInvalido;
+
+  /// No description provided for @definicoesCampoDenominacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Denominação social'**
+  String get definicoesCampoDenominacao;
+
+  /// No description provided for @definicoesCampoDenominacaoAjuda.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome legal da empresa, usado nas declarações (ex. Auto Silva – Comércio de Automóveis, Lda).'**
+  String get definicoesCampoDenominacaoAjuda;
+
+  /// No description provided for @definicoesCampoLocalidade.
+  ///
+  /// In pt, this message translates to:
+  /// **'Localidade'**
+  String get definicoesCampoLocalidade;
+
+  /// No description provided for @definicoesSecaoDeclaracoes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dados para as declarações'**
+  String get definicoesSecaoDeclaracoes;
 }
 
 class _AppLocalizationsDelegate

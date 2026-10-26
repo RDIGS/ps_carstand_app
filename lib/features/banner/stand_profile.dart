@@ -9,6 +9,9 @@ class StandProfile {
     this.slug,
     this.siteAtivo = false,
     this.vendedorPodeAprovarVisitas = false,
+    this.nif,
+    this.denominacaoSocial,
+    this.localidade,
   });
 
   factory StandProfile.fromJson(Map<String, dynamic> json) => StandProfile(
@@ -21,6 +24,9 @@ class StandProfile {
         slug: json['slug'] as String?,
         siteAtivo: (json['siteAtivo'] as bool?) ?? false,
         vendedorPodeAprovarVisitas: (json['vendedorPodeAprovarVisitas'] as bool?) ?? false,
+        nif: json['nif'] as String?,
+        denominacaoSocial: json['denominacaoSocial'] as String?,
+        localidade: json['localidade'] as String?,
       );
 
   final String id;
@@ -39,4 +45,10 @@ class StandProfile {
 
   /// Se os colaboradores (não só o owner) podem aprovar pedidos de visita.
   final bool vendedorPodeAprovarVisitas;
+
+  /// Dados que entram nas declarações do veículo (denominação social vazia
+  /// → usa o nome do stand).
+  final String? nif;
+  final String? denominacaoSocial;
+  final String? localidade;
 }

@@ -618,7 +618,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vendaRegistadaTexto => 'Veículo marcado como vendido.';
 
   @override
-  String get registoCompraLabel => 'Registo de Compra:';
+  String get registoCompraLabel => 'Declaração de venda:';
 
   @override
   String get copiarLink => 'Copiar link';
@@ -1303,7 +1303,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get semVendasRegistadas => 'Ainda não há vendas registadas.';
 
   @override
-  String get verRegistoCompra => 'Ver Registo de Compra';
+  String get verRegistoCompra => 'Ver declaração de venda';
 
   @override
   String get reverterVendaTitulo => 'Reverter venda';
@@ -1819,4 +1819,80 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get erroJaRespondido =>
       'Este pedido já foi respondido por outra pessoa.';
+
+  @override
+  String get declaracoesTitulo => 'Declarações';
+
+  @override
+  String get declaracoesVazio =>
+      'Ainda não foram emitidas declarações para este veículo.';
+
+  @override
+  String get declaracaoCompra => 'Declaração de compra';
+
+  @override
+  String get declaracaoVenda => 'Declaração de venda';
+
+  @override
+  String get declaracaoCirculacao => 'Declaração de circulação';
+
+  @override
+  String get declaracaoCaracteristicas => 'Declaração de características';
+
+  @override
+  String get dadosClienteTitulo => 'Dados do cliente';
+
+  @override
+  String get dadosVendedorTitulo => 'Dados de quem vende o veículo';
+
+  @override
+  String get lerCartaoCidadao => 'Ler Cartão de Cidadão';
+
+  @override
+  String get lerCartaoCidadaoAjuda =>
+      'Tira foto à frente e ao verso e os dados são preenchidos automaticamente. Também podes escrevê-los à mão.';
+
+  @override
+  String get campoNifOpcional => 'NIF';
+
+  @override
+  String get campoPneusDianteiros => 'Pneus dianteiros (ex. 205/55 R16)';
+
+  @override
+  String get campoPneusTraseiros => 'Pneus traseiros';
+
+  @override
+  String get declaracaoEmitir => 'Emitir declaração';
+
+  @override
+  String get declaracaoEmitida => 'Declaração emitida.';
+
+  @override
+  String get declaracaoCompraPergunta => 'Criar a declaração de compra?';
+
+  @override
+  String get declaracaoCompraPerguntaTexto =>
+      'Gera a Declaração de Compra e Venda com o stand como comprador. Precisas dos dados de quem vendeu o veículo (Cartão de Cidadão ou escritos à mão).';
+
+  @override
+  String get agoraNao => 'Agora não';
+
+  @override
+  String get definicoesCampoNif => 'NIF da empresa';
+
+  @override
+  String get definicoesNifInvalido => 'O NIF tem de ter 9 dígitos.';
+
+  @override
+  String get definicoesCampoDenominacao => 'Denominação social';
+
+  @override
+  String get definicoesCampoDenominacaoAjuda =>
+      'Nome legal da empresa, usado nas declarações (ex. Auto Silva – Comércio de Automóveis, Lda).';
+
+  @override
+  String get definicoesCampoLocalidade => 'Localidade';
+
+  @override
+  String get definicoesSecaoDeclaracoes => 'Dados para as declarações';
 }

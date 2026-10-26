@@ -617,7 +617,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vendaRegistadaTexto => 'Vehicle marked as sold.';
 
   @override
-  String get registoCompraLabel => 'Purchase record:';
+  String get registoCompraLabel => 'Sale declaration:';
 
   @override
   String get copiarLink => 'Copy link';
@@ -1299,7 +1299,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get semVendasRegistadas => 'No sales registered yet.';
 
   @override
-  String get verRegistoCompra => 'View purchase record';
+  String get verRegistoCompra => 'View sale declaration';
 
   @override
   String get reverterVendaTitulo => 'Revert sale';
@@ -1814,4 +1814,79 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get erroJaRespondido =>
       'This request was already answered by someone else.';
+
+  @override
+  String get declaracoesTitulo => 'Declarations';
+
+  @override
+  String get declaracoesVazio => 'No declarations issued for this vehicle yet.';
+
+  @override
+  String get declaracaoCompra => 'Purchase declaration';
+
+  @override
+  String get declaracaoVenda => 'Sale declaration';
+
+  @override
+  String get declaracaoCirculacao => 'Circulation declaration';
+
+  @override
+  String get declaracaoCaracteristicas => 'Characteristics declaration';
+
+  @override
+  String get dadosClienteTitulo => 'Customer details';
+
+  @override
+  String get dadosVendedorTitulo => 'Details of the person selling the vehicle';
+
+  @override
+  String get lerCartaoCidadao => 'Read Citizen Card';
+
+  @override
+  String get lerCartaoCidadaoAjuda =>
+      'Take a photo of the front and back and the details are filled in automatically. You can also type them.';
+
+  @override
+  String get campoNifOpcional => 'Tax number';
+
+  @override
+  String get campoPneusDianteiros => 'Front tyres (e.g. 205/55 R16)';
+
+  @override
+  String get campoPneusTraseiros => 'Rear tyres';
+
+  @override
+  String get declaracaoEmitir => 'Issue declaration';
+
+  @override
+  String get declaracaoEmitida => 'Declaration issued.';
+
+  @override
+  String get declaracaoCompraPergunta => 'Create the purchase declaration?';
+
+  @override
+  String get declaracaoCompraPerguntaTexto =>
+      'Generates the purchase and sale declaration with the stand as buyer. You need the seller\'s details (Citizen Card or typed in).';
+
+  @override
+  String get agoraNao => 'Not now';
+
+  @override
+  String get definicoesCampoNif => 'Company tax number';
+
+  @override
+  String get definicoesNifInvalido => 'The tax number must have 9 digits.';
+
+  @override
+  String get definicoesCampoDenominacao => 'Legal company name';
+
+  @override
+  String get definicoesCampoDenominacaoAjuda =>
+      'Company legal name used on declarations (e.g. Auto Silva – Car Trading, Lda).';
+
+  @override
+  String get definicoesCampoLocalidade => 'Town';
+
+  @override
+  String get definicoesSecaoDeclaracoes => 'Details for declarations';
 }

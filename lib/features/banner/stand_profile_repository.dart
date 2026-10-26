@@ -35,6 +35,9 @@ class StandProfileRepository {
     required String? slug,
     required bool siteAtivo,
     required bool vendedorPodeAprovarVisitas,
+    required String? nif,
+    required String? denominacaoSocial,
+    required String? localidade,
   }) {
     return _api.request(
       'PATCH',
@@ -46,6 +49,9 @@ class StandProfileRepository {
         'slug': slug,
         'siteAtivo': siteAtivo,
         'vendedorPodeAprovarVisitas': vendedorPodeAprovarVisitas,
+        'nif': nif,
+        'denominacaoSocial': denominacaoSocial,
+        'localidade': localidade,
       },
       parse: (data) => StandProfile.fromJson(data as Map<String, dynamic>),
     );

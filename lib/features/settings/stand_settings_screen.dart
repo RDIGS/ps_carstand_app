@@ -16,6 +16,7 @@ import '../banner/stand_profile_repository.dart';
 /// no Render → `/site/:slug` do backend).
 const String siteBaseUrl = String.fromEnvironment('SITE_BASE_URL', defaultValue: 'https://ps-carstand-app.onrender.com');
 
+final _nifValido = RegExp(r'^\d{9}$');
 final _slugValido = RegExp(r'^[a-z0-9](?:[a-z0-9-]{1,38})[a-z0-9]$');
 
 /// Sugestão de endereço a partir do nome do stand ("Auto Silva, Lda" →
@@ -40,6 +41,9 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
   final _morada = TextEditingController();
   final _redes = TextEditingController();
   final _slug = TextEditingController();
+  final _nif = TextEditingController();
+  final _denominacao = TextEditingController();
+  final _localidade = TextEditingController();
   StandProfile? _perfil;
   bool _siteAtivo = false;
   bool _colabAprovam = false;
@@ -55,7 +59,7 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
 
   @override
   void dispose() {
-    for (final c in [_contacto, _morada, _redes, _slug]) {
+    for (final c in [_contacto, _morada, _redes, _slug, _nif, _denominacao, _localidade]) {
       c.dispose();
     }
     super.dispose();
@@ -82,6 +86,9 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
     _slug.text = p.slug ?? sugerirSlug(p.nome);
     _siteAtivo = p.siteAtivo;
     _colabAprovam = p.vendedorPodeAprovarVisitas;
+    _nif.text = p.nif ?? '';
+    _denominacao.text = p.denominacaoSocial ?? '';
+    _localidade.text = p.localidade ?? '';
   }
 
   String? _ouNull(TextEditingController c) => c.text.trim().isEmpty ? null : c.text.trim();
@@ -97,6 +104,10 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.definicoesSiteEnderecoInvalido)));
       return;
     }
+    if (_nif.text.trim().isNotEmpty && !_nifValido.hasMatch(_nif.text.trim())) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.definicoesNifInvalido)));
+      return;
+    }
     if (_siteAtivo && slug.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.definicoesSiteSemEndereco)));
       return;
@@ -110,6 +121,9 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
             slug: slug.isEmpty ? null : slug,
             siteAtivo: _siteAtivo,
             vendedorPodeAprovarVisitas: _colabAprovam,
+            nif: _ouNull(_nif),
+            denominacaoSocial: _ouNull(_denominacao),
+            localidade: _ouNull(_localidade),
           );
       if (!mounted) return;
       setState(() => _aplicar(p));
@@ -220,6 +234,32 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
                         controller: _redes,
                         maxLength: 120,
                         decoration: InputDecoration(labelText: l10n.definicoesCampoRedes),
+                      ),
+                      const Divider(height: 32),
+                      Text(l10n.definicoesSecaoDeclaracoes, style: tema.textTheme.titleMedium),
+                      TextField(
+                        controller: _denominacao,
+                        maxLength: 150,
+                        decoration: InputDecoration(
+                          labelText: l10n.definicoesCampoDenominacao,
+                          helperText: l10n.definicoesCampoDenominacaoAjuda,
+                        ),
+                      ),
+                      TextField(
+                        controller: _nif,
+                        maxLength: 9,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        onChanged: (_) => setState(() {}),
+                        decoration: InputDecoration(
+                          labelText: l10n.definicoesCampoNif,
+                          errorText: _nif.text.trim().isNotEmpty && !_nifValido.hasMatch(_nif.text.trim()) ? l10n.definicoesNifInvalido : null,
+                        ),
+                      ),
+                      TextField(
+                        controller: _localidade,
+                        maxLength: 80,
+                        decoration: InputDecoration(labelText: l10n.definicoesCampoLocalidade),
                       ),
                       const Divider(height: 32),
                       Text(l10n.definicoesSecaoSite, style: tema.textTheme.titleMedium),

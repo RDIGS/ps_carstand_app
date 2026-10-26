@@ -12,6 +12,7 @@ import '../../core/utils/matricula_validator.dart';
 import '../../shared/widgets/document_photo_slot.dart';
 import '../../shared/widgets/image_source_picker.dart';
 import '../../shared/widgets/max_width_body.dart';
+import '../declaracoes/emitir_declaracao.dart';
 import 'create_vehicle_data.dart';
 import 'vehicles_repository.dart';
 
@@ -182,6 +183,24 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
         } on ApiException {
           // Ignorado de propósito — dá para anexar depois em VehicleDocumentsCard.
         }
+      }
+      if (!mounted) return;
+      // Ato da compra: oferece logo a declaração de compra e venda (o
+      // veículo já está gravado — dá para a emitir depois na ficha).
+      final l10n = context.l10n;
+      final criar = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text(l10n.declaracaoCompraPergunta),
+          content: Text(l10n.declaracaoCompraPerguntaTexto),
+          actions: [
+            TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text(l10n.agoraNao)),
+            FilledButton(onPressed: () => Navigator.of(ctx).pop(true), child: Text(l10n.sim)),
+          ],
+        ),
+      );
+      if (criar == true && mounted) {
+        await emitirDeclaracao(context, vehicleId: vehicleId, tipo: 'compra');
       }
       if (mounted) Navigator.of(context).pop(true);
     } on ApiException catch (e) {
