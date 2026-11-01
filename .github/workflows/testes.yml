@@ -1,0 +1,24 @@
+# Corre a análise e os testes da app a cada envio (push) e pull request. Se
+# algo falhar, o commit fica a vermelho no GitHub e chega um email.
+name: Testes
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.44.6
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Análise
+        run: flutter analyze --no-fatal-infos
+      - name: Testes
+        run: flutter test
