@@ -5,6 +5,9 @@ import '../../core/theme/app_colors.dart';
 import '../auth/auth_state.dart';
 import '../../shared/widgets/account_menu_button.dart';
 import '../../shared/widgets/vehicle_card.dart';
+import '../finance/finance_repository.dart';
+import '../finance/painel_stand.dart';
+import 'painel_stand_view.dart';
 import 'add_vehicle_screen.dart';
 import 'dua_capture_screen.dart';
 import 'vehicle.dart';
@@ -31,6 +34,8 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
   bool _loading = true;
   bool _loadingMore = false;
   Object? _error;
+  // Só para owner; se falhar a lista aparece na mesma, só sem o painel.
+  PainelStand? _painel;
 
   @override
   void initState() {
@@ -59,6 +64,8 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
     });
     try {
       final resultado = await context.read<VehiclesRepository>().list();
+      if (!mounted) return;
+      _carregarPainel();
       setState(() {
         _vehicles
           ..clear()
@@ -72,6 +79,16 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
         _error = e;
         _loading = false;
       });
+    }
+  }
+
+  Future<void> _carregarPainel() async {
+    if (context.read<AuthState>().userRole != 'owner') return;
+    try {
+      final painel = await context.read<FinanceRepository>().painel();
+      if (mounted) setState(() => _painel = painel);
+    } catch (_) {
+      // Best-effort — ver comentário em _painel.
     }
   }
 
@@ -182,31 +199,43 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
             return LayoutBuilder(
               builder: (context, constraints) {
                 final colunas = _colunas(constraints.maxWidth);
-                return GridView.builder(
+                return CustomScrollView(
                   controller: _scrollController,
-                  padding: const EdgeInsets.all(16),
-                  itemCount: _vehicles.length + (_loadingMore ? 1 : 0),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: colunas,
-                    mainAxisExtent: 320, // cartão vertical (foto + ficha técnica) do redesign
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                  ),
-                  itemBuilder: (context, index) {
-                    if (index >= _vehicles.length) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    final vehicle = _vehicles[index];
-                    return VehicleCard(
-                      vehicle: vehicle,
-                      onTap: () async {
-                        await Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => VehicleDetailScreen(vehicleId: vehicle.id)),
-                        );
-                        if (context.mounted) _refresh();
-                      },
-                    );
-                  },
+                  slivers: [
+                    if (_painel != null)
+                      SliverPadding(
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+                        sliver: SliverToBoxAdapter(child: PainelStandView(painel: _painel!)),
+                      ),
+                    SliverPadding(
+                      // Fundo extra para o último cartão não ficar atrás do FAB.
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 88),
+                      sliver: SliverGrid.builder(
+                        itemCount: _vehicles.length + (_loadingMore ? 1 : 0),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: colunas,
+                          mainAxisExtent: 320, // cartão vertical (foto + ficha técnica) do redesign
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                        ),
+                        itemBuilder: (context, index) {
+                          if (index >= _vehicles.length) {
+                            return const Center(child: CircularProgressIndicator());
+                          }
+                          final vehicle = _vehicles[index];
+                          return VehicleCard(
+                            vehicle: vehicle,
+                            onTap: () async {
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => VehicleDetailScreen(vehicleId: vehicle.id)),
+                              );
+                              if (context.mounted) _refresh();
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 );
               },
             );

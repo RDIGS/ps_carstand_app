@@ -6,6 +6,7 @@ import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
+import '../../core/utils/euros.dart';
 import '../../shared/widgets/max_width_body.dart';
 import '../../shared/widgets/network_image_safe.dart';
 import '../../shared/widgets/status_badge.dart';
@@ -294,8 +295,12 @@ class _PrecosCard extends StatelessWidget {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // Wrap (não Row): com compra, pedido, final, despesas e margem são
+        // até 5 valores — numa Row não cabiam num telemóvel.
+        child: Wrap(
+          alignment: WrapAlignment.spaceAround,
+          spacing: 24,
+          runSpacing: 12,
           children: [
             if (role == 'owner' && vehicle.precoCompra != null)
               _PrecoColuna(label: l10n.precoCompra, valor: vehicle.precoCompra!),
@@ -303,6 +308,17 @@ class _PrecosCard extends StatelessWidget {
               _PrecoColuna(label: l10n.precoVendaRecomendado, valor: vehicle.precoVendaRecomendado!, destaque: true),
             if (vehicle.precoVendaFinal != null)
               _PrecoColuna(label: l10n.precoVendaFinal, valor: vehicle.precoVendaFinal!),
+            // despesasTotal/margemPrevista só chegam preenchidos para owners.
+            if (vehicle.despesasTotal != null && vehicle.despesasTotal! > 0)
+              _PrecoColuna(label: l10n.precoDespesas, valor: vehicle.despesasTotal!),
+            if (vehicle.margemPrevista != null && vehicle.estado != 'vendido')
+              _PrecoColuna(
+                label: l10n.painelMargemPrevista,
+                valor: vehicle.margemPrevista!,
+                destaque: true,
+                cor: vehicle.margemPrevista! < 0 ? AppColors.red : AppColors.teal,
+                sinal: true,
+              ),
           ],
         ),
       ),
@@ -311,11 +327,13 @@ class _PrecosCard extends StatelessWidget {
 }
 
 class _PrecoColuna extends StatelessWidget {
-  const _PrecoColuna({required this.label, required this.valor, this.destaque = false});
+  const _PrecoColuna({required this.label, required this.valor, this.destaque = false, this.cor, this.sinal = false});
 
   final String label;
   final double valor;
   final bool destaque;
+  final Color? cor;
+  final bool sinal;
 
   @override
   Widget build(BuildContext context) {
@@ -323,10 +341,10 @@ class _PrecoColuna extends StatelessWidget {
       children: [
         Text(label, style: Theme.of(context).textTheme.bodyMedium),
         Text(
-          '${valor.toStringAsFixed(0)} €',
+          euros(valor, sinal: sinal),
           style: AppTypography.numero(
             fontSize: destaque ? 22 : 18,
-            color: destaque ? AppColors.teal : Theme.of(context).colorScheme.onSurface,
+            color: cor ?? (destaque ? AppColors.teal : Theme.of(context).colorScheme.onSurface),
           ),
         ),
       ],

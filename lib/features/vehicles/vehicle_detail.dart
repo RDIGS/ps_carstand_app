@@ -25,6 +25,8 @@ class VehicleDetail {
     this.precoCompra,
     this.precoVendaRecomendado,
     this.precoVendaFinal,
+    this.despesasTotal,
+    this.margemPrevista,
     this.matriculaAnterior,
     this.paisOrigemAnterior,
     this.dataPrimeiraMatriculaOriginal,
@@ -55,6 +57,8 @@ class VehicleDetail {
         precoCompra: parseDecimal(json['preco_compra']),
         precoVendaRecomendado: parseDecimal(json['preco_venda_recomendado']),
         precoVendaFinal: parseDecimal(json['preco_venda_final']),
+        despesasTotal: parseDecimal(json['despesas_total']),
+        margemPrevista: parseDecimal(json['margem_prevista']),
         matriculaAnterior: json['matricula_anterior'] as String?,
         paisOrigemAnterior: json['pais_origem_anterior'] as String?,
         dataPrimeiraMatriculaOriginal: json['data_primeira_matricula_original'] as String?,
@@ -85,6 +89,11 @@ class VehicleDetail {
   final double? precoCompra;
   final double? precoVendaRecomendado;
   final double? precoVendaFinal;
+
+  /// Só chegam para owners (o backend nem as envia aos vendedores), tal como
+  /// o preço de compra. Margem prevista = preço pedido − compra − despesas.
+  final double? despesasTotal;
+  final double? margemPrevista;
   final String? matriculaAnterior;
   final String? paisOrigemAnterior;
   final String? dataPrimeiraMatriculaOriginal;

@@ -20,6 +20,7 @@ class Vehicle {
     this.diasEmStock,
     this.checklistTotal,
     this.checklistConcluidos,
+    this.margemPrevista,
   });
 
   factory Vehicle.fromJson(Map<String, dynamic> json) => Vehicle(
@@ -35,6 +36,7 @@ class Vehicle {
         checklistTotal: json['checklist_total'] != null ? (json['checklist_total'] as num).toInt() : null,
         checklistConcluidos:
             json['checklist_concluidos'] != null ? (json['checklist_concluidos'] as num).toInt() : null,
+        margemPrevista: parseDecimal(json['margem_prevista']),
       );
 
   final String id;
@@ -50,6 +52,10 @@ class Vehicle {
   // cartão do veículo quando já existe pelo menos 1 item de checklist.
   final int? checklistTotal;
   final int? checklistConcluidos;
+
+  /// Só para owners (o backend não a envia a vendedores): preço pedido −
+  /// compra − despesas; null sem preço pedido ou de compra.
+  final double? margemPrevista;
 }
 
 class VehicleListPage {

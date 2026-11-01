@@ -637,5 +637,19 @@
   "definicoesCampoDenominacao": "Legal company name",
   "definicoesCampoDenominacaoAjuda": "Company legal name used on declarations (e.g. Auto Silva – Car Trading, Lda).",
   "definicoesCampoLocalidade": "Town",
-  "definicoesSecaoDeclaracoes": "Details for declarations"
+  "definicoesSecaoDeclaracoes": "Details for declarations",
+  "painelEmStock": "In stock",
+  "painelCarros": "{n, plural, =1{1 car} other{{n} cars}}",
+  "@painelCarros": {"placeholders":{"n":{"type":"int"}}},
+  "painelInvestido": "Invested",
+  "painelInvestidoDesc": "purchase + expenses",
+  "painelMargemPrevista": "Expected margin",
+  "painelSemPreco": "{n, plural, =1{1 car without price} other{{n} cars without price}}",
+  "@painelSemPreco": {"placeholders":{"n":{"type":"int"}}},
+  "painelTudoComPreco": "if everything sells at asking price",
+  "painelLucroMes": "Profit this month",
+  "painelVendasMes": "{n, plural, =0{no sales yet} =1{1 sale} other{{n} sales}}",
+  "@painelVendasMes": {"placeholders":{"n":{"type":"int"}}},
+  "precoDespesas": "Expenses",
+  "painelEmStockDesc": "available and reserved cars"
 }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/l10n_extension.dart';
+import '../auth/auth_state.dart';
 import 'declaracao.dart';
 import 'declaracoes_repository.dart';
 import 'emitir_declaracao.dart';
@@ -54,7 +55,8 @@ class _VehicleDeclaracoesCardState extends State<VehicleDeclaracoesCard> {
               spacing: 8,
               runSpacing: 8,
               children: [
-                for (final tipo in ['circulacao', 'caracteristicas', 'compra'])
+                // A de compra leva o preço de compra — só owner (o backend também recusa).
+                for (final tipo in ['circulacao', 'caracteristicas', if (context.watch<AuthState>().userRole == 'owner') 'compra'])
                   OutlinedButton.icon(
                     icon: const Icon(Icons.description_outlined, size: 18),
                     label: Text(tituloDeclaracao(l10n, tipo)),

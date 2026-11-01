@@ -1889,4 +1889,62 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get definicoesSecaoDeclaracoes => 'Details for declarations';
+
+  @override
+  String get painelEmStock => 'In stock';
+
+  @override
+  String painelCarros(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n cars',
+      one: '1 car',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get painelInvestido => 'Invested';
+
+  @override
+  String get painelInvestidoDesc => 'purchase + expenses';
+
+  @override
+  String get painelMargemPrevista => 'Expected margin';
+
+  @override
+  String painelSemPreco(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n cars without price',
+      one: '1 car without price',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get painelTudoComPreco => 'if everything sells at asking price';
+
+  @override
+  String get painelLucroMes => 'Profit this month';
+
+  @override
+  String painelVendasMes(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n sales',
+      one: '1 sale',
+      zero: 'no sales yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get precoDespesas => 'Expenses';
+
+  @override
+  String get painelEmStockDesc => 'available and reserved cars';
 }

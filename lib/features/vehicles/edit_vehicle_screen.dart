@@ -73,7 +73,8 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
       await repo.update(
         widget.vehicle.id,
         kms: int.tryParse(_kms.text.trim()),
-        precoCompra: double.tryParse(_precoCompra.text.replaceAll(',', '.')),
+        // Preço de compra é só para owners (o backend nem o envia a vendedores).
+        precoCompra: owner ? double.tryParse(_precoCompra.text.replaceAll(',', '.')) : null,
         precoVendaRecomendado: double.tryParse(_precoVendaRecomendado.text.replaceAll(',', '.')),
         versao: owner ? (_versao.text.trim().isEmpty ? null : _versao.text.trim()) : null,
         cor: owner ? (_cor.text.trim().isEmpty ? null : _cor.text.trim()) : null,
@@ -113,12 +114,14 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
                 validator: (v) => int.tryParse(v?.trim() ?? '') == null ? l10n.validacaoNumeroInvalido : null,
               ),
               const SizedBox(height: 12),
-              TextFormField(
-                controller: _precoCompra,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(labelText: l10n.campoPrecoCompra),
-              ),
-              const SizedBox(height: 12),
+              if (_isOwner) ...[
+                TextFormField(
+                  controller: _precoCompra,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  decoration: InputDecoration(labelText: l10n.campoPrecoCompra),
+                ),
+                const SizedBox(height: 12),
+              ],
               TextFormField(
                 controller: _precoVendaRecomendado,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),

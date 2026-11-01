@@ -13,6 +13,7 @@ import '../../shared/widgets/document_photo_slot.dart';
 import '../../shared/widgets/image_source_picker.dart';
 import '../../shared/widgets/max_width_body.dart';
 import '../declaracoes/emitir_declaracao.dart';
+import '../auth/auth_state.dart';
 import 'create_vehicle_data.dart';
 import 'vehicles_repository.dart';
 
@@ -185,6 +186,10 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
         }
       }
       if (!mounted) return;
+      if (context.read<AuthState>().userRole != 'owner') {
+        Navigator.of(context).pop(true);
+        return;
+      }
       // Ato da compra: oferece logo a declaração de compra e venda (o
       // veículo já está gravado — dá para a emitir depois na ficha).
       final l10n = context.l10n;

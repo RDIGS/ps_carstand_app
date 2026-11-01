@@ -3571,6 +3571,72 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Dados para as declarações'**
   String get definicoesSecaoDeclaracoes;
+
+  /// No description provided for @painelEmStock.
+  ///
+  /// In pt, this message translates to:
+  /// **'Em stock'**
+  String get painelEmStock;
+
+  /// No description provided for @painelCarros.
+  ///
+  /// In pt, this message translates to:
+  /// **'{n, plural, =1{1 carro} other{{n} carros}}'**
+  String painelCarros(int n);
+
+  /// No description provided for @painelInvestido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Investido'**
+  String get painelInvestido;
+
+  /// No description provided for @painelInvestidoDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'compra + despesas'**
+  String get painelInvestidoDesc;
+
+  /// No description provided for @painelMargemPrevista.
+  ///
+  /// In pt, this message translates to:
+  /// **'Margem prevista'**
+  String get painelMargemPrevista;
+
+  /// No description provided for @painelSemPreco.
+  ///
+  /// In pt, this message translates to:
+  /// **'{n, plural, =1{1 carro sem preço} other{{n} carros sem preço}}'**
+  String painelSemPreco(int n);
+
+  /// No description provided for @painelTudoComPreco.
+  ///
+  /// In pt, this message translates to:
+  /// **'se vender tudo ao preço pedido'**
+  String get painelTudoComPreco;
+
+  /// No description provided for @painelLucroMes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lucro este mês'**
+  String get painelLucroMes;
+
+  /// No description provided for @painelVendasMes.
+  ///
+  /// In pt, this message translates to:
+  /// **'{n, plural, =0{ainda sem vendas} =1{1 venda} other{{n} vendas}}'**
+  String painelVendasMes(int n);
+
+  /// No description provided for @precoDespesas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesas'**
+  String get precoDespesas;
+
+  /// No description provided for @painelEmStockDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'carros disponíveis e reservados'**
+  String get painelEmStockDesc;
 }
 
 class _AppLocalizationsDelegate

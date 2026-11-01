@@ -673,5 +673,19 @@
   "definicoesCampoDenominacao": "Denominação social",
   "definicoesCampoDenominacaoAjuda": "Nome legal da empresa, usado nas declarações (ex. Auto Silva – Comércio de Automóveis, Lda).",
   "definicoesCampoLocalidade": "Localidade",
-  "definicoesSecaoDeclaracoes": "Dados para as declarações"
+  "definicoesSecaoDeclaracoes": "Dados para as declarações",
+  "painelEmStock": "Em stock",
+  "painelCarros": "{n, plural, =1{1 carro} other{{n} carros}}",
+  "@painelCarros": {"placeholders":{"n":{"type":"int"}}},
+  "painelInvestido": "Investido",
+  "painelInvestidoDesc": "compra + despesas",
+  "painelMargemPrevista": "Margem prevista",
+  "painelSemPreco": "{n, plural, =1{1 carro sem preço} other{{n} carros sem preço}}",
+  "@painelSemPreco": {"placeholders":{"n":{"type":"int"}}},
+  "painelTudoComPreco": "se vender tudo ao preço pedido",
+  "painelLucroMes": "Lucro este mês",
+  "painelVendasMes": "{n, plural, =0{ainda sem vendas} =1{1 venda} other{{n} vendas}}",
+  "@painelVendasMes": {"placeholders":{"n":{"type":"int"}}},
+  "precoDespesas": "Despesas",
+  "painelEmStockDesc": "carros disponíveis e reservados"
 }

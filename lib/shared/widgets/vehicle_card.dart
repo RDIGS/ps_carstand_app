@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
+import '../../core/utils/euros.dart';
 import '../../features/vehicles/vehicle.dart';
 import 'network_image_safe.dart';
 import 'status_badge.dart';
@@ -31,7 +32,13 @@ class VehicleCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _Photo(url: vehicle.fotoCapa, corEstado: corEstado, estado: vehicle.estado),
+              _Photo(
+                url: vehicle.fotoCapa,
+                corEstado: corEstado,
+                estado: vehicle.estado,
+                // Só chega preenchida para owners; num vendido já não é "prevista".
+                margem: vendido ? null : vehicle.margemPrevista,
+              ),
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -58,7 +65,7 @@ class VehicleCard extends StatelessWidget {
                         _KmsReading(kms: vehicle.kms),
                         if (vehicle.precoVendaRecomendado != null)
                           Text(
-                            '${vehicle.precoVendaRecomendado!.toStringAsFixed(0)} €',
+                            euros(vehicle.precoVendaRecomendado!),
                             style: AppTypography.numero(fontSize: 18, color: AppColors.teal),
                           ),
                       ],
@@ -86,11 +93,12 @@ class VehicleCard extends StatelessWidget {
 /// Redesign") — nunca uma faixa colorida sólida, é só um tom de fundo atrás
 /// do ícone/foto do veículo.
 class _Photo extends StatelessWidget {
-  const _Photo({required this.url, required this.corEstado, required this.estado});
+  const _Photo({required this.url, required this.corEstado, required this.estado, this.margem});
 
   final String? url;
   final Color corEstado;
   final String estado;
+  final double? margem;
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +140,12 @@ class _Photo extends StatelessWidget {
               ),
             ),
           ),
+          if (margem != null)
+            Positioned(
+              top: 12,
+              right: 12,
+              child: _MargemPill(margem: margem!),
+            ),
         ],
       ),
     );
@@ -148,6 +162,34 @@ class _Photo extends StatelessWidget {
       ),
       child: Center(
         child: Icon(Icons.directions_car_outlined, size: 52, color: corEstado.withValues(alpha: 0.6)),
+      ),
+    );
+  }
+}
+
+/// Margem prevista (owner) por cima da foto: verde se dá lucro, vermelho se
+/// já está a dar prejuízo ao preço pedido.
+class _MargemPill extends StatelessWidget {
+  const _MargemPill({required this.margem});
+
+  final double margem;
+
+  @override
+  Widget build(BuildContext context) {
+    final cor = margem < 0 ? AppColors.red : AppColors.tealInk;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(8, 5, 10, 5),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(margem < 0 ? Icons.trending_down : Icons.trending_up, size: 14, color: cor),
+          const SizedBox(width: 4),
+          Text(euros(margem, sinal: true), style: AppTypography.numero(fontSize: 12.5, color: cor)),
+        ],
       ),
     );
   }

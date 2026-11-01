@@ -6,6 +6,7 @@ import 'finance_statement.dart';
 import 'finance_summary.dart';
 import 'invoice.dart';
 import 'invoice_extraction_result.dart';
+import 'painel_stand.dart';
 import 'stock_potencial.dart';
 
 class FinanceRepository {
@@ -42,6 +43,11 @@ class FinanceRepository {
       parse: (data) =>
           (data as List<dynamic>).map((e) => FinanceEvolutionPoint.fromJson(e as Map<String, dynamic>)).toList(),
     );
+  }
+
+  Future<PainelStand> painel() {
+    return _api.request('GET', '/finance/painel',
+        parse: (data) => PainelStand.fromJson(data as Map<String, dynamic>));
   }
 
   Future<StockPotencial> stockPotencial() {
