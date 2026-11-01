@@ -48,6 +48,11 @@ class NetworkImageSafe extends StatelessWidget {
     }
     return CachedNetworkImage(
       imageUrl: imageUrl,
+      // Os links do Storage são assinados de novo a cada hora (muda o
+      // ?token=), mas o caminho de cada ficheiro é único e nunca muda de
+      // conteúdo — a cache em disco usa só o caminho, para não voltar a
+      // descarregar a mesma foto de hora a hora.
+      cacheKey: imageUrl.split('?').first,
       width: width,
       height: height,
       fit: fit,
