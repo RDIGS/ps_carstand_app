@@ -621,14 +621,14 @@ class _VehicleExpensesCardState extends State<VehicleExpensesCard> {
                                 fit: BoxFit.cover,
                               ),
                             )
-                          : const Icon(Icons.receipt_long, color: AppColors.inkMuted),
+                          : Icon(Icons.receipt_long, color: AppColors.inkMuted),
                       title: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(categoriaDespesaLabel(l10n, despesa.categoria)),
                           if (despesa.pagoPor != null && !despesa.reembolsado) ...[
                             const SizedBox(width: 8),
-                            const Icon(Icons.hourglass_bottom, size: 14, color: AppColors.orange),
+                            Icon(Icons.hourglass_bottom, size: 14, color: AppColors.orange),
                           ],
                         ],
                       ),

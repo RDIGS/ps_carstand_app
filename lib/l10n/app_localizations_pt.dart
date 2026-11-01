@@ -1953,4 +1953,60 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get painelEmStockDesc => 'carros disponíveis e reservados';
+
+  @override
+  String get fichaTecnicaTitulo => 'Ficha técnica';
+
+  @override
+  String get definicoesSecaoAparencia => 'Aparência';
+
+  @override
+  String get definicoesAparenciaAjuda => 'Aplica-se a toda a equipa do stand.';
+
+  @override
+  String get temaEditorial => 'Claro editorial';
+
+  @override
+  String get temaEditorialDesc =>
+      'Marfim e serifa, como uma revista de automóveis.';
+
+  @override
+  String get temaLuxo => 'Escuro luxo';
+
+  @override
+  String get temaLuxoDesc => 'Preto e champanhe, como uma montra à noite.';
+
+  @override
+  String get temaMinimal => 'Minimalista';
+
+  @override
+  String get temaMinimalDesc => 'Branco e preto, letra moderna e limpa.';
+
+  @override
+  String get menuAparencia => 'Aparência…';
+
+  @override
+  String get aparenciaTitulo => 'Aparência';
+
+  @override
+  String get aparenciaAjuda => 'Só para ti — fica guardada na tua conta.';
+
+  @override
+  String get loginBemVindo => 'Bem-vindo de volta';
+
+  @override
+  String get loginKicker => 'Gestão de stands automóveis';
+
+  @override
+  String get loginSlogan => 'O seu stand, sempre em ordem.';
+
+  @override
+  String get loginSloganSub =>
+      'Stock, vendas, documentos e clientes num só lugar — com a margem de cada carro à vista.';
+
+  @override
+  String get standTokenKicker => 'Primeiro acesso';
+
+  @override
+  String get standTokenTitulo => 'Ligar ao seu stand';
 }

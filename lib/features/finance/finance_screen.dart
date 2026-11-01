@@ -408,7 +408,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                   for (final linha in resumo.rankingVendedores)
                     Card(
                       child: ListTile(
-                        leading: const Icon(Icons.person, color: AppColors.teal),
+                        leading: Icon(Icons.person, color: AppColors.teal),
                         title: Text((linha['vendedor_nome'] as String?) ?? '?'),
                         subtitle: Text(
                           '${l10n.numVendas(parseCount(linha['num_vendas']))} · '

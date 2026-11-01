@@ -407,13 +407,14 @@ class _SectionTitle extends StatelessWidget {
 }
 
 class _AvisoBanner extends StatelessWidget {
-  const _AvisoBanner({required this.text, this.cor = AppColors.orange});
+  const _AvisoBanner({required this.text, this.cor});
 
   final String text;
-  final Color cor;
+  final Color? cor; // por omissão, a cor de aviso do tema
 
   @override
   Widget build(BuildContext context) {
+    final cor = this.cor ?? AppColors.orange;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),

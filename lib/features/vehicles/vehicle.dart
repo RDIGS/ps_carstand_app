@@ -21,6 +21,7 @@ class Vehicle {
     this.checklistTotal,
     this.checklistConcluidos,
     this.margemPrevista,
+    this.ano,
   });
 
   factory Vehicle.fromJson(Map<String, dynamic> json) => Vehicle(
@@ -37,7 +38,10 @@ class Vehicle {
         checklistConcluidos:
             json['checklist_concluidos'] != null ? (json['checklist_concluidos'] as num).toInt() : null,
         margemPrevista: parseDecimal(json['margem_prevista']),
+        ano: _ano(json['data_primeira_matricula_original'] ?? json['data_primeira_matricula']),
       );
+
+  static int? _ano(dynamic data) => data is String && data.length >= 4 ? int.tryParse(data.substring(0, 4)) : null;
 
   final String id;
   final String matricula;
@@ -56,6 +60,9 @@ class Vehicle {
   /// Só para owners (o backend não a envia a vendedores): preço pedido −
   /// compra − despesas; null sem preço pedido ou de compra.
   final double? margemPrevista;
+
+  /// Ano da 1.ª matrícula (a original, se for importado).
+  final int? ano;
 }
 
 class VehicleListPage {

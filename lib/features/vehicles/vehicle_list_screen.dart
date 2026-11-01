@@ -2,6 +2,7 @@
 import 'package:provider/provider.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_typography.dart';
 import '../auth/auth_state.dart';
 import '../../shared/widgets/account_menu_button.dart';
 import '../../shared/widgets/vehicle_card.dart';
@@ -144,11 +145,12 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
     if (resultado == true && mounted) _refresh();
   }
 
-  // Breakpoints da secção 20: <600 1 coluna, 600–1024 2 colunas, >1024 3–4 colunas.
+  // Breakpoints da secção 20, mais largos no "Claro editorial": fotos
+  // grandes pedem menos colunas (3 num ecrã normal de computador).
   int _colunas(double largura) {
     if (largura < 600) return 1;
-    if (largura < 1024) return 2;
-    if (largura < 1440) return 3;
+    if (largura < 1000) return 2;
+    if (largura < 1700) return 3;
     return 4;
   }
 
@@ -156,122 +158,179 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthState>();
     final l10n = context.l10n;
+    final largura = MediaQuery.of(context).size.width;
+    // Acima de 1024 há a barra lateral (HomeShell) — o botão de adicionar vai
+    // para o cabeçalho e não há botão flutuante.
+    final computador = largura >= 1024;
+    final margem = computador ? 40.0 : 20.0;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Secção 19: nome + ícone da app sempre visíveis no cabeçalho.
-            Image.asset('assets/images/app_icon.png', width: 28, height: 28),
-            const SizedBox(width: 8),
-            Text(l10n.appBarStandNome(auth.standNome ?? ''), overflow: TextOverflow.ellipsis),
-          ],
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: AccountMenuButton(
-              child: CircleAvatar(
-                backgroundColor: AppColors.teal,
-                child: Text(
-                  (auth.userNome?.isNotEmpty ?? false) ? auth.userNome![0].toUpperCase() : '?',
-                  style: const TextStyle(color: Colors.white),
+            _Cabecalho(
+              margem: margem,
+              standNome: auth.standNome ?? '',
+              titulo: l10n.navVeiculos,
+              acao: computador
+                  ? FilledButton.icon(
+                      onPressed: _abrirOpcoesAdicionar,
+                      icon: const Icon(Icons.add, size: 18),
+                      label: Text(l10n.adicionarVeiculo),
+                    )
+                  : AccountMenuButton(
+                      child: CircleAvatar(
+                        radius: 18,
+                        backgroundColor: Theme.of(context).colorScheme.onSurface,
+                        child: Text(
+                          (auth.userNome?.isNotEmpty ?? false) ? auth.userNome![0].toUpperCase() : '?',
+                          style: TextStyle(color: Theme.of(context).colorScheme.surface, fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ),
+            ),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: _refresh,
+                child: Builder(
+                  builder: (context) {
+                    if (_loading) return _LoadingSkeleton(colunas: _colunas(largura), margem: margem);
+                    if (_error != null) return _ErrorState(message: _error.toString(), onRetry: _refresh);
+                    if (_vehicles.isEmpty) return _EmptyState(onAdd: _abrirOpcoesAdicionar);
+
+                    return LayoutBuilder(
+                      builder: (context, constraints) {
+                        final colunas = _colunas(constraints.maxWidth);
+                        return CustomScrollView(
+                          controller: _scrollController,
+                          slivers: [
+                            if (_painel != null)
+                              SliverPadding(
+                                padding: EdgeInsets.fromLTRB(margem, 8, margem, 8),
+                                sliver: SliverToBoxAdapter(child: PainelStandView(painel: _painel!)),
+                              ),
+                            SliverPadding(
+                              // Fundo extra para o último cartão não ficar atrás do botão flutuante.
+                              padding: EdgeInsets.fromLTRB(margem, 28, margem, computador ? 48 : 96),
+                              sliver: SliverGrid.builder(
+                                itemCount: _vehicles.length + (_loadingMore ? 1 : 0),
+                                gridDelegate: _grelha(constraints.maxWidth, colunas, margem),
+                                itemBuilder: (context, index) {
+                                  if (index >= _vehicles.length) {
+                                    return const Center(child: CircularProgressIndicator());
+                                  }
+                                  final vehicle = _vehicles[index];
+                                  return VehicleCard(
+                                    vehicle: vehicle,
+                                    onTap: () async {
+                                      await Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (_) => VehicleDetailScreen(vehicleId: vehicle.id)),
+                                      );
+                                      if (context.mounted) _refresh();
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: Builder(
-          builder: (context) {
-            if (_loading) {
-              return _LoadingSkeleton(colunas: _colunas(MediaQuery.of(context).size.width));
-            }
-            if (_error != null) {
-              return _ErrorState(message: _error.toString(), onRetry: _refresh);
-            }
-            if (_vehicles.isEmpty) {
-              return _EmptyState(onAdd: _abrirOpcoesAdicionar);
-            }
-
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                final colunas = _colunas(constraints.maxWidth);
-                return CustomScrollView(
-                  controller: _scrollController,
-                  slivers: [
-                    if (_painel != null)
-                      SliverPadding(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-                        sliver: SliverToBoxAdapter(child: PainelStandView(painel: _painel!)),
-                      ),
-                    SliverPadding(
-                      // Fundo extra para o último cartão não ficar atrás do FAB.
-                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 88),
-                      sliver: SliverGrid.builder(
-                        itemCount: _vehicles.length + (_loadingMore ? 1 : 0),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: colunas,
-                          mainAxisExtent: 320, // cartão vertical (foto + ficha técnica) do redesign
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                        itemBuilder: (context, index) {
-                          if (index >= _vehicles.length) {
-                            return const Center(child: CircularProgressIndicator());
-                          }
-                          final vehicle = _vehicles[index];
-                          return VehicleCard(
-                            vehicle: vehicle,
-                            onTap: () async {
-                              await Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => VehicleDetailScreen(vehicleId: vehicle.id)),
-                              );
-                              if (context.mounted) _refresh();
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
+          ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'vehicles-fab',
-        onPressed: _abrirOpcoesAdicionar,
-        icon: const Icon(Icons.add),
-        label: Text(l10n.adicionarVeiculo),
+      floatingActionButton: computador
+          ? null
+          : FloatingActionButton.extended(
+              heroTag: 'vehicles-fab',
+              onPressed: _abrirOpcoesAdicionar,
+              icon: const Icon(Icons.add),
+              label: Text(l10n.adicionarVeiculo),
+            ),
+    );
+  }
+}
+
+const _espacoColunas = 28.0;
+const _espacoLinhas = 40.0;
+
+/// Altura de cada cartão = foto 3:2 da largura da coluna + bloco de texto.
+SliverGridDelegate _grelha(double larguraTotal, int colunas, double margem) {
+  final largura = (larguraTotal - margem * 2 - _espacoColunas * (colunas - 1)) / colunas;
+  return SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: colunas,
+    mainAxisExtent: largura / kFotoCartaoProporcao + kTextoCartaoAltura,
+    crossAxisSpacing: _espacoColunas,
+    mainAxisSpacing: _espacoLinhas,
+  );
+}
+
+/// Cabeçalho da página: nome do stand em versaletes por cima do título
+/// serifado, ação à direita.
+class _Cabecalho extends StatelessWidget {
+  const _Cabecalho({required this.margem, required this.standNome, required this.titulo, required this.acao});
+
+  final double margem;
+  final String standNome;
+  final String titulo;
+  final Widget acao;
+
+  @override
+  Widget build(BuildContext context) {
+    final tema = Theme.of(context);
+    return Padding(
+      padding: EdgeInsets.fromLTRB(margem, 28, margem, 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  standNome.toUpperCase(),
+                  style: AppTypography.etiqueta(color: tema.colorScheme.onSurfaceVariant),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 6),
+                Text(titulo, style: tema.textTheme.displayMedium),
+              ],
+            ),
+          ),
+          acao,
+        ],
       ),
     );
   }
 }
 
 class _LoadingSkeleton extends StatelessWidget {
-  const _LoadingSkeleton({required this.colunas});
+  const _LoadingSkeleton({required this.colunas, required this.margem});
 
   final int colunas;
+  final double margem;
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: 6,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: colunas,
-        mainAxisExtent: 320,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-      ),
-      itemBuilder: (context, index) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(14),
+    final cor = Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05);
+    return LayoutBuilder(
+      builder: (context, constraints) => GridView.builder(
+        padding: EdgeInsets.fromLTRB(margem, 28, margem, 28),
+        itemCount: 6,
+        gridDelegate: _grelha(constraints.maxWidth, colunas, margem),
+        itemBuilder: (context, index) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(aspectRatio: kFotoCartaoProporcao, child: ColoredBox(color: cor)),
+            const SizedBox(height: 16),
+            Container(width: 160, height: 14, color: cor),
+          ],
         ),
       ),
     );
@@ -293,7 +352,7 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.directions_car_outlined, size: 56, color: AppColors.inkMuted),
+            Icon(Icons.directions_car_outlined, size: 56, color: AppColors.inkMuted),
             const SizedBox(height: 16),
             Text(l10n.vehiclesEmptyTitulo, style: Theme.of(context).textTheme.headlineMedium),
             const SizedBox(height: 8),
@@ -321,7 +380,7 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline, size: 48, color: AppColors.orange),
+            Icon(Icons.error_outline, size: 48, color: AppColors.orange),
             const SizedBox(height: 12),
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 16),

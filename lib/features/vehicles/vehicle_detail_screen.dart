@@ -6,16 +6,15 @@ import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
-import '../../core/utils/euros.dart';
 import '../../shared/widgets/max_width_body.dart';
 import '../../shared/widgets/network_image_safe.dart';
-import '../../shared/widgets/status_badge.dart';
 import '../auth/auth_state.dart';
 import '../banner/banner_template_picker_screen.dart';
 import '../checklist/vehicle_checklist_card.dart';
 import '../sales/sale_screen.dart';
 import 'edit_vehicle_screen.dart';
 import 'market_estimate.dart';
+import 'vehicle_apresentacao.dart';
 import 'vehicle_detail.dart';
 import 'vehicle_documents_card.dart';
 import '../declaracoes/vehicle_declaracoes_card.dart';
@@ -117,6 +116,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
         ],
       ),
       body: MaxWidthBody(
+        maxWidth: 1080,
         child: FutureBuilder<VehicleDetail>(
           future: _future,
           builder: (context, snapshot) {
@@ -130,23 +130,18 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
             return RefreshIndicator(
               onRefresh: _refresh,
               child: ListView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 48),
                 children: [
-                  _FichaTecnicaCard(vehicle: vehicle),
-                  const SizedBox(height: 16),
+                  VehicleApresentacao(vehicle: vehicle),
+                  const SizedBox(height: 40),
+                  VehicleFichaTecnica(vehicle: vehicle),
+                  const SizedBox(height: 40),
                   VehiclePhotoGalleryCard(vehicleId: vehicle.id),
                   const SizedBox(height: 16),
                   VehicleDocumentsCard(vehicleId: vehicle.id),
                   const SizedBox(height: 16),
                   VehicleDeclaracoesCard(vehicleId: vehicle.id),
                   const SizedBox(height: 16),
-                  // Sem nenhum preço visível o cartão ficava vazio.
-                  if ((role == 'owner' && vehicle.precoCompra != null) ||
-                      vehicle.precoVendaRecomendado != null ||
-                      vehicle.precoVendaFinal != null) ...[
-                    _PrecosCard(vehicle: vehicle),
-                    const SizedBox(height: 16),
-                  ],
                   if (vehicle.importado) _ImportadoCard(vehicle: vehicle),
                   if (vehicle.importado) const SizedBox(height: 16),
                   _ActionsCard(
@@ -178,180 +173,6 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
   }
 }
 
-class _FichaTecnicaCard extends StatelessWidget {
-  const _FichaTecnicaCard({required this.vehicle});
-
-  final VehicleDetail vehicle;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final corEstado = AppColors.paraEstado(vehicle.estado);
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      // IntrinsicHeight é necessário porque o Row usa stretch dentro de um
-      // ListView (altura não limitada) — sem isto o layout falha em
-      // silêncio numa build de release e o cartão nunca chega a aparecer.
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(width: 6, color: corEstado),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          vehicle.matricula,
-                          style: AppTypography.numero(fontSize: 20, color: Theme.of(context).colorScheme.onSurface),
-                        ),
-                        StatusBadge(estado: vehicle.estado),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text('${vehicle.marca} ${vehicle.modelo}', style: Theme.of(context).textTheme.headlineLarge),
-                    if (vehicle.versao != null) Text(vehicle.versao!, style: Theme.of(context).textTheme.bodyMedium),
-                    const Divider(height: 28),
-                    Wrap(
-                      spacing: 24,
-                      runSpacing: 12,
-                      children: [
-                        _Spec(label: l10n.specKms, value: '${vehicle.kms} km', mono: true),
-                        if (vehicle.dataPrimeiraMatriculaReal != null)
-                          _Spec(
-                              label: l10n.specPrimeiraMatricula, value: vehicle.dataPrimeiraMatriculaReal!, mono: true),
-                        if (vehicle.categoria != null) _Spec(label: l10n.specCategoria, value: vehicle.categoria!),
-                        if (vehicle.combustivel != null)
-                          _Spec(label: l10n.specCombustivel, value: vehicle.combustivel!),
-                        if (vehicle.cilindrada != null)
-                          _Spec(label: l10n.specCilindrada, value: '${vehicle.cilindrada} cm³'),
-                        if (vehicle.potenciaKw != null)
-                          _Spec(label: l10n.specPotencia, value: '${vehicle.potenciaKw} kW'),
-                        if (vehicle.cor != null) _Spec(label: l10n.specCor, value: vehicle.cor!),
-                        if (vehicle.numLugares != null) _Spec(label: l10n.specLugares, value: '${vehicle.numLugares}'),
-                        if (vehicle.pesoTara != null) _Spec(label: l10n.specTara, value: '${vehicle.pesoTara} kg'),
-                        if (vehicle.pesoBruto != null)
-                          _Spec(label: l10n.specPesoBruto, value: '${vehicle.pesoBruto} kg'),
-                      ],
-                    ),
-                    if (vehicle.chassis != null) ...[
-                      const SizedBox(height: 12),
-                      Text(l10n.specChassis, style: Theme.of(context).textTheme.bodyMedium),
-                      Text(
-                        vehicle.chassis!,
-                        style: AppTypography.numero(fontSize: 13, color: Theme.of(context).colorScheme.onSurface),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Spec extends StatelessWidget {
-  const _Spec({required this.label, required this.value, this.mono = false});
-
-  final String label;
-  final String value;
-  final bool mono;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(label, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.inkMuted)),
-        Text(
-          value,
-          style: mono
-              ? AppTypography.numero(fontSize: 14, color: Theme.of(context).colorScheme.onSurface)
-              : Theme.of(context).textTheme.bodyLarge,
-        ),
-      ],
-    );
-  }
-}
-
-class _PrecosCard extends StatelessWidget {
-  const _PrecosCard({required this.vehicle});
-
-  final VehicleDetail vehicle;
-
-  @override
-  Widget build(BuildContext context) {
-    final role = context.watch<AuthState>().userRole;
-    final l10n = context.l10n;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        // Wrap (não Row): com compra, pedido, final, despesas e margem são
-        // até 5 valores — numa Row não cabiam num telemóvel.
-        child: Wrap(
-          alignment: WrapAlignment.spaceAround,
-          spacing: 24,
-          runSpacing: 12,
-          children: [
-            if (role == 'owner' && vehicle.precoCompra != null)
-              _PrecoColuna(label: l10n.precoCompra, valor: vehicle.precoCompra!),
-            if (vehicle.precoVendaRecomendado != null)
-              _PrecoColuna(label: l10n.precoVendaRecomendado, valor: vehicle.precoVendaRecomendado!, destaque: true),
-            if (vehicle.precoVendaFinal != null)
-              _PrecoColuna(label: l10n.precoVendaFinal, valor: vehicle.precoVendaFinal!),
-            // despesasTotal/margemPrevista só chegam preenchidos para owners.
-            if (vehicle.despesasTotal != null && vehicle.despesasTotal! > 0)
-              _PrecoColuna(label: l10n.precoDespesas, valor: vehicle.despesasTotal!),
-            if (vehicle.margemPrevista != null && vehicle.estado != 'vendido')
-              _PrecoColuna(
-                label: l10n.painelMargemPrevista,
-                valor: vehicle.margemPrevista!,
-                destaque: true,
-                cor: vehicle.margemPrevista! < 0 ? AppColors.red : AppColors.teal,
-                sinal: true,
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _PrecoColuna extends StatelessWidget {
-  const _PrecoColuna({required this.label, required this.valor, this.destaque = false, this.cor, this.sinal = false});
-
-  final String label;
-  final double valor;
-  final bool destaque;
-  final Color? cor;
-  final bool sinal;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(label, style: Theme.of(context).textTheme.bodyMedium),
-        Text(
-          euros(valor, sinal: sinal),
-          style: AppTypography.numero(
-            fontSize: destaque ? 22 : 18,
-            color: cor ?? (destaque ? AppColors.teal : Theme.of(context).colorScheme.onSurface),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class _ImportadoCard extends StatelessWidget {
   const _ImportadoCard({required this.vehicle});
 
@@ -366,7 +187,7 @@ class _ImportadoCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            const Icon(Icons.public, color: AppColors.orange),
+            Icon(Icons.public, color: AppColors.orange),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -376,7 +197,7 @@ class _ImportadoCard extends StatelessWidget {
                   if (vehicle.matriculaAnterior != null) Text(l10n.matriculaAnteriorLabel(vehicle.matriculaAnterior!)),
                   if (vehicle.paisOrigemAnterior != null) Text(l10n.paisOrigemLabel(vehicle.paisOrigemAnterior!)),
                   if (vehicle.possivelImportado)
-                    Text(l10n.confiancaBaixaAviso, style: const TextStyle(color: AppColors.orange)),
+                    Text(l10n.confiancaBaixaAviso, style: TextStyle(color: AppColors.orange)),
                 ],
               ),
             ),
@@ -558,7 +379,7 @@ class _MarketEstimateCardState extends State<_MarketEstimateCard> {
     if (_future == null) {
       return Card(
         child: ListTile(
-          leading: const Icon(Icons.trending_up, color: AppColors.teal),
+          leading: Icon(Icons.trending_up, color: AppColors.teal),
           title: Text(l10n.estimativaMercadoTitulo),
           subtitle: Text(l10n.estimativaMercadoSubtitulo),
           trailing: TextButton(onPressed: _consultar, child: Text(l10n.consultar)),
@@ -687,10 +508,10 @@ class _FonteEstimativa extends StatelessWidget {
                       height: 36,
                       fit: BoxFit.cover,
                       errorWidget: (context, _, __) =>
-                          const Icon(Icons.directions_car, color: AppColors.inkMuted),
+                          Icon(Icons.directions_car, color: AppColors.inkMuted),
                     ),
                   )
-                : const Icon(Icons.directions_car, color: AppColors.inkMuted),
+                : Icon(Icons.directions_car, color: AppColors.inkMuted),
             title: Text(anuncio.titulo, maxLines: 1, overflow: TextOverflow.ellipsis),
             subtitle: Text([
               if (anuncio.ano != null) '${anuncio.ano}',

@@ -143,7 +143,7 @@ class _DuaCaptureScreenState extends State<DuaCaptureScreen> {
               ),
               if (_erro != null) ...[
                 const SizedBox(height: 12),
-                Text(_erro!, style: const TextStyle(color: AppColors.orange)),
+                Text(_erro!, style: TextStyle(color: AppColors.orange)),
               ],
               const SizedBox(height: 8),
               CheckboxListTile(

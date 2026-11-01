@@ -1,43 +1,44 @@
 import 'package:flutter/material.dart';
 
-/// Paleta alinhada ao logo real (triquetra teal/laranja/lilás) — substitui a
-/// paleta "navy + âmbar" antiga que nunca bateu certo com a marca. Mockup
-/// aprovado: design canvas "PS CarStand Redesign" (ver memória
-/// project_visual_redesign).
+import 'paletas.dart';
+
+/// Cores do tema ativo (ver paletas.dart). Antes eram constantes fixas; desde
+/// que o owner pode escolher a aparência do stand (2026-11), cada cor lê a
+/// paleta atual — o ThemeState troca-a e reconstrói a app inteira.
+///
+/// Os nomes (teal/orange/lilac) ficaram por compatibilidade; o que conta é o
+/// papel de cada um (ver comentário de [Paleta]).
 class AppColors {
   const AppColors._();
 
-  // Texto e superfícies (fundo branco quente, não frio).
-  static const ink = Color(0xFF15171B); // texto principal
-  static const inkMuted = Color(0xFF6C7278); // texto secundário, ícones neutros
-  static const inkFaint = Color(0xFF9A9EA3); // texto terciário/desativado
-  static const surface = Color(0xFFFAF9F7); // fundo de página
-  static const card = Color(0xFFFFFFFF);
-  static const border = Color(0xFFE9E6E1);
-  static const borderSoft = Color(0xFFF0EEE9);
+  /// Definida pelo ThemeState antes de cada reconstrução.
+  static Paleta paleta = Paleta.editorialClaro;
 
-  // Primária (do logo) — ações primárias, estado "disponível".
-  static const teal = Color(0xFF1E9E86);
-  static const tealInk = Color(0xFF0F6B58); // texto/ícone sobre fundo tintado de teal
-  static const teal100 = Color(0xFFDFF3EE);
+  static Color get ink => paleta.ink; // texto principal
+  static Color get inkMuted => paleta.inkMuted; // texto secundário, ícones neutros
+  static Color get inkFaint => paleta.inkFaint; // texto terciário/desativado
+  static Color get surface => paleta.surface; // fundo de página
+  static Color get card => paleta.card;
+  static Color get border => paleta.border;
+  static Color get borderSoft => paleta.borderSoft;
 
-  // Acento secundário (do logo) — "reservado", avisos, CTAs secundários.
-  static const orange = Color(0xFFD97A2E);
-  static const orangeInk = Color(0xFFA15A20);
-  static const orange100 = Color(0xFFFBE7D5);
+  static Color get teal => paleta.teal; // principal — "disponível", valores positivos
+  static Color get tealInk => paleta.tealInk;
+  static Color get teal100 => paleta.teal100;
 
-  // Acento terciário (do logo) — "pendente_aprovacao", dados/agendado.
-  static const lilac = Color(0xFFA366D9);
-  static const lilacInk = Color(0xFF7A3FAE);
-  static const lilac100 = Color(0xFFF0E3FA);
+  static Color get orange => paleta.orange; // secundária — "reservado", avisos
+  static Color get orangeInk => paleta.orangeInk;
+  static Color get orange100 => paleta.orange100;
 
-  // Só "rejeitado"/valores negativos — não vem do logo, semântica pura.
-  static const red = Color(0xFFC64A3E);
-  static const red100 = Color(0xFFFBE3E0);
+  static Color get lilac => paleta.lilac; // "pendente_aprovacao", dados/agendado
+  static Color get lilacInk => paleta.lilacInk;
+  static Color get lilac100 => paleta.lilac100;
 
-  // "vendido"/neutro — baixo chroma de propósito (estado inativo).
-  static const gray = Color(0xFF8A8F98);
-  static const gray100 = Color(0xFFEEF0F1);
+  static Color get red => paleta.red; // só "rejeitado"/valores negativos
+  static Color get red100 => paleta.red100;
+
+  static Color get gray => paleta.gray; // "vendido"/neutro
+  static Color get gray100 => paleta.gray100;
 
   static Color paraEstado(String estado) {
     switch (estado) {

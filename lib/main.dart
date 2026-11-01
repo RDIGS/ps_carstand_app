@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'l10n/app_localizations.dart';
 import 'core/api/api_client.dart';
 import 'core/storage/secure_storage.dart';
-import 'core/theme/app_theme.dart';
 import 'core/theme/theme_state.dart';
 import 'features/app_version/app_version_repository.dart';
 import 'features/app_version/update_required_screen.dart';
@@ -29,6 +29,8 @@ import 'features/team/team_repository.dart';
 import 'features/vehicles/vehicles_repository.dart';
 
 void main() {
+  // Letras vêm de assets/google_fonts (ver pubspec.yaml) — nunca da Google.
+  GoogleFonts.config.allowRuntimeFetching = false;
   runApp(const PsCarStandApp());
 }
 
@@ -48,24 +50,43 @@ class PsCarStandApp extends StatelessWidget {
         // (401 + refresh falhado) — o callback é ligado depois de o
         // AuthState existir, através deste indirection simples.
         ProxyProvider<SecureStorage, ApiClient>(
-          update: (_, storage, previous) => previous ?? ApiClient(storage, onSessionExpired: () => _onSessionExpired?.call()),
+          update: (_, storage, previous) =>
+              previous ??
+              ApiClient(storage,
+                  onSessionExpired: () => _onSessionExpired?.call()),
         ),
-        ProxyProvider<ApiClient, AuthRepository>(update: (_, api, __) => AuthRepository(api)),
-        ProxyProvider<ApiClient, AppVersionRepository>(update: (_, api, __) => AppVersionRepository(api)),
-        ProxyProvider<ApiClient, VehiclesRepository>(update: (_, api, __) => VehiclesRepository(api)),
-        ProxyProvider<ApiClient, SalesRepository>(update: (_, api, __) => SalesRepository(api)),
-        ProxyProvider<ApiClient, TeamRepository>(update: (_, api, __) => TeamRepository(api)),
-        ProxyProvider<ApiClient, FinanceRepository>(update: (_, api, __) => FinanceRepository(api)),
-        ProxyProvider<ApiClient, AuditRepository>(update: (_, api, __) => AuditRepository(api)),
-        ProxyProvider<ApiClient, ChecklistRepository>(update: (_, api, __) => ChecklistRepository(api)),
-        ProxyProvider<ApiClient, LeadsRepository>(update: (_, api, __) => LeadsRepository(api)),
-        ProxyProvider<ApiClient, LegalRepository>(update: (_, api, __) => LegalRepository(api)),
-        ProxyProvider<ApiClient, StandProfileRepository>(update: (_, api, __) => StandProfileRepository(api)),
-        ProxyProvider<ApiClient, SuggestionsRepository>(update: (_, api, __) => SuggestionsRepository(api)),
-        ProxyProvider<ApiClient, CalendarRepository>(update: (_, api, __) => CalendarRepository(api)),
-        ProxyProvider<ApiClient, VisitsRepository>(update: (_, api, __) => VisitsRepository(api)),
-        ProxyProvider<ApiClient, DeclaracoesRepository>(update: (_, api, __) => DeclaracoesRepository(api)),
-        ChangeNotifierProxyProvider4<AuthRepository, SecureStorage, AppVersionRepository, LegalRepository, AuthState>(
+        ProxyProvider<ApiClient, AuthRepository>(
+            update: (_, api, __) => AuthRepository(api)),
+        ProxyProvider<ApiClient, AppVersionRepository>(
+            update: (_, api, __) => AppVersionRepository(api)),
+        ProxyProvider<ApiClient, VehiclesRepository>(
+            update: (_, api, __) => VehiclesRepository(api)),
+        ProxyProvider<ApiClient, SalesRepository>(
+            update: (_, api, __) => SalesRepository(api)),
+        ProxyProvider<ApiClient, TeamRepository>(
+            update: (_, api, __) => TeamRepository(api)),
+        ProxyProvider<ApiClient, FinanceRepository>(
+            update: (_, api, __) => FinanceRepository(api)),
+        ProxyProvider<ApiClient, AuditRepository>(
+            update: (_, api, __) => AuditRepository(api)),
+        ProxyProvider<ApiClient, ChecklistRepository>(
+            update: (_, api, __) => ChecklistRepository(api)),
+        ProxyProvider<ApiClient, LeadsRepository>(
+            update: (_, api, __) => LeadsRepository(api)),
+        ProxyProvider<ApiClient, LegalRepository>(
+            update: (_, api, __) => LegalRepository(api)),
+        ProxyProvider<ApiClient, StandProfileRepository>(
+            update: (_, api, __) => StandProfileRepository(api)),
+        ProxyProvider<ApiClient, SuggestionsRepository>(
+            update: (_, api, __) => SuggestionsRepository(api)),
+        ProxyProvider<ApiClient, CalendarRepository>(
+            update: (_, api, __) => CalendarRepository(api)),
+        ProxyProvider<ApiClient, VisitsRepository>(
+            update: (_, api, __) => VisitsRepository(api)),
+        ProxyProvider<ApiClient, DeclaracoesRepository>(
+            update: (_, api, __) => DeclaracoesRepository(api)),
+        ChangeNotifierProxyProvider4<AuthRepository, SecureStorage,
+            AppVersionRepository, LegalRepository, AuthState>(
           create: (context) => AuthState(
             context.read<AuthRepository>(),
             context.read<SecureStorage>(),
@@ -97,23 +118,27 @@ class _AppRoot extends StatelessWidget {
         return MaterialApp(
           title: 'PS CarStand',
           debugShowCheckedModeBanner: false,
-          theme: AppTheme.light(),
-          darkTheme: AppTheme.dark(),
-          // Nunca segue o sistema/browser sozinho (secção 11: claro é o
-          // default) — só muda com o alternador explícito no menu de perfil.
-          themeMode: themeState.mode,
+          // Tema do stand + modo claro/escuro já resolvidos pelo ThemeState
+          // (nunca segue o sistema/browser sozinho — secção 11).
+          theme: themeState.themeData,
+          themeMode: ThemeMode.light,
           // Idioma vem de people.idioma (secção 18), não do dispositivo.
           locale: Locale(auth.userIdioma),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: switch (auth.status) {
-            AuthStatus.loading => const Scaffold(body: Center(child: CircularProgressIndicator())),
-            AuthStatus.updateRequired => const UpdateRequiredScreen(),
-            AuthStatus.legalPending => const LegalAcceptanceScreen(),
-            AuthStatus.needsStandToken => const StandTokenScreen(),
-            AuthStatus.needsLogin => const LoginScreen(),
-            AuthStatus.authenticated => const HomeShell(),
-          },
+          // Chave muda com a aparência → a árvore é reconstruída por inteiro.
+          home: KeyedSubtree(
+            key: ValueKey(themeState.chave),
+            child: switch (auth.status) {
+              AuthStatus.loading => const Scaffold(
+                  body: Center(child: CircularProgressIndicator())),
+              AuthStatus.updateRequired => const UpdateRequiredScreen(),
+              AuthStatus.legalPending => const LegalAcceptanceScreen(),
+              AuthStatus.needsStandToken => const StandTokenScreen(),
+              AuthStatus.needsLogin => const LoginScreen(),
+              AuthStatus.authenticated => const HomeShell(),
+            },
+          ),
         );
       },
     );

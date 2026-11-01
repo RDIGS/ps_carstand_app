@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/l10n_extension.dart';
-import '../../core/theme/theme_state.dart';
+import 'escolher_aparencia.dart';
 import '../../features/audit/audit_screen.dart';
 import '../../features/auth/auth_state.dart';
 import '../../features/settings/stand_settings_screen.dart';
@@ -23,7 +23,6 @@ class AccountMenuButton extends StatelessWidget {
     // Lido aqui (durante o build) e não dentro do itemBuilder: o itemBuilder
     // só corre ao clicar, fora do build, e um `context.watch` aí rebenta a
     // asserção do provider — o menu não abria em modo debug.
-    final modoEscuro = context.watch<ThemeState>().mode == ThemeMode.dark;
     final l10n = context.l10n;
 
     return PopupMenuButton<String>(
@@ -34,11 +33,7 @@ class AccountMenuButton extends StatelessWidget {
         CheckedPopupMenuItem(value: 'idioma_pt', checked: auth.userIdioma == 'pt', child: const Text('Português')),
         CheckedPopupMenuItem(value: 'idioma_en', checked: auth.userIdioma == 'en', child: const Text('English')),
         const PopupMenuDivider(),
-        CheckedPopupMenuItem(
-          value: 'tema_escuro',
-          checked: modoEscuro,
-          child: Text(l10n.menuModoEscuro),
-        ),
+        PopupMenuItem(value: 'aparencia', child: Text(l10n.menuAparencia)),
         const PopupMenuDivider(),
         // Só owner (secção 4/O15) — auditoria é um assunto administrativo
         // do stand, tal como Equipa/Financeiro.
@@ -63,8 +58,8 @@ class AccountMenuButton extends StatelessWidget {
         auth.changeIdioma('pt');
       case 'idioma_en':
         auth.changeIdioma('en');
-      case 'tema_escuro':
-        context.read<ThemeState>().toggle();
+      case 'aparencia':
+        await mostrarEscolherAparencia(context);
       case 'definicoes':
         Navigator.of(context).push(MaterialPageRoute(builder: (_) => const StandSettingsScreen()));
       case 'auditoria':

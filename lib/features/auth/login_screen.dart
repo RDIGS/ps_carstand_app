@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/api/api_error_l10n.dart';
 import '../../core/l10n_extension.dart';
+import 'auth_layout.dart';
 import 'auth_state.dart';
 import 'reset_password_screen.dart';
 
@@ -77,64 +78,55 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final standNome = context.watch<AuthState>().standNome;
     final l10n = context.l10n;
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 420),
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(l10n.loginTitulo, style: Theme.of(context).textTheme.displayMedium),
-                  if (standNome != null) ...[
-                    const SizedBox(height: 4),
-                    Text(standNome, style: Theme.of(context).textTheme.bodyLarge),
-                  ],
-                  const SizedBox(height: 24),
-                  TextField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(labelText: l10n.loginEmail, border: const OutlineInputBorder()),
-                  ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    decoration: InputDecoration(
-                      labelText: l10n.loginPassword,
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
-                        onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
-                      ),
-                    ),
-                    onSubmitted: (_) => _submit(),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _loading ? null : _submit,
-                    child: _loading
-                        ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                        : Text(l10n.loginTitulo),
-                  ),
-                  const SizedBox(height: 8),
-                  TextButton(
-                    onPressed: _loading ? null : () => _mostrarEsqueceuPassword(context),
-                    child: Text(l10n.loginEsqueceuPassword),
-                  ),
-                  TextButton(
-                    onPressed: _loading ? null : _trocarDeStand,
-                    child: Text(l10n.trocarDeStandTitulo),
-                  ),
-                ],
-              ),
+    final suave = Theme.of(context).colorScheme.onSurfaceVariant;
+    return AuthLayout(
+      kicker: standNome ?? 'PS CarStand',
+      titulo: l10n.loginBemVindo,
+      children: [
+        TextField(
+          controller: _emailController,
+          keyboardType: TextInputType.emailAddress,
+          autofillHints: const [AutofillHints.email],
+          decoration: InputDecoration(labelText: l10n.loginEmail),
+        ),
+        const SizedBox(height: 14),
+        TextField(
+          controller: _passwordController,
+          obscureText: _obscurePassword,
+          autofillHints: const [AutofillHints.password],
+          decoration: InputDecoration(
+            labelText: l10n.loginPassword,
+            suffixIcon: IconButton(
+              icon: Icon(_obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined, size: 20),
+              onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
             ),
           ),
+          onSubmitted: (_) => _submit(),
         ),
-      ),
+        const SizedBox(height: 22),
+        ElevatedButton(
+          onPressed: _loading ? null : _submit,
+          child: _loading
+              ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+              : Text(l10n.loginTitulo),
+        ),
+        const SizedBox(height: 18),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: suave, padding: EdgeInsets.zero),
+              onPressed: _loading ? null : () => _mostrarEsqueceuPassword(context),
+              child: Text(l10n.loginEsqueceuPassword),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: suave, padding: EdgeInsets.zero),
+              onPressed: _loading ? null : _trocarDeStand,
+              child: Text(l10n.trocarDeStandTitulo),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

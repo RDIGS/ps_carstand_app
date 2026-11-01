@@ -39,13 +39,13 @@ class DocumentPhotoSlot extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   Image.memory(bytes!, fit: BoxFit.cover),
-                  const Positioned(
+                  Positioned(
                     top: 8,
                     right: 8,
                     child: CircleAvatar(
                       radius: 12,
                       backgroundColor: AppColors.teal,
-                      child: Icon(Icons.check, size: 16, color: Colors.white),
+                      child: const Icon(Icons.check, size: 16, color: Colors.white),
                     ),
                   ),
                 ],
@@ -53,7 +53,7 @@ class DocumentPhotoSlot extends StatelessWidget {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.camera_alt_outlined, size: 40, color: AppColors.inkMuted),
+                  Icon(Icons.camera_alt_outlined, size: 40, color: AppColors.inkMuted),
                   const SizedBox(height: 8),
                   Text(label),
                 ],

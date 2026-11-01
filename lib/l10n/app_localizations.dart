@@ -3637,6 +3637,114 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'carros disponíveis e reservados'**
   String get painelEmStockDesc;
+
+  /// No description provided for @fichaTecnicaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ficha técnica'**
+  String get fichaTecnicaTitulo;
+
+  /// No description provided for @definicoesSecaoAparencia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aparência'**
+  String get definicoesSecaoAparencia;
+
+  /// No description provided for @definicoesAparenciaAjuda.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aplica-se a toda a equipa do stand.'**
+  String get definicoesAparenciaAjuda;
+
+  /// No description provided for @temaEditorial.
+  ///
+  /// In pt, this message translates to:
+  /// **'Claro editorial'**
+  String get temaEditorial;
+
+  /// No description provided for @temaEditorialDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marfim e serifa, como uma revista de automóveis.'**
+  String get temaEditorialDesc;
+
+  /// No description provided for @temaLuxo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escuro luxo'**
+  String get temaLuxo;
+
+  /// No description provided for @temaLuxoDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preto e champanhe, como uma montra à noite.'**
+  String get temaLuxoDesc;
+
+  /// No description provided for @temaMinimal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Minimalista'**
+  String get temaMinimal;
+
+  /// No description provided for @temaMinimalDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Branco e preto, letra moderna e limpa.'**
+  String get temaMinimalDesc;
+
+  /// No description provided for @menuAparencia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aparência…'**
+  String get menuAparencia;
+
+  /// No description provided for @aparenciaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aparência'**
+  String get aparenciaTitulo;
+
+  /// No description provided for @aparenciaAjuda.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só para ti — fica guardada na tua conta.'**
+  String get aparenciaAjuda;
+
+  /// No description provided for @loginBemVindo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bem-vindo de volta'**
+  String get loginBemVindo;
+
+  /// No description provided for @loginKicker.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gestão de stands automóveis'**
+  String get loginKicker;
+
+  /// No description provided for @loginSlogan.
+  ///
+  /// In pt, this message translates to:
+  /// **'O seu stand, sempre em ordem.'**
+  String get loginSlogan;
+
+  /// No description provided for @loginSloganSub.
+  ///
+  /// In pt, this message translates to:
+  /// **'Stock, vendas, documentos e clientes num só lugar — com a margem de cada carro à vista.'**
+  String get loginSloganSub;
+
+  /// No description provided for @standTokenKicker.
+  ///
+  /// In pt, this message translates to:
+  /// **'Primeiro acesso'**
+  String get standTokenKicker;
+
+  /// No description provided for @standTokenTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ligar ao seu stand'**
+  String get standTokenTitulo;
 }
 
 class _AppLocalizationsDelegate

@@ -33,6 +33,9 @@ class AuthState extends ChangeNotifier {
   // Preferência guardada em people.idioma (secção 18), não no dispositivo —
   // 'pt' antes de autenticar, porque ainda não sabemos quem é o utilizador.
   String userIdioma = 'pt';
+  // Tema da conta vindo do último login — o HomeShell aplica-o (ThemeState)
+  // e limpa-o. Fora disso o tema vive no ThemeState, guardado no dispositivo.
+  String? temaDoLogin;
   // Guarda a exceção (não já uma String) para o ecrã poder traduzi-la com o
   // BuildContext dele, via ApiExceptionL10n.localizado — AuthState não tem
   // acesso a contexto para traduzir aqui (secção 18, texto vive no .arb).
@@ -196,6 +199,7 @@ class AuthState extends ChangeNotifier {
       userNome = result.userNome;
       userRole = result.userRole;
       userIdioma = result.userIdioma;
+      temaDoLogin = result.userTema;
       await _finishLogin();
       return true;
     } on ApiException catch (e) {
@@ -216,6 +220,14 @@ class AuthState extends ChangeNotifier {
       // Best-effort: a app já mudou de idioma localmente; sincroniza com o
       // backend na próxima oportunidade (ex.: outro pedido autenticado).
     }
+  }
+
+  /// Guarda o tema na conta (o ThemeState já o aplicou). Best-effort, como o
+  /// idioma.
+  Future<void> changeTema(String tema) async {
+    try {
+      await _repository.updateTema(tema);
+    } catch (_) {}
   }
 
   /// Logout normal — mantém o token do stand guardado (secção 4).

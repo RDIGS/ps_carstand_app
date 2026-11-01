@@ -102,7 +102,7 @@ class _VisitRequestsViewState extends State<VisitRequestsView> {
           children: [
             Row(
               children: [
-                const Icon(Icons.event_available, color: AppColors.teal),
+                Icon(Icons.event_available, color: AppColors.teal),
                 const SizedBox(width: 10),
                 Expanded(child: Text(p.nome, style: Theme.of(context).textTheme.titleMedium)),
                 Text(_fmt.format(p.dataHora), style: const TextStyle(fontWeight: FontWeight.w600)),

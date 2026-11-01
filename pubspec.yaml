@@ -71,3 +71,6 @@ flutter:
   assets:
     - assets/images/app_icon.png
     - assets/images/logo_horizontal.png
+    # Letras incluídas na app (não descarregadas da Google em tempo real):
+    # funcionam sem internet e não enviam o IP dos utilizadores à Google.
+    - assets/google_fonts/

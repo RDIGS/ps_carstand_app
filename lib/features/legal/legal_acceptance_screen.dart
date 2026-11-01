@@ -95,7 +95,7 @@ class _LegalAcceptanceScreenState extends State<LegalAcceptanceScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     if (_erro != null) ...[
-                      Text(_erro!, style: const TextStyle(color: AppColors.orange)),
+                      Text(_erro!, style: TextStyle(color: AppColors.orange)),
                       const SizedBox(height: 8),
                     ],
                     CheckboxListTile(

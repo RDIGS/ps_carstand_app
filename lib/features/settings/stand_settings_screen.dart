@@ -225,11 +225,13 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
                         maxLength: 120,
                         decoration: InputDecoration(labelText: l10n.definicoesCampoContacto),
                       ),
+                      const SizedBox(height: 12),
                       TextField(
                         controller: _morada,
                         maxLength: 200,
                         decoration: InputDecoration(labelText: l10n.definicoesCampoMorada),
                       ),
+                      const SizedBox(height: 12),
                       TextField(
                         controller: _redes,
                         maxLength: 120,
@@ -237,6 +239,7 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
                       ),
                       const Divider(height: 32),
                       Text(l10n.definicoesSecaoDeclaracoes, style: tema.textTheme.titleMedium),
+                      const SizedBox(height: 12),
                       TextField(
                         controller: _denominacao,
                         maxLength: 150,
@@ -245,6 +248,7 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
                           helperText: l10n.definicoesCampoDenominacaoAjuda,
                         ),
                       ),
+                      const SizedBox(height: 12),
                       TextField(
                         controller: _nif,
                         maxLength: 9,
@@ -256,6 +260,7 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
                           errorText: _nif.text.trim().isNotEmpty && !_nifValido.hasMatch(_nif.text.trim()) ? l10n.definicoesNifInvalido : null,
                         ),
                       ),
+                      const SizedBox(height: 12),
                       TextField(
                         controller: _localidade,
                         maxLength: 80,
@@ -270,6 +275,7 @@ class _StandSettingsScreenState extends State<StandSettingsScreen> {
                         value: _siteAtivo,
                         onChanged: (v) => setState(() => _siteAtivo = v),
                       ),
+                      const SizedBox(height: 12),
                       TextField(
                         controller: _slug,
                         maxLength: 40,

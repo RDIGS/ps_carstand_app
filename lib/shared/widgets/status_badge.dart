@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_typography.dart';
 import '../../l10n/app_localizations.dart';
 
 String rotuloEstado(AppLocalizations l10n, String estado) {
@@ -20,8 +21,8 @@ String rotuloEstado(AppLocalizations l10n, String estado) {
   }
 }
 
-/// Etiqueta de estado inspirada nos indicadores do tablier (secção 11):
-/// verde/âmbar/cinza, nunca vermelho-choque.
+/// Etiqueta de estado: ponto na cor do estado + texto em versaletes (mesmo
+/// estilo dos cartões de veículo — sem pílula colorida).
 class StatusBadge extends StatelessWidget {
   const StatusBadge({super.key, required this.estado});
 
@@ -30,20 +31,16 @@ class StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cor = AppColors.paraEstado(estado);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(color: cor.withValues(alpha: 0.14), borderRadius: BorderRadius.circular(999)),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(width: 8, height: 8, decoration: BoxDecoration(color: cor, shape: BoxShape.circle)),
-          const SizedBox(width: 6),
-          Text(
-            rotuloEstado(context.l10n, estado),
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: cor, fontSize: 12),
-          ),
-        ],
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(width: 7, height: 7, decoration: BoxDecoration(color: cor, shape: BoxShape.circle)),
+        const SizedBox(width: 7),
+        Text(
+          rotuloEstado(context.l10n, estado).toUpperCase(),
+          style: AppTypography.etiqueta(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 10.5),
+        ),
+      ],
     );
   }
 }

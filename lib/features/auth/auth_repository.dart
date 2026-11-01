@@ -22,6 +22,7 @@ class LoginResult {
     required this.userNome,
     required this.userRole,
     required this.userIdioma,
+    this.userTema = 'editorial',
   });
 
   factory LoginResult.fromJson(Map<String, dynamic> json) {
@@ -33,6 +34,7 @@ class LoginResult {
       userNome: user['nome'] as String,
       userRole: user['role'] as String,
       userIdioma: user['idioma'] as String? ?? 'pt',
+      userTema: user['tema'] as String? ?? 'editorial',
     );
   }
 
@@ -42,6 +44,9 @@ class LoginResult {
   final String userNome;
   final String userRole;
   final String userIdioma;
+
+  /// Aparência escolhida pela pessoa (people.tema).
+  final String userTema;
 }
 
 /// Estado da subscrição do stand (secção 3.4, O14) — contagens já vêm
@@ -118,6 +123,10 @@ class AuthRepository {
       data: {'email': email, 'code': code, 'novaPassword': novaPassword},
       parse: (_) {},
     );
+  }
+
+  Future<void> updateTema(String tema) {
+    return _api.request('PATCH', '/auth/tema', data: {'tema': tema}, parse: (_) {});
   }
 
   Future<void> updateIdioma(String idioma) {

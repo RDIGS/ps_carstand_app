@@ -1947,4 +1947,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get painelEmStockDesc => 'available and reserved cars';
+
+  @override
+  String get fichaTecnicaTitulo => 'Specifications';
+
+  @override
+  String get definicoesSecaoAparencia => 'Appearance';
+
+  @override
+  String get definicoesAparenciaAjuda => 'Applies to the whole stand team.';
+
+  @override
+  String get temaEditorial => 'Light editorial';
+
+  @override
+  String get temaEditorialDesc => 'Ivory and serif, like a car magazine.';
+
+  @override
+  String get temaLuxo => 'Dark luxury';
+
+  @override
+  String get temaLuxoDesc => 'Black and champagne, like a showroom at night.';
+
+  @override
+  String get temaMinimal => 'Minimal';
+
+  @override
+  String get temaMinimalDesc => 'White and black, clean modern type.';
+
+  @override
+  String get menuAparencia => 'Appearance…';
+
+  @override
+  String get aparenciaTitulo => 'Appearance';
+
+  @override
+  String get aparenciaAjuda => 'Just for you — saved to your account.';
+
+  @override
+  String get loginBemVindo => 'Welcome back';
+
+  @override
+  String get loginKicker => 'Car dealership management';
+
+  @override
+  String get loginSlogan => 'Your dealership, always in order.';
+
+  @override
+  String get loginSloganSub =>
+      'Stock, sales, documents and customers in one place — with every car\'s margin in sight.';
+
+  @override
+  String get standTokenKicker => 'First access';
+
+  @override
+  String get standTokenTitulo => 'Connect to your dealership';
 }

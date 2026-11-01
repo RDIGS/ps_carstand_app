@@ -137,7 +137,7 @@ class AvisosExtracaoFatura extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.error_outline, size: 16, color: AppColors.orange),
+                  Icon(Icons.error_outline, size: 16, color: AppColors.orange),
                   const SizedBox(width: 8),
                   Expanded(child: Text(m, style: Theme.of(context).textTheme.bodySmall)),
                 ],

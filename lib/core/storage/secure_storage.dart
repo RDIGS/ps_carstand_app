@@ -17,6 +17,7 @@ class SecureStorage {
   static const _kUserRole = 'user_role';
   static const _kUserIdioma = 'user_idioma';
   static const _kThemeMode = 'theme_mode';
+  static const _kTema = 'tema_stand';
 
   // No Windows (flutter_secure_storage_windows 3.x) todas as chaves vivem num
   // único ficheiro encriptado, reescrito por inteiro a cada escrita, sem
@@ -82,6 +83,8 @@ class SecureStorage {
   /// não da conta, por isso vive só aqui, não em `saveSession`.
   Future<String?> readThemeMode() => _ler(_kThemeMode);
   Future<void> saveThemeMode(String mode) => _emFila(() => _storage.write(key: _kThemeMode, value: mode));
+  Future<String?> readTema() => _ler(_kTema);
+  Future<void> saveTema(String tema) => _emFila(() => _storage.write(key: _kTema, value: tema));
 
   /// Logout normal: mantém o token do stand guardado (secção 4), só limpa a sessão.
   Future<void> clearSession() => _emFila(() async {

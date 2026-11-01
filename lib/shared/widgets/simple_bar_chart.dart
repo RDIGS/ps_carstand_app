@@ -16,14 +16,16 @@ class BarChartEntry {
 /// Flutter SDK real, por isso evita a superfície de API mais instável
 /// entre versões (títulos customizados/rotacionados).
 class SimpleBarChart extends StatelessWidget {
-  const SimpleBarChart({super.key, required this.entries, this.color = AppColors.teal, this.height = 200});
+  const SimpleBarChart({super.key, required this.entries, this.color, this.height = 200});
 
   final List<BarChartEntry> entries;
-  final Color color;
+  /// Por omissão, a cor principal do tema ativo.
+  final Color? color;
   final double height;
 
   @override
   Widget build(BuildContext context) {
+    final color = this.color ?? AppColors.teal;
     if (entries.isEmpty) return const SizedBox.shrink();
 
     final maxValue = entries.map((e) => e.value).fold<double>(0, (a, b) => a > b ? a : b);

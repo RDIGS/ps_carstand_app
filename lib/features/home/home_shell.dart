@@ -6,6 +6,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/l10n_extension.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_typography.dart';
+import '../../core/theme/paletas.dart';
+import '../../core/theme/theme_state.dart';
 import '../../shared/widgets/account_menu_button.dart';
 import '../auth/auth_repository.dart';
 import '../auth/auth_state.dart';
@@ -39,6 +42,17 @@ class _HomeShellState extends State<HomeShell> {
   void initState() {
     super.initState();
     unawaited(_loadStockAlerts());
+    unawaited(_sincronizarTema());
+  }
+
+  // Tema da conta: depois de um login aplica o que vem do servidor (a pessoa
+  // pode tê-lo escolhido noutro dispositivo); fora disso fica o guardado neste.
+  Future<void> _sincronizarTema() async {
+    final auth = context.read<AuthState>();
+    final tema = auth.temaDoLogin;
+    if (tema == null) return;
+    auth.temaDoLogin = null;
+    await context.read<ThemeState>().definirTema(TemaApp.deCodigo(tema));
   }
 
   Future<void> _loadStockAlerts() async {
@@ -56,12 +70,12 @@ class _HomeShellState extends State<HomeShell> {
     final l10n = context.l10n;
 
     final destinations = <_Destino>[
-      _Destino(icon: Icons.directions_car, label: l10n.navVeiculos, screen: const VehicleListScreen()),
-      _Destino(icon: Icons.receipt_long, label: l10n.navVendas, screen: const SalesListScreen()),
-      _Destino(icon: Icons.person_search, label: l10n.navLeads, screen: const LeadsListScreen()),
-      _Destino(icon: Icons.calendar_month, label: l10n.navCalendario, screen: const CalendarScreen()),
-      if (isOwner) _Destino(icon: Icons.groups, label: l10n.navEquipa, screen: const TeamScreen()),
-      if (isOwner) _Destino(icon: Icons.bar_chart, label: l10n.navFinanceiro, screen: const FinanceScreen()),
+      _Destino(icon: Icons.directions_car_outlined, label: l10n.navVeiculos, screen: const VehicleListScreen()),
+      _Destino(icon: Icons.receipt_long_outlined, label: l10n.navVendas, screen: const SalesListScreen()),
+      _Destino(icon: Icons.person_search_outlined, label: l10n.navLeads, screen: const LeadsListScreen()),
+      _Destino(icon: Icons.calendar_month_outlined, label: l10n.navCalendario, screen: const CalendarScreen()),
+      if (isOwner) _Destino(icon: Icons.groups_outlined, label: l10n.navEquipa, screen: const TeamScreen()),
+      if (isOwner) _Destino(icon: Icons.bar_chart_outlined, label: l10n.navFinanceiro, screen: const FinanceScreen()),
     ];
 
     final index = _index < destinations.length ? _index : 0;
@@ -115,8 +129,6 @@ class _HomeShellState extends State<HomeShell> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
         onDestinationSelected: (i) => setState(() => _index = i),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        indicatorColor: AppColors.teal.withValues(alpha: 0.14),
         destinations: [
           for (final d in destinations) NavigationDestination(icon: Icon(d.icon), label: d.label),
         ],
@@ -176,23 +188,13 @@ class _Sidebar extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               children: [
-                Image.asset('assets/images/app_icon.png', width: 34, height: 34),
+                Image.asset('assets/images/app_icon.png', width: 28, height: 28),
                 const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('PS', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 17)),
-                    Text(
-                      'CarStand',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 13, color: AppColors.orange, letterSpacing: 0.2),
-                    ),
-                  ],
-                ),
+                Text('PS CarStand', style: AppTypography.serifa(fontSize: 21, color: Theme.of(context).colorScheme.onSurface)),
               ],
             ),
           ),
-          const SizedBox(height: 28),
+          const SizedBox(height: 36),
           for (var i = 0; i < destinations.length; i++) _SidebarItem(destino: destinations[i], selected: i == index, onTap: () => onSelect(i)),
           const Spacer(),
           Container(
@@ -205,8 +207,8 @@ class _Sidebar extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 16,
-                      backgroundColor: AppColors.teal,
-                      child: Text(inicial, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13)),
+                      backgroundColor: Theme.of(context).colorScheme.onSurface,
+                      child: Text(inicial, style: TextStyle(color: Theme.of(context).colorScheme.surface, fontWeight: FontWeight.w700, fontSize: 13)),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
@@ -226,12 +228,12 @@ class _Sidebar extends StatelessWidget {
                           ),
                           Text(
                             isOwner ? l10n.funcaoOwner : l10n.funcaoVendedor,
-                            style: const TextStyle(fontSize: 12, color: AppColors.inkFaint),
+                            style: TextStyle(fontSize: 12, color: AppColors.inkFaint),
                           ),
                         ],
                       ),
                     ),
-                    const Icon(Icons.unfold_more, size: 16, color: AppColors.inkFaint),
+                    Icon(Icons.unfold_more, size: 16, color: AppColors.inkFaint),
                   ],
                 ),
               ),
@@ -252,32 +254,25 @@ class _SidebarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final corInativa = Theme.of(context).colorScheme.onSurfaceVariant;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Material(
-        color: selected ? AppColors.teal.withValues(alpha: 0.14) : Colors.transparent,
-        borderRadius: BorderRadius.circular(10),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(10),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            child: Row(
-              children: [
-                Icon(destino.icon, size: 20, color: selected ? AppColors.teal : corInativa),
-                const SizedBox(width: 12),
-                Text(
-                  destino.label,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-                    color: selected ? AppColors.teal : corInativa,
-                  ),
-                ),
-              ],
+    final tinta = Theme.of(context).colorScheme.onSurface;
+    final cor = selected ? tinta : Theme.of(context).colorScheme.onSurfaceVariant;
+    // Item ativo: texto a cheio + traço fino à esquerda (sem caixa tintada).
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+        decoration: BoxDecoration(
+          border: Border(left: BorderSide(color: selected ? AppColors.teal : Colors.transparent, width: 2)),
+        ),
+        child: Row(
+          children: [
+            Icon(destino.icon, size: 19, color: cor),
+            const SizedBox(width: 14),
+            Text(
+              destino.label,
+              style: TextStyle(fontSize: 14, fontWeight: selected ? FontWeight.w700 : FontWeight.w500, color: cor),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -301,11 +296,11 @@ class _SubscriptionBanner extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      color: AppColors.orange.withValues(alpha: 0.16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      color: AppColors.orange100,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 9),
       child: Row(
         children: [
-          const Icon(Icons.error_outline, color: AppColors.orange, size: 20),
+          Icon(Icons.error_outline, color: AppColors.orangeInk, size: 17),
           const SizedBox(width: 10),
           Expanded(child: Text(texto, style: Theme.of(context).textTheme.bodyMedium)),
         ],
@@ -328,11 +323,11 @@ class _UpdateRecomendadaBanner extends StatelessWidget {
     final l10n = context.l10n;
     return Container(
       width: double.infinity,
-      color: AppColors.orange.withValues(alpha: 0.16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      color: AppColors.orange100,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 9),
       child: Row(
         children: [
-          const Icon(Icons.system_update, color: AppColors.orange, size: 20),
+          Icon(Icons.system_update, color: AppColors.orangeInk, size: 17),
           const SizedBox(width: 10),
           Expanded(child: Text(l10n.atualizacaoRecomendadaAviso(versao), style: Theme.of(context).textTheme.bodyMedium)),
           if (changelogUrl != null)
@@ -361,11 +356,11 @@ class _StockParadoBanner extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        color: AppColors.orange.withValues(alpha: 0.16),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        color: AppColors.orange100,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 9),
         child: Row(
           children: [
-            const Icon(Icons.hourglass_bottom, color: AppColors.orange, size: 20),
+            Icon(Icons.hourglass_bottom, color: AppColors.orangeInk, size: 17),
             const SizedBox(width: 10),
             Expanded(
               child: Text(

@@ -684,7 +684,7 @@ class _EntryTile extends StatelessWidget {
             Text(financeCategoriaLabel(l10n, entry.categoria)),
             if (entry.pagoPor != null && !entry.reembolsado) ...[
               const SizedBox(width: 8),
-              const Icon(Icons.hourglass_bottom, size: 14, color: AppColors.orange),
+              Icon(Icons.hourglass_bottom, size: 14, color: AppColors.orange),
             ],
             if (entry.recorrente) ...[
               const SizedBox(width: 6),

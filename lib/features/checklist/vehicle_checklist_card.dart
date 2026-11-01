@@ -219,7 +219,7 @@ class _ChecklistCardState extends State<ChecklistCard> {
                       title: Text(
                         item.descricao,
                         style: item.concluido
-                            ? const TextStyle(decoration: TextDecoration.lineThrough, color: AppColors.inkMuted)
+                            ? TextStyle(decoration: TextDecoration.lineThrough, color: AppColors.inkMuted)
                             : null,
                       ),
                       secondary: IconButton(
